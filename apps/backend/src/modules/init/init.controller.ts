@@ -37,6 +37,19 @@ export class InitController {
   @Get()
   async init(@Query('entity') entity: string) {
     switch (entity) {
+      case 'all': {
+        await this.initUser();
+        await this.initProvince();
+        await this.initRegency();
+        await this.initDistrict();
+        await this.initVillage();
+        await this.initParticipantType();
+        await this.initDoseForm();
+        await this.initFormType();
+        await this.initPrescriptionStatus();
+        return this.initPaymentStatus();
+      }
+
       case 'user':
         return await this.initUser();
 
