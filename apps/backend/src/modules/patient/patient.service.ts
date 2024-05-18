@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Gender } from '@prisma/client';
 import * as dayjs from 'dayjs';
 import { Repository } from 'typeorm';
 import { Patient } from './patient';
@@ -12,7 +11,7 @@ export class PatientService {
     private patientRepository: Repository<Patient>,
   ) {}
 
-  async generateNIK(gender: Gender, birthDate: string) {
+  async generateNIK(gender: 'MALE' | 'FEMALE', birthDate: string) {
     const total = await this.patientRepository.count();
     let date = dayjs(birthDate).get('date');
     if (gender === 'FEMALE') {

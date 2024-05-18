@@ -1,8 +1,6 @@
-import { Gender, Religion } from '@prisma/client';
 import {
   IsDateString,
   IsDefined,
-  IsEnum,
   IsNotEmptyObject,
   IsObject,
   IsOptional,
@@ -51,12 +49,12 @@ export class PatientCreateRequest {
   @IsString()
   fullName: string;
 
-  @IsEnum(Gender)
-  gender: Gender;
+  @IsString()
+  gender: string;
 
-  @IsEnum(Religion)
+  @IsString()
   @IsOptional()
-  religion?: Religion;
+  religion?: string;
 
   @IsDateString()
   birthDate: string;

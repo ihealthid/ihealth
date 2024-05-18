@@ -1,4 +1,3 @@
-import { Address } from '@prisma/client';
 import { BirthDate } from './birthdate';
 import { Period } from './period';
 import { Telecom } from './telecom';
@@ -22,7 +21,7 @@ export interface Patient extends Resource {
   birthDate: Date;
   _birthDate: BirthDate;
   deceasedBoolean: boolean;
-  address: Address[];
+  // address: Address[];
   contact: Contact[];
   managingOrganization: ManagingOrganization;
 }

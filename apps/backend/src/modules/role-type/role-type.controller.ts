@@ -1,5 +1,4 @@
 import { Controller, Get } from '@nestjs/common';
-import { RoleType } from '@prisma/client';
 
 @Controller({
   path: '/role-types',
@@ -7,6 +6,6 @@ import { RoleType } from '@prisma/client';
 export class RoleTypeController {
   @Get()
   async all() {
-    return Object.keys(RoleType).map((item) => item);
+    return ['medic', 'non_medic'];
   }
 }

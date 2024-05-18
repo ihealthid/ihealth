@@ -22,7 +22,7 @@ import { DistrictModule } from './modules/district/district.module';
 import { VillageModule } from './modules/village/village.module';
 import { EncounterStatusModule } from './modules/encounter-status/encounter-status.module';
 import { ConfigModule } from '@nestjs/config';
-import { SatuSehatModule } from './third-party/satu-sehat/satu-sehat.module';
+// import { SatuSehatModule } from './third-party/satu-sehat/satu-sehat.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { InitModule } from './modules/init/init.module';
 import { CodeSystemTypeModule } from './modules/code-system-type/code-system-type.module';
@@ -122,7 +122,7 @@ import { ParticipantModule } from './modules/participant/participant.module';
     AllergyModule,
     PatientAllergyModule,
 
-    SatuSehatModule,
+    // SatuSehatModule,
     InitModule,
 
     RFIDModule,
