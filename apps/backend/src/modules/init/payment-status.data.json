@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "code": "pending",
+      "display": "Pending",
+      "order": 1
+    },
+    {
+      "code": "done",
+      "display": "Done",
+      "order": 2
+    },
+    {
+      "code": "canceled",
+      "display": "Canceled",
+      "order": 3
+    }
+  ]
+}

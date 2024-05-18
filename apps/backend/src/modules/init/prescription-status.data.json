@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "code": "request",
+      "display": "Request",
+      "order": 1
+    },
+    {
+      "code": "process",
+      "display": "Process",
+      "order": 2
+    },
+    {
+      "code": "done",
+      "display": "Done",
+      "order": 3
+    },
+    {
+      "code": "canceled",
+      "display": "canceled",
+      "order": 4
+    }
+  ]
+}

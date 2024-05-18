@@ -1,0 +1,62 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { FormType } from '../form-type/form-type';
+import { Brand } from '../brand/brand';
+
+@Entity()
+export class Consumable {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({
+    unique: true,
+    nullable: true,
+  })
+  barcode?: string;
+
+  @Column({
+    unique: true,
+    nullable: true,
+  })
+  registeredId?: string;
+
+  @Column()
+  name: string;
+
+  @Column({
+    nullable: true,
+  })
+  variant?: string;
+
+  @Column()
+  price: number;
+
+  @Column({
+    default: false
+  })
+  isImported: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @Column()
+  brandId: number;
+
+  @ManyToOne(() => Brand)
+  brand: Brand;
+
+  @Column()
+  formTypeId: number;
+
+  @ManyToOne(() => FormType)
+  formType: FormType;
+}

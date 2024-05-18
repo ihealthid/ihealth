@@ -1,0 +1,140 @@
+{
+  "data": [
+    {
+      "code": 11,
+      "display": "ACEH"
+    },
+    {
+      "code": 12,
+      "display": "SUMATERA UTARA"
+    },
+    {
+      "code": 13,
+      "display": "SUMATERA BARAT"
+    },
+    {
+      "code": 14,
+      "display": "RIAU"
+    },
+    {
+      "code": 15,
+      "display": "JAMBI"
+    },
+    {
+      "code": 16,
+      "display": "SUMATERA SELATAN"
+    },
+    {
+      "code": 17,
+      "display": "BENGKULU"
+    },
+    {
+      "code": 18,
+      "display": "LAMPUNG"
+    },
+    {
+      "code": 19,
+      "display": "KEPULAUAN BANGKA BELITUNG"
+    },
+    {
+      "code": 21,
+      "display": "KEPULAUAN RIAU"
+    },
+    {
+      "code": 31,
+      "display": "DKI JAKARTA"
+    },
+    {
+      "code": 32,
+      "display": "JAWA BARAT"
+    },
+    {
+      "code": 33,
+      "display": "JAWA TENGAH"
+    },
+    {
+      "code": 34,
+      "display": "DI YOGYAKARTA"
+    },
+    {
+      "code": 35,
+      "display": "JAWA TIMUR"
+    },
+    {
+      "code": 36,
+      "display": "BANTEN"
+    },
+    {
+      "code": 51,
+      "display": "BALI"
+    },
+    {
+      "code": 52,
+      "display": "NUSA TENGGARA BARAT"
+    },
+    {
+      "code": 53,
+      "display": "NUSA TENGGARA TIMUR"
+    },
+    {
+      "code": 61,
+      "display": "KALIMANTAN BARAT"
+    },
+    {
+      "code": 62,
+      "display": "KALIMANTAN TENGAH"
+    },
+    {
+      "code": 63,
+      "display": "KALIMANTAN SELATAN"
+    },
+    {
+      "code": 64,
+      "display": "KALIMANTAN TIMUR"
+    },
+    {
+      "code": 65,
+      "display": "KALIMANTAN UTARA"
+    },
+    {
+      "code": 71,
+      "display": "SULAWESI UTARA"
+    },
+    {
+      "code": 72,
+      "display": "SULAWESI TENGAH"
+    },
+    {
+      "code": 73,
+      "display": "SULAWESI SELATAN"
+    },
+    {
+      "code": 74,
+      "display": "SULAWESI TENGGARA"
+    },
+    {
+      "code": 75,
+      "display": "GORONTALO"
+    },
+    {
+      "code": 76,
+      "display": "SULAWESI BARAT"
+    },
+    {
+      "code": 81,
+      "display": "MALUKU"
+    },
+    {
+      "code": 82,
+      "display": "MALUKU UTARA"
+    },
+    {
+      "code": 91,
+      "display": "PAPUA BARAT"
+    },
+    {
+      "code": 94,
+      "display": "PAPUA"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "display": "Powder",
+      "definition": "Powder"
+    },
+    {
+      "display": "Capsule",
+      "definition": "Capsule"
+    },
+    {
+      "display": "Tablet",
+      "definition": "Tablet"
+    }
+  ]
+}
