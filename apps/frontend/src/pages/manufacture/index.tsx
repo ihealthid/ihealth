@@ -22,7 +22,7 @@ import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
 
 export const Component = () => {
   const addSectionRef = useRef<DisclosureAction>(null);
-  const editSectionRef = useRef<DisclosureActionOnEdit<number>>(null);
+  const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
   const [deleteMutation] = useDeleteManufactureMutation();
 
   return (
@@ -55,10 +55,6 @@ export const Component = () => {
             )}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
-              },
-              {
                 keyIndex: "name",
                 header: "Nama",
               },
@@ -77,7 +73,7 @@ export const Component = () => {
                     label: "Delete",
                     onClick(row) {
                       deleteConfirmation("Delete Manufacture", () =>
-                        deleteMutation(row.id)
+                        deleteMutation(row.id),
                       );
                     },
                   },

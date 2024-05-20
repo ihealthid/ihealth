@@ -4,7 +4,7 @@ import { PaginationQueryParams } from "@/types/pagination-query-params";
 import { EntityResponse } from "@/types/entity-response";
 
 export interface Manufacture {
-  id: number;
+  id: string;
   name: string;
   createdAt: string;
   updatedAt: string;
@@ -27,7 +27,7 @@ const api = mainApi.injectEndpoints({
       providesTags: ["Manufacture"],
     }),
 
-    getManufacture: query<EntityResponse<Manufacture>, number>({
+    getManufacture: query<EntityResponse<Manufacture>, string>({
       query: (id) => ({
         url: "/manufactures/" + id,
       }),
@@ -45,7 +45,7 @@ const api = mainApi.injectEndpoints({
 
     updateManufacture: mutation<
       EntityResponse<Manufacture>,
-      Partial<ManufactureInput> & { id: number }
+      Partial<ManufactureInput> & { id: string }
     >({
       query: ({ id, ...body }) => ({
         url: "/manufactures/" + id,
@@ -55,7 +55,7 @@ const api = mainApi.injectEndpoints({
       invalidatesTags: ["Manufacture"],
     }),
 
-    deleteManufacture: mutation<EntityResponse<Manufacture>, number>({
+    deleteManufacture: mutation<EntityResponse<Manufacture>, string>({
       query: (id) => ({
         url: "/manufactures/" + id,
         method: "delete",

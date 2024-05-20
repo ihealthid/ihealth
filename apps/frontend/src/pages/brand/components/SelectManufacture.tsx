@@ -3,8 +3,8 @@ import { Select } from "@mantine/core";
 import { useMemo } from "react";
 
 interface SelectManufactureProps {
-  defaultValue?: number | null;
-  onChange: (value?: number | null) => void;
+  defaultValue?: string | null;
+  onChange: (value?: string | null) => void;
 }
 
 export const SelectManufacture = ({
@@ -20,7 +20,7 @@ export const SelectManufacture = ({
     if (!data) return [];
     return data.data.map((row) => ({
       label: row.name,
-      value: row.id.toString(),
+      value: row.id,
     }));
   }, [data]);
 
@@ -30,7 +30,7 @@ export const SelectManufacture = ({
       placeholder="Select manufacture"
       data={options}
       defaultValue={defaultValue?.toString()}
-      onChange={(e) => onChange(e ? parseInt(e) : null)}
+      onChange={onChange}
     />
   );
 };

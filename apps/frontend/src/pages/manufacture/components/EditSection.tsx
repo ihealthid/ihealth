@@ -9,9 +9,9 @@ import {
   useUpdateManufactureMutation,
 } from "@/services/api/manufacture";
 
-export const EditSection = forwardRef<DisclosureActionOnEdit<number>>(
+export const EditSection = forwardRef<DisclosureActionOnEdit<string>>(
   (_, ref) => {
-    const [id, setId] = useState<number | undefined>();
+    const [id, setId] = useState<string | undefined>();
     const [opened, { open, close }] = useDisclosure();
 
     const [fetcher, { data }] = useLazyGetManufactureQuery();
@@ -49,5 +49,5 @@ export const EditSection = forwardRef<DisclosureActionOnEdit<number>>(
         </Modal.Body>
       </Modal>
     );
-  }
+  },
 );
