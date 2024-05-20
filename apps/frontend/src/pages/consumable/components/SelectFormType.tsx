@@ -3,8 +3,8 @@ import { Select } from "@mantine/core";
 import { useMemo } from "react";
 
 interface SelectFormTypeProps {
-  defaultValue?: number | null;
-  onChange: (value?: number | null) => void;
+  defaultValue?: string | null;
+  onChange: (value?: string | null) => void;
 }
 
 export const SelectFormType = ({
@@ -20,7 +20,7 @@ export const SelectFormType = ({
     if (!data) return [];
     return data.data.map((row) => ({
       label: row.display,
-      value: row.id.toString(),
+      value: row.id,
     }));
   }, [data]);
 
@@ -29,8 +29,8 @@ export const SelectFormType = ({
       label="Form Type"
       placeholder="Select form type"
       data={options}
-      defaultValue={defaultValue?.toString()}
-      onChange={(e) => onChange(e ? parseInt(e) : null)}
+      defaultValue={defaultValue}
+      onChange={onChange}
     />
   );
 };

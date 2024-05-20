@@ -3,7 +3,7 @@ import { mainApi } from "./main";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
 
 export interface FormType {
-  id: number;
+  id: string;
   code: string;
   display: string;
 }

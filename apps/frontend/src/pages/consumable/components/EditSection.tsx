@@ -5,16 +5,16 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 import { ConsumableForm } from "./ConsumableForm";
 import { DisclosureActionOnEdit } from "@/types/disclosure";
 import {
-  useLazyGetBrandQuery,
-  useUpdateBrandMutation,
-} from "@/services/api/brand";
+  useLazyGetConsumableQuery,
+  useUpdateConsumableMutation,
+} from "@/services/api/consumable";
 
-export const EditSection = forwardRef<DisclosureActionOnEdit<number>>(
+export const EditSection = forwardRef<DisclosureActionOnEdit<string>>(
   (_, ref) => {
-    const [id, setId] = useState<number | undefined>();
+    const [id, setId] = useState<string | undefined>();
     const [opened, { open, close }] = useDisclosure();
 
-    const [fetcher, { data }] = useLazyGetBrandQuery();
+    const [fetcher, { data }] = useLazyGetConsumableQuery();
 
     useImperativeHandle(ref, () => ({
       open(id) {
@@ -27,13 +27,13 @@ export const EditSection = forwardRef<DisclosureActionOnEdit<number>>(
 
     return (
       <Modal
-        title={<Title order={4}>Edit Brand</Title>}
+        title={<Title order={4}>Edit Consumable</Title>}
         opened={opened}
         onClose={close}
       >
         <Modal.Body>
           <FormProvider
-            useMutate={useUpdateBrandMutation}
+            useMutate={useUpdateConsumableMutation}
             onSuccess={close}
             initialValues={{ id }}
           >
@@ -49,5 +49,5 @@ export const EditSection = forwardRef<DisclosureActionOnEdit<number>>(
         </Modal.Body>
       </Modal>
     );
-  }
+  },
 );

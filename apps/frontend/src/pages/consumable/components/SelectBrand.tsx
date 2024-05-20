@@ -3,8 +3,8 @@ import { Select } from "@mantine/core";
 import { useMemo } from "react";
 
 interface SelectBrandProps {
-  defaultValue?: number | null;
-  onChange: (value?: number | null) => void;
+  defaultValue?: string | null;
+  onChange: (value?: string | null) => void;
 }
 
 export const SelectBrand = ({ defaultValue, onChange }: SelectBrandProps) => {
@@ -17,7 +17,7 @@ export const SelectBrand = ({ defaultValue, onChange }: SelectBrandProps) => {
     if (!data) return [];
     return data.data.map((row) => ({
       label: row.name,
-      value: row.id.toString(),
+      value: row.id,
     }));
   }, [data]);
 
@@ -26,8 +26,8 @@ export const SelectBrand = ({ defaultValue, onChange }: SelectBrandProps) => {
       label="Brand"
       placeholder="Select brand"
       data={options}
-      defaultValue={defaultValue?.toString()}
-      onChange={(e) => onChange(e ? parseInt(e) : null)}
+      defaultValue={defaultValue}
+      onChange={onChange}
     />
   );
 };

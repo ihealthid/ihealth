@@ -27,7 +27,7 @@ import Barcode from "react-barcode";
 export const Component = () => {
   const navigate = useNavigate();
   const addSectionRef = useRef<DisclosureAction>(null);
-  const editSectionRef = useRef<DisclosureActionOnEdit<number>>(null);
+  const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
   const [deleteMutation] = useDeleteConsumableMutation();
 
   return (
@@ -60,10 +60,6 @@ export const Component = () => {
             )}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
-              },
-              {
                 header: "Barcode",
                 render: (row) =>
                   row.barcode && (
@@ -72,10 +68,7 @@ export const Component = () => {
                         <Badge>{row.barcode}</Badge>
                       </Popover.Target>
                       <Popover.Dropdown>
-                        <Barcode
-                          value={row.barcode?.toString()}
-                          displayValue={false}
-                        />
+                        <Barcode value={row.barcode} displayValue={false} />
                       </Popover.Dropdown>
                     </Popover>
                   ),
@@ -122,7 +115,7 @@ export const Component = () => {
                     label: "Delete",
                     onClick(row) {
                       deleteConfirmation("Delete Brand", () =>
-                        deleteMutation(row.id)
+                        deleteMutation(row.id),
                       );
                     },
                   },

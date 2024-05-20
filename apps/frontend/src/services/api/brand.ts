@@ -5,9 +5,9 @@ import { EntityResponse } from "@/types/entity-response";
 import { Manufacture } from "./manufacture";
 
 export interface Brand {
-  id: number;
+  id: string;
   name: string;
-  manufactureId: number;
+  manufactureId: string;
   manufacture: Manufacture;
   createdAt: string;
   updatedAt: string;
@@ -15,7 +15,7 @@ export interface Brand {
 
 interface BrandInput {
   name: string;
-  manufactureId: number;
+  manufactureId: string;
 }
 
 const api = mainApi.injectEndpoints({
@@ -28,7 +28,7 @@ const api = mainApi.injectEndpoints({
       providesTags: ["Brand"],
     }),
 
-    getBrand: query<EntityResponse<Brand>, number>({
+    getBrand: query<EntityResponse<Brand>, string>({
       query: (id) => ({
         url: "/brands/" + id,
       }),
@@ -46,7 +46,7 @@ const api = mainApi.injectEndpoints({
 
     updateBrand: mutation<
       EntityResponse<Brand>,
-      Partial<BrandInput> & { id: number }
+      Partial<BrandInput> & { id: string }
     >({
       query: ({ id, ...body }) => ({
         url: "/brands/" + id,
@@ -56,7 +56,7 @@ const api = mainApi.injectEndpoints({
       invalidatesTags: ["Brand"],
     }),
 
-    deleteBrand: mutation<EntityResponse<Brand>, number>({
+    deleteBrand: mutation<EntityResponse<Brand>, string>({
       query: (id) => ({
         url: "/brands/" + id,
         method: "delete",

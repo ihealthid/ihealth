@@ -3,14 +3,15 @@ import { mainApi } from "./main";
 import { Brand } from "./brand";
 import { FormType } from "./form-type";
 import { PaginationResult } from "@/types/pagination-result";
+import { EntityResponse } from "@/types/entity-response";
 
 export type Consumable = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   variant?: string;
-  formTypeId: number;
-  brandId: number;
+  formTypeId: string;
+  brandId: string;
   isDomestic: boolean;
   barcode?: string;
   registeredId?: string;
@@ -24,25 +25,28 @@ type ConsumableInput = {
   name: string;
   price: number;
   variant?: string;
-  formTypeId: number;
-  brandId: number;
+  formTypeId: string;
+  brandId: string;
   isDomestic: boolean;
   barcode?: string;
   registeredId?: string;
 };
 
 const consumableApi = mainApi.injectEndpoints({
-  endpoints: (builder) => ({
-    getConsumables: builder.query<
-      PaginationResult<Consumable>,
-      PaginationQueryParams
-    >({
+  endpoints: ({ mutation, query }) => ({
+    getConsumables: query<PaginationResult<Consumable>, PaginationQueryParams>({
       query: () => ({
         url: "/consumables",
       }),
       providesTags: ["Consumable"],
     }),
-    createConsumable: builder.mutation<unknown, ConsumableInput>({
+    getConsumable: query<EntityResponse<Consumable>, string>({
+      query: (id) => ({
+        url: `/consumables/${id}`,
+      }),
+      providesTags: ["Consumable"],
+    }),
+    createConsumable: mutation<EntityResponse<Consumable>, ConsumableInput>({
       query: (body) => ({
         url: "/consumables",
         method: "post",
@@ -50,7 +54,17 @@ const consumableApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Consumable"],
     }),
-    deleteConsumable: builder.mutation<unknown, number>({
+    updateConsumable: mutation<
+      EntityResponse<Consumable>,
+      Partial<ConsumableInput> & { id: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/consumables/${id}`,
+        method: "put",
+        body,
+      }),
+    }),
+    deleteConsumable: mutation<EntityResponse<Consumable>, string>({
       query: (id) => ({
         url: `/consumables/${id}`,
         method: "delete",
@@ -62,6 +76,8 @@ const consumableApi = mainApi.injectEndpoints({
 
 export const {
   useGetConsumablesQuery,
+  useLazyGetConsumableQuery,
   useCreateConsumableMutation,
+  useUpdateConsumableMutation,
   useDeleteConsumableMutation,
 } = consumableApi;
