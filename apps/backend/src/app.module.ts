@@ -54,6 +54,7 @@ import { ClassificationDiseaseGroupModule } from './modules/classification-disea
 import { AddressEntryModule } from './modules/address-entry/address-entry.module';
 import { EncounterHistoryModule } from './modules/encounter-history/encounter-history.module';
 import { ObservationEntryModule } from './modules/observation-entry/observation-entry.module';
+import { EncounterActModule } from './modules/encounter-act/encounter-act.module';
 
 @Module({
   imports: [
@@ -117,6 +118,8 @@ import { ObservationEntryModule } from './modules/observation-entry/observation-
     PractitionerModule,
 
     EncounterModule,
+    EncounterActModule,
+
     ObservationModule,
     ObservationEntryModule,
     DiagnoseStatusModule,

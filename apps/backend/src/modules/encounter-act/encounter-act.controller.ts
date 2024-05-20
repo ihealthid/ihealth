@@ -16,7 +16,6 @@ import {
 import { EntityManager } from 'typeorm';
 import { EncounterAct } from './encounter-act';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { Encounter } from '../encounter/encounter';
 
 @Controller({
   path: 'encounter-acts',
@@ -44,7 +43,7 @@ export class EncounterActController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: any) {
-    const encounterAct = this.entityManager.create(Encounter, data);
+    const encounterAct = this.entityManager.create(EncounterAct, data);
     return this.entityManager.save(encounterAct);
   }
 
