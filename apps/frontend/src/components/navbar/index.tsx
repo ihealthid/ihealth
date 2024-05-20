@@ -49,10 +49,6 @@ const Navbar = () => {
                 link: "/encounter-act",
               },
               {
-                label: "Act Encounter Code",
-                link: "act-encounter-code",
-              },
-              {
                 label: "Participant Type Code",
                 link: "participant-type-code",
               },
