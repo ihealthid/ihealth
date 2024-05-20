@@ -4,6 +4,11 @@
       "code": "registered",
       "display": "Registered",
       "order": 1
+    },
+    {
+      "code": "observed",
+      "display": "Observed",
+      "order": 2
     }
   ]
 }

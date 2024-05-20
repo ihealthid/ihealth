@@ -25,10 +25,6 @@ import dayjs from "dayjs";
 export const Component = () => {
   const navigate = useNavigate();
   const sorter = useMap([["status.order", "desc"]]);
-  const sort = _.map(
-    Array.from(sorter.entries()),
-    ([key, value]) => `${key}|${value}`
-  );
 
   return (
     <Card>
@@ -43,10 +39,6 @@ export const Component = () => {
             "createdAt:dateAt": dayjs().format("YYYY-MM-DD"),
           }}
           cols={[
-            {
-              keyIndex: "id",
-              header: "ID",
-            },
             {
               keyIndex: "patient.fullName",
               header: "Pasien",

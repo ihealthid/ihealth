@@ -20,7 +20,7 @@ import { useMemo } from "react";
 
 export const Component = () => {
   const params = useParams();
-  const encounterId = Number.parseInt(params.id as string);
+  const encounterId = params.id as string;
   const { data } = useGetObservationByEncounterIdQuery({
     encounterId,
   });
@@ -31,10 +31,10 @@ export const Component = () => {
         item.type === "number"
           ? parseInt(item.value)
           : item.type === "string"
-          ? item.value
-          : item.value === "true"
-          ? true
-          : false,
+            ? item.value
+            : item.value === "true"
+              ? true
+              : false,
     }));
 
     return _.reduce(
@@ -49,7 +49,7 @@ export const Component = () => {
         }
         return acc;
       },
-      {} as any
+      {} as any,
     );
   }, [data]);
 

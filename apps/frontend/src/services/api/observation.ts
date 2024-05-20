@@ -6,20 +6,20 @@ interface BaseObservation {
 }
 
 export interface Observation extends Partial<BaseObservation> {
-  id: number;
+  id: string;
   createdAt: string;
   updatedAt: string;
 }
 
 interface ObservationUpdateInput extends Partial<BaseObservation> {
-  encounterId: number;
+  encounterId: string;
 }
 
 const api = mainApi.injectEndpoints({
   endpoints: (builder) => ({
     getObservationByEncounterId: builder.query<
       EntityResponse<Observation>,
-      { encounterId: number }
+      { encounterId: string }
     >({
       query: ({ encounterId }) => ({
         url: `/observations/encounter/${encounterId}`,
