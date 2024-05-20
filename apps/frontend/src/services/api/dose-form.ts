@@ -3,7 +3,7 @@ import { mainApi } from "./main";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
 
 export interface DoseForm {
-  id: number;
+  id: string;
   display: string;
   definition?: string;
 }

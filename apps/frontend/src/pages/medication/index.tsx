@@ -5,7 +5,6 @@ import {
   Flex,
   Group,
   NumberFormatter,
-  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -20,8 +19,8 @@ import {
 } from "@/services/api/medication";
 import { useNavigate } from "react-router-dom";
 import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
-import { modals } from "@mantine/modals";
 import { EditSection } from "./components/EditSection";
+import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
 
 export const Component = () => {
   const navigate = useNavigate();
@@ -59,10 +58,6 @@ export const Component = () => {
             )}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
-              },
-              {
                 keyIndex: "name",
                 header: "Nama",
               },
@@ -96,19 +91,11 @@ export const Component = () => {
                   },
                   {
                     icon: <IconTrash />,
-                    label: "Hapus",
+                    label: "Delete",
                     onClick(row) {
-                      modals.openConfirmModal({
-                        title: <Title order={4}>Hapus Obat</Title>,
-                        children: (
-                          <Text>
-                            Apakah anda yakin akan menghapus Obat ini?
-                          </Text>
-                        ),
-                        onConfirm() {
-                          deleteMedication(row.id);
-                        },
-                      });
+                      deleteConfirmation("Delete Medication", () =>
+                        deleteMedication(row.id),
+                      );
                     },
                   },
                 ],

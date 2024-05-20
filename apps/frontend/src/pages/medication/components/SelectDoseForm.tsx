@@ -3,9 +3,9 @@ import { Select } from "@mantine/core";
 import { useMemo } from "react";
 
 interface SelectDoseFormProps {
-  value?: null | number;
-  defaultValue?: number;
-  onChange: (value: null | number) => void;
+  value?: null | string;
+  defaultValue?: string;
+  onChange: (value: null | string) => void;
 }
 
 export const SelectDoseForm = ({
@@ -21,7 +21,7 @@ export const SelectDoseForm = ({
   const options = useMemo(() => {
     if (!data) return [];
     return data.data.map((row) => ({
-      value: row.id.toString(),
+      value: row.id,
       label: row.display,
     }));
   }, [data]);
@@ -31,9 +31,9 @@ export const SelectDoseForm = ({
       label="Dose Form"
       placeholder="Select dose form"
       data={options}
-      value={value ? value.toString() : undefined}
-      defaultValue={defaultValue ? defaultValue.toString() : undefined}
-      onChange={(v) => onChange(v ? parseInt(v) : null)}
+      value={value ?? undefined}
+      defaultValue={defaultValue ?? undefined}
+      onChange={onChange}
     />
   );
 };
