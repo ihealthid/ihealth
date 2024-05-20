@@ -12,6 +12,7 @@ export const router = createBrowserRouter([
     path: "/",
     lazy: () => import("./components/layout"),
     children: [
+      load("/encounter-act", () => import("./pages/encounter-act")),
       load("/admission", () => import("./pages/admission")),
       load("/appointment", () => import("./pages/appointment")),
       load("/area", () => import("./pages/area")),

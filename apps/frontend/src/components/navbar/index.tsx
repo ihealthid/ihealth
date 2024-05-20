@@ -45,6 +45,10 @@ const Navbar = () => {
                 link: "/classification-disease",
               },
               {
+                label: "Encounter Act",
+                link: "/encounter-act",
+              },
+              {
                 label: "Act Encounter Code",
                 link: "act-encounter-code",
               },
