@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -14,9 +13,9 @@ import {
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
 import { AuthGuard } from '../auth/auth.guard';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Patient } from './patient';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Identify } from '../identify/identify';
 import { Address } from '../address/address';
 import { AddressEntry } from '../address-entry/address-entry';
@@ -37,7 +36,7 @@ export class PatientController {
       ...paginationQuery,
       relations: {
         identifies: true,
-        address: {
+        addresses: {
           entries: true,
           village: {
             district: {
@@ -72,7 +71,7 @@ export class PatientController {
       },
       relations: {
         identifies: true,
-        address: {
+        addresses: {
           entries: true,
           village: {
             district: {

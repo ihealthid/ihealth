@@ -1,5 +1,5 @@
 import { FormProvider } from "@/components/form-provider";
-import { usePostPatientMutation } from "@/services/api/patient";
+import { useCreatePatientMutation } from "@/services/api/patient";
 import { DisclosureAction } from "@/types/disclosure";
 import { Stack, Flex, Button, Modal, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -12,20 +12,17 @@ export const AddSection = forwardRef<DisclosureAction>((_, ref) => {
   useImperativeHandle(ref, () => ({ open, close }));
   return (
     <Modal
-    size="lg"
+      size="lg"
       opened={opened}
       onClose={close}
-      title={<Title order={4}>Tambah Pasien</Title>}
+      title={<Title order={4}>Add New Patient</Title>}
     >
-      <FormProvider
-        useMutate={usePostPatientMutation}
-        onSuccess={close}
-      >
+      <FormProvider useMutate={useCreatePatientMutation} onSuccess={close}>
         {(form) => (
           <Stack>
             <PatientForm form={form} />
             <Flex justify="end" mt={16}>
-              <Button type="submit">Simpan</Button>
+              <Button type="submit">Save</Button>
             </Flex>
           </Stack>
         )}

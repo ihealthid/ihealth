@@ -5,11 +5,11 @@ import { PaginationResult } from "@/types/pagination-result";
 import { EntityResponse } from "@/types/entity-response";
 
 export type Address = {
-  id: number;
+  id: string;
   name: string;
   address: string;
   village: Village;
-  entry: { code: string; value: string }[];
+  entries: { code: string; value: string }[];
 };
 
 export type Identify = {
@@ -18,7 +18,7 @@ export type Identify = {
 };
 
 export type Patient = {
-  id: number;
+  id: string;
   identifies: Identify[];
   fullName: string;
   gender: string;
@@ -52,7 +52,7 @@ type PostPatientInput = {
 
 const patientApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    getPatient: builder.query<EntityResponse<Patient>, number>({
+    getPatient: builder.query<EntityResponse<Patient>, string>({
       query: (id) => ({
         url: "/patients/" + id,
       }),
@@ -70,14 +70,14 @@ const patientApi = mainApi.injectEndpoints({
     }),
     getPatientByEncounterId: builder.query<
       { data: Patient },
-      { encounterId: number }
+      { encounterId: string }
     >({
       query: ({ encounterId }) => ({
         url: `/patients/encounter/${encounterId}`,
       }),
       providesTags: ["Patient"],
     }),
-    postPatient: builder.mutation<unknown, PostPatientInput>({
+    createPatient: builder.mutation<EntityResponse<Patient>, PostPatientInput>({
       query: (body) => ({
         url: "/patients",
         method: "post",
@@ -85,9 +85,9 @@ const patientApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Patient"],
     }),
-    putPatient: builder.mutation<
-      unknown,
-      Partial<PostPatientInput> & { id: number }
+    updatePatient: builder.mutation<
+      EntityResponse<Patient>,
+      Partial<PostPatientInput> & { id: string }
     >({
       query: ({ id, ...body }) => ({
         url: "/patients/" + id,
@@ -96,7 +96,7 @@ const patientApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Patient"],
     }),
-    deletePatient: builder.mutation<unknown, number>({
+    deletePatient: builder.mutation<EntityResponse<Patient>, string>({
       query: (id) => ({
         url: `/patients/${id}`,
         method: "delete",
@@ -110,8 +110,8 @@ export const {
   useGetPatientsQuery,
   useGetPatientByEncounterIdQuery,
   useLazyGetPatientsQuery,
-  usePostPatientMutation,
+  useCreatePatientMutation,
   useDeletePatientMutation,
   useLazyGetPatientQuery,
-  usePutPatientMutation,
+  useUpdatePatientMutation,
 } = patientApi;

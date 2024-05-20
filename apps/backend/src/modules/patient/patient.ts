@@ -35,7 +35,7 @@ export class Patient {
   identifies: Identify[];
 
   @OneToMany(() => Address, (address) => address.patient)
-  address: Address;
+  addresses: Address[];
 
   @OneToMany(() => Encounter, (encounter) => encounter.patient)
   encounters: Encounter[];

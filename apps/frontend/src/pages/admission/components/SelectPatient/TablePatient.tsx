@@ -1,5 +1,5 @@
 import {
-  Identify,
+  Entry,
   Patient,
   useLazyGetPatientsQuery,
 } from "@/services/api/patient";
@@ -31,7 +31,7 @@ export const TablePatient = ({ onSelect, search }: TablePatientProps) => {
     });
   }, [search, fetchPatient]);
 
-  const getNIK = (data: Identify[]) =>
+  const getNIK = (data: Entry[]) =>
     data.find((i) => i.system.includes("nik"))?.value;
 
   const rows = useMemo(
@@ -51,7 +51,7 @@ export const TablePatient = ({ onSelect, search }: TablePatientProps) => {
             </TableTr>
           ))
         : [],
-    [data, onSelect]
+    [data, onSelect],
   );
 
   return (

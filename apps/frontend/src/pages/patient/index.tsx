@@ -14,7 +14,6 @@ import {
   TableTh,
   TableThead,
   TableTr,
-  TextInput,
   Title,
   Tooltip,
 } from "@mantine/core";
@@ -30,18 +29,18 @@ import { SearchField } from "./components/SearchField";
 
 export const Component = () => {
   const addSectionRef = useRef<DisclosureAction>(null);
-  const editSectionRef = useRef<DisclosureActionOnEdit<number>>(null);
+  const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
 
   return (
     <>
       <Card>
         <Flex justify="space-between" align="center">
-          <Title order={4}>Pasien</Title>
+          <Title order={4}>Patient</Title>
           <Button
             leftSection={<IconPlus />}
             onClick={() => addSectionRef.current?.open()}
           >
-            Tambah
+            Add New
           </Button>
         </Flex>
 
@@ -50,11 +49,7 @@ export const Component = () => {
             queryLoader={useGetPatientsQuery}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
-              },
-              {
-                header: "Identitas",
+                header: "Identifies",
                 render: (row) => (
                   <Group>
                     {row.identifies?.map((item) => (
@@ -67,44 +62,42 @@ export const Component = () => {
               },
               {
                 keyIndex: "fullName",
-                header: "Nama Lengkap",
+                header: "Full Name",
               },
               {
                 keyIndex: "birthDate",
-                header: "Tanggal Lahir",
+                header: "Birth Date",
                 render: (row) => humanizedDate(row.birthDate),
               },
               {
                 keyIndex: "address",
-                header: "Alamat",
+                header: "Address",
                 render: (row) => (
                   <HoverCard>
                     <HoverCardTarget>
-                      <Badge variant="subtle">Lihat Alamat</Badge>
+                      <Badge variant="subtle">Show</Badge>
                     </HoverCardTarget>
                     <HoverCardDropdown>
                       <Table>
                         <TableThead>
                           <TableTr>
-                            <TableTh>Alamat</TableTh>
-                            <TableTh>Desa/Kelurahan</TableTh>
-                            <TableTh>Kecamatan</TableTh>
-                            <TableTh>Kabupaten</TableTh>
+                            <TableTh>Address</TableTh>
+                            <TableTh>Village</TableTh>
+                            <TableTh>District</TableTh>
+                            <TableTh>Regency</TableTh>
                           </TableTr>
                         </TableThead>
                         <TableTbody>
-                          {row.addresses.map((address) => (
+                          {row.addresses?.map((address) => (
                             <TableTr key={address.id}>
                               <TableTd>
-                                <Group gap={0}>
-                                  <Badge variant="subtle">
-                                    {address.address}
-                                  </Badge>
-                                  {address.identifies?.map((identity) => (
-                                    <Badge variant="subtle">
-                                      {identity.system.split("/").pop()}{" "}
-                                      {identity.value}
-                                    </Badge>
+                                <Group>
+                                  <span>{address.address}</span>
+                                  {address.entries.map(({ code, value }) => (
+                                    <span>
+                                      {code.split("/").pop()?.toUpperCase()}{" "}
+                                      {value}
+                                    </span>
                                   ))}
                                 </Group>
                               </TableTd>
