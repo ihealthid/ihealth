@@ -17,7 +17,7 @@ import { IconCash } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 interface TotalSectionProps {
-  id: number;
+  id: string;
   subtotal: number;
   discount: number;
   total: number;

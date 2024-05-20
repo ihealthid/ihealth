@@ -44,6 +44,8 @@ export const mainApi = createApi({
     "ActEncounterCode",
     "ParticipantTypeCode",
     "PatientCondition",
+
+    "Payment",
   ],
   endpoints: () => ({}),
 });

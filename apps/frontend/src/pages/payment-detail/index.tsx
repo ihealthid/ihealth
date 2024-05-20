@@ -1,7 +1,6 @@
 import { useGetPaymentQuery } from "@/services/api/payment";
 import {
   Avatar,
-  Button,
   Card,
   Divider,
   Grid,
@@ -20,7 +19,7 @@ import { TotalSection } from "./components/TotalSection";
 
 export const Component = () => {
   const params = useParams();
-  const id = parseInt(params.id!);
+  const id = params.id! as string;
   const { data } = useGetPaymentQuery(id);
 
   return (

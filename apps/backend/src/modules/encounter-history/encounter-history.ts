@@ -28,6 +28,9 @@ export class EncounterHistory {
   @JoinColumn()
   encounter: Encounter;
 
+  @Column()
+  statusId: string;
+
   @ManyToOne(() => EncounterStatus)
   @JoinColumn()
   status: EncounterStatus;

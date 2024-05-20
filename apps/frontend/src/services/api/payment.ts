@@ -5,20 +5,20 @@ import { Encounter } from "./encounter";
 import { EntityResponse } from "@/types/entity-response";
 
 export interface PaymentStatus {
-  id: number;
+  id: string;
   code: string;
   display: string;
   order: number;
 }
 
 export interface Payment {
-  id: number;
+  id: string;
   amount: number;
   createdAt: string;
   updatedAt: string;
-  statusId: number;
+  statusId: string;
   status: PaymentStatus;
-  encounterId?: number;
+  encounterId?: string;
   encounter?: Encounter;
 }
 
@@ -39,20 +39,23 @@ const api = mainApi.injectEndpoints({
         url: "/payments",
         params,
       }),
+      providesTags: ["Payment"],
     }),
 
-    getPayment: query<EntityResponse<PaymentDetail>, number>({
+    getPayment: query<EntityResponse<PaymentDetail>, string>({
       query: (id) => ({
         url: "/payments/" + id,
       }),
+      providesTags: ["Payment"],
     }),
 
-    donePayment: mutation<EntityResponse<Payment>, number>({
+    donePayment: mutation<EntityResponse<Payment>, string>({
       query: (id) => ({
         url: "/payments",
         method: "post",
         body: { id },
       }),
+      invalidatesTags: ["Payment"],
     }),
   }),
 });

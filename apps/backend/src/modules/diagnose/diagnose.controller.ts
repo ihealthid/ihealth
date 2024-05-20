@@ -123,10 +123,21 @@ export class DiagnoseController {
         code: 'done',
       });
 
-      await trx.insert(EncounterHistory, {
-        encounterId,
-        status: encounterStatus,
+      const history = await trx.findOne(EncounterHistory, {
+        where: {
+          statusId: encounterStatus.id,
+          encounterId,
+        },
       });
+
+      if (!history) {
+        await trx.insert(EncounterHistory, {
+          encounterId,
+          status: encounterStatus,
+        });
+      } else {
+        await trx.update(EncounterHistory, { id: history.id }, history);
+      }
 
       const paymentStatus = await trx.findOneBy(PaymentStatus, {
         code: 'pending',
