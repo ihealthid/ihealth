@@ -4,7 +4,7 @@ import { PaginationResult } from "@/types/pagination-result";
 import { EntityResponse } from "@/types/entity-response";
 
 export type PatientCondition = {
-  id: number;
+  id: string;
   code: string;
   display: string;
   definition?: string;
@@ -20,7 +20,7 @@ const api = mainApi.injectEndpoints({
   endpoints: (builder) => ({
     getPatientCondition: builder.query<
       EntityResponse<PatientCondition>,
-      number
+      string
     >({
       query: (id) => ({
         url: "/patient-conditions/" + id,
@@ -37,7 +37,10 @@ const api = mainApi.injectEndpoints({
       }),
       providesTags: ["PatientCondition"],
     }),
-    createPatientCondition: builder.mutation<unknown, PatientConditionInput>({
+    createPatientCondition: builder.mutation<
+      EntityResponse<PatientCondition>,
+      PatientConditionInput
+    >({
       query: (body) => ({
         url: "/patient-conditions",
         method: "post",
@@ -46,8 +49,8 @@ const api = mainApi.injectEndpoints({
       invalidatesTags: ["PatientCondition"],
     }),
     updatePatientCondition: builder.mutation<
-      unknown,
-      PatientConditionInput & { id: number }
+      EntityResponse<PatientCondition>,
+      PatientConditionInput & { id: string }
     >({
       query: ({ id, ...body }) => ({
         url: "/patient-conditions/" + id,
@@ -56,7 +59,10 @@ const api = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["PatientCondition"],
     }),
-    deletePatientCondition: builder.mutation<unknown, number>({
+    deletePatientCondition: builder.mutation<
+      EntityResponse<PatientCondition>,
+      string
+    >({
       query: (id) => ({
         url: `/patient-conditions/${id}`,
         method: "delete",

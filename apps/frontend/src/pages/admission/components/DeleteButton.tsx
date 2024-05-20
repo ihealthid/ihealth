@@ -4,7 +4,7 @@ import { modals } from "@mantine/modals";
 import { IconTrash } from "@tabler/icons-react";
 import { useCallback } from "react";
 
-export const ButtonDelete = ({ id }: { id: number }) => {
+export const ButtonDelete = ({ id }: { id: string }) => {
   const [mutate] = useDeleteAdmissionMutation();
   const onClick = useCallback(() => {
     modals.openConfirmModal({

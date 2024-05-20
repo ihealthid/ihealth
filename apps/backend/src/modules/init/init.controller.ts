@@ -20,12 +20,14 @@ import * as formTypeJson from './form-type.data.json';
 import * as prescriptionStatusJson from './prescription-status.data.json';
 import * as paymentStatusJson from './payment-status.data.json';
 import * as maritalStatusJson from './marital-status.data.json';
+import * as encounterStatusJson from './encounter-status.data.json';
 
 import { DoseForm } from '../dose-form/dose-form';
 import { FormType } from '../form-type/form-type';
 import { PrescriptionStatus } from '../prescription-status/prescription-status';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { MaritalStatus } from '../marital-status/marital-status';
+import { EncounterStatus } from '../encounter-status/encounter-status';
 
 @Controller({
   path: 'init',
@@ -49,6 +51,7 @@ export class InitController {
         await this.initDoseForm();
         await this.initFormType();
         await this.initPrescriptionStatus();
+        await this.initEncounterStatus();
         return this.initPaymentStatus();
       }
 
@@ -79,6 +82,15 @@ export class InitController {
 
       case 'marital-status':
         return this.initMaritalStatus();
+
+      case 'encounter-status':
+        return this.initEncounterStatus();
+    }
+  }
+
+  async initEncounterStatus() {
+    for (const row of encounterStatusJson.data) {
+      await this.entityManager.upsert(EncounterStatus, row, ['code']);
     }
   }
 

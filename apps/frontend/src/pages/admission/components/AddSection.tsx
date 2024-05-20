@@ -32,14 +32,16 @@ export const AddSection = forwardRef<AddSectionRef>((_, ref) => {
             <Stack>
               <SelectPatientConditionCode
                 onChange={(e) =>
-                  e && form.setFieldValue("patientConditionId", parseInt(e))
+                  e && form.setFieldValue("patientConditionId", e)
                 }
               />
               <SelectPatient
                 onChange={(e) => e && form.setFieldValue("patientId", e)}
               />
               <SelectService
-                onChange={(e) => e && form.setFieldValue("healthcareServiceId", e)}
+                onChange={(e) => {
+                  e && form.setFieldValue("healthcareServiceId", e);
+                }}
               />
               <Flex justify="end" mt="md">
                 <Button type="submit">Simpan</Button>

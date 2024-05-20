@@ -4,7 +4,7 @@ import { Select, SelectProps } from "@mantine/core";
 interface SelectPatientConditionCodeProps extends Omit<SelectProps, "data"> {}
 
 export const SelectPatientConditionCode = (
-  props: SelectPatientConditionCodeProps
+  props: SelectPatientConditionCodeProps,
 ) => {
   const { data } = useGetPatientConditionsQuery({
     page: 1,
@@ -13,7 +13,7 @@ export const SelectPatientConditionCode = (
 
   const options = data
     ? data.data.map((item) => ({
-        value: item.id.toString(),
+        value: item.id,
         label: item.display,
       }))
     : [];

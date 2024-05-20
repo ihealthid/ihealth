@@ -36,7 +36,7 @@ export const Component = () => {
         <ProTable
           queryLoader={useGetEncountersQuery}
           queryParams={{
-            "createdAt:dateAt": dayjs().format('YYYY-MM-DD'),
+            "createdAt:dateAt": dayjs().format("YYYY-MM-DD"),
           }}
           headerSection={(filter) => (
             <Group p="md">
@@ -69,10 +69,6 @@ export const Component = () => {
             </Group>
           )}
           cols={[
-            {
-              keyIndex: "id",
-              header: "ID",
-            },
             {
               keyIndex: "patient.fullName",
               header: "Pasien",

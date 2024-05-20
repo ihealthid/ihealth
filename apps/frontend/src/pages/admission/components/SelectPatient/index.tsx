@@ -16,7 +16,7 @@ const searchOptions = [
 ];
 
 interface SelectPatientProps {
-  onChange?: (id: number | null) => void;
+  onChange?: (id: string | null) => void;
 }
 
 export const SelectPatient = ({ onChange }: SelectPatientProps) => {
@@ -33,7 +33,7 @@ export const SelectPatient = ({ onChange }: SelectPatientProps) => {
       close();
       onChange?.(row.id);
     },
-    [setSelected, close, onChange]
+    [setSelected, close, onChange],
   );
 
   return (

@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ActEncounterCode } from '../act-encounter-code/act-encounter-code';
 import { Patient } from '../patient/patient';
 import { Participant } from '../participant/participant';
 import { EncounterHistory } from '../encounter-history/encounter-history';
@@ -34,13 +33,6 @@ export class Encounter {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @Column()
-  actEncounterCodeId: string;
-
-  @ManyToOne(() => ActEncounterCode)
-  @JoinColumn()
-  actEncounterCode: ActEncounterCode;
 
   @ManyToOne(() => Patient)
   @JoinColumn()

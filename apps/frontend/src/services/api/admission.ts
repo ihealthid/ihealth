@@ -1,15 +1,15 @@
+import { EntityResponse } from "@/types/entity-response";
 import { mainApi } from "./main";
 
 export type PostAdmissionInput = {
-  patientId: number;
-  healthcareServiceId: number;
-  patientConditionId: number;
+  patientId: string;
+  healthcareServiceId: string;
+  patientConditionId: string;
 };
 
 const admissionApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    
-    deleteAdmission: builder.mutation<unknown, number>({
+    deleteAdmission: builder.mutation<EntityResponse<any>, string>({
       query: (id) => ({
         url: `/admissions/${id}`,
         method: "delete",
@@ -19,5 +19,4 @@ const admissionApi = mainApi.injectEndpoints({
   }),
 });
 
-export const { useDeleteAdmissionMutation } =
-  admissionApi;
+export const { useDeleteAdmissionMutation } = admissionApi;

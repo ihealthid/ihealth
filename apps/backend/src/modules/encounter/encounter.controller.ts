@@ -65,17 +65,12 @@ export class EncounterController {
         code: 'ADM',
       });
 
-      const actEncounterCode = await trx.findOneByOrFail(ActEncounterCode, {
-        code: 'AMB',
-      });
-
       const healthcareService = await trx.findOneByOrFail(HealthcareService, {
         id: data.healthcareServiceId,
       });
 
       const encounter = trx.create(Encounter, {
         patient,
-        actEncounterCode,
         healthcareService,
         periodStart: new Date(),
         patientCondition,

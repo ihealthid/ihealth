@@ -9,26 +9,26 @@ import { DateValue } from "@mantine/dates";
 import { EncounterStatus } from "./encounter-status";
 
 export type Encounter = {
-  id: number;
+  id: string;
   patient: Patient;
   screening: Observation;
   diagnose?: Diagnose;
-  clinicService: HealthcareService;
+  healthcareService: HealthcareService;
   createdAt: string;
   updatedAt: string;
   status: EncounterStatus;
-  histories: any[]
+  histories: any[];
 };
 
 type PostEncounterInput = {
-  patientId: number;
-  clinicServiceId: number;
-  visualScreeningId: number;
+  patientId: string;
+  healthcareServiceId: string;
+  patientConditionId: string;
 };
 
 const encounterApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    getEncounter: builder.query<Encounter, number>({
+    getEncounter: builder.query<Encounter, string>({
       query: (id) => ({
         url: `/encounters/${id}`,
       }),

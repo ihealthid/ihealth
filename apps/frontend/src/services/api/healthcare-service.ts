@@ -4,7 +4,7 @@ import { PaginationResult } from "@/types/pagination-result";
 import { EntityResponse } from "@/types/entity-response";
 
 export interface HealthcareService {
-  id: number;
+  id: string;
   name: string;
   price: number;
 }
@@ -18,7 +18,7 @@ const api = mainApi.injectEndpoints({
   endpoints: (builder) => ({
     getHealthcareService: builder.query<
       EntityResponse<HealthcareService>,
-      number
+      string
     >({
       query: (id) => ({
         url: "/healthcare-services/" + id,
@@ -44,8 +44,8 @@ const api = mainApi.injectEndpoints({
       invalidatesTags: ["HealthcareService"],
     }),
     updateHealthcareService: builder.mutation<
-      unknown,
-      HealthcareServiceInput & { id: number }
+      EntityResponse<HealthcareService>,
+      HealthcareServiceInput & { id: string }
     >({
       query: ({ id, ...body }) => ({
         url: "/healthcare-services/" + id,
@@ -54,7 +54,10 @@ const api = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["HealthcareService"],
     }),
-    deleteHealthcareService: builder.mutation<unknown, number>({
+    deleteHealthcareService: builder.mutation<
+      EntityResponse<HealthcareService>,
+      string
+    >({
       query: (id) => ({
         url: `/healthcare-services/${id}`,
         method: "delete",
