@@ -119,7 +119,7 @@ export class DiagnoseController {
         },
       );
 
-      const encounterStatus = await trx.findOneBy(EncounterStatus, {
+      const encounterStatus = await trx.findOneByOrFail(EncounterStatus, {
         code: 'done',
       });
 
@@ -132,12 +132,15 @@ export class DiagnoseController {
         code: 'pending',
       });
 
-      const payment = trx.create(Payment, {
-        amount: 1234,
-        encounterId,
-        status: paymentStatus,
-      });
-      trx.save(payment);
+      await trx.upsert(
+        Payment,
+        {
+          amount: 1234,
+          encounterId,
+          status: paymentStatus,
+        },
+        ['encounterId'],
+      );
 
       const diagnoseStatus = await trx.findOneBy(DiagnoseStatus, {
         code: 'done',

@@ -19,7 +19,6 @@ import { Patient } from '../patient/patient';
 import { EncounterHistory } from '../encounter-history/encounter-history';
 import { Participant } from '../participant/participant';
 import { ParticipantTypeCode } from '../participant-type-code/participant-type-code';
-import { ActEncounterCode } from '../act-encounter-code/act-encounter-code';
 import { EncounterStatus } from '../encounter-status/encounter-status';
 import { PatientCondition } from '../patient-condition/patient-condition';
 import { HealthcareService } from '../healthcare-service/healthcare-service';

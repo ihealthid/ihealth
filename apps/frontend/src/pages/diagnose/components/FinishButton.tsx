@@ -9,7 +9,7 @@ interface FinishButtonProps {
 export const FinishButton = ({ disabled }: FinishButtonProps) => {
   const params = useParams();
   const navigate = useNavigate();
-  const id = Number.parseInt(params.id as string);
+  const id = params.id as string;
 
   const [mutate] = usePostDiagnoseMutation();
 

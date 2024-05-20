@@ -9,6 +9,11 @@
       "code": "observed",
       "display": "Observed",
       "order": 2
+    },
+    {
+      "code": "done",
+      "display": "Done",
+      "order": 3
     }
   ]
 }
