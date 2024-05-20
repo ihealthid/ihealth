@@ -8,7 +8,7 @@ import { useGetPrescriptionItemsQuery } from "@/services/api/prescription-item";
 
 export const Component = () => {
   const params = useParams();
-  const id = parseInt(params.id as string);
+  const id = params.id as string;
   const { data } = useGetPrescriptionQuery(id);
 
   const patient = data?.data.encounter?.patient;

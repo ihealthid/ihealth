@@ -4,7 +4,7 @@ import { IconCheck } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 interface FinishButtonProps {
-  id: number;
+  id: string;
 }
 export const FinishButton = ({ id }: FinishButtonProps) => {
   const navigate = useNavigate();
