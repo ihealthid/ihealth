@@ -15,6 +15,7 @@ import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
+import { BrandInputRequest } from './brand.request';
 
 @Controller({
   path: 'brands',
@@ -48,13 +49,16 @@ export class BrandController {
   }
 
   @Post()
-  async create(@Body() data: any) {
+  async create(@Body() data: BrandInputRequest) {
     const brand = this.entityManager.create(Brand, data);
     return this.entityManager.save(brand);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: any) {
+  async update(
+    @Param('id') id: string,
+    @Body() data: Partial<BrandInputRequest>,
+  ) {
     const brand = await this.entityManager.findOneByOrFail(Brand, { id });
     const uData = this.entityManager.merge(Brand, brand, data);
     return this.entityManager.save(uData);
