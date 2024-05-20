@@ -14,7 +14,7 @@ import { IconLink } from "@tabler/icons-react";
 import { useMemo } from "react";
 
 interface ProfilePatientProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 const gender: { [key: string]: string } = {

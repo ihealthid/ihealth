@@ -3,11 +3,13 @@ import { Table } from "@mantine/core";
 import { useMemo } from "react";
 
 interface AllergyTableProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 export const AllergyTable = ({ encounterId }: AllergyTableProps) => {
-  const { data } = useGetPatientAllergyQuery({ encounterId });
+  const { data } = useGetPatientAllergyQuery({
+    filter: [`patient.encounters.id:of:${encounterId}`],
+  });
 
   const rows = useMemo(
     () =>
@@ -18,9 +20,9 @@ export const AllergyTable = ({ encounterId }: AllergyTableProps) => {
           <Table.Td></Table.Td>
         </Table.Tr>
       )) ?? [],
-    [data]
+    [data],
   );
-  
+
   return (
     <Table withTableBorder striped highlightOnHover>
       <Table.Thead>

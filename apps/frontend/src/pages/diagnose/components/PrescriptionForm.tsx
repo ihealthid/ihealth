@@ -17,7 +17,7 @@ export const PrescriptionForm = ({
   onReset,
   encounterId,
 }: {
-  encounterId: number;
+  encounterId: string;
   onReset(): void;
 }) => {
   return (

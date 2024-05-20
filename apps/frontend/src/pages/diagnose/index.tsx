@@ -14,7 +14,7 @@ import { AllergySection } from "./components/AllergySection";
 
 export const Component = () => {
   const params = useParams();
-  const id = Number.parseInt(params.id as string);
+  const id = params.id as string;
 
   const [prescriptionId, setPrescriptionId] = useState(randomId());
 
@@ -48,7 +48,9 @@ export const Component = () => {
                       <Card.Section>
                         <Tabs orientation="vertical">
                           <Tabs.List>
-                            <Tabs.Tab value="prescription">Prescription</Tabs.Tab>
+                            <Tabs.Tab value="prescription">
+                              Prescription
+                            </Tabs.Tab>
                             <Tabs.Tab value="inject">Injection</Tabs.Tab>
                             <Tabs.Tab value="reference">Rujuk</Tabs.Tab>
                             <Tabs.Tab value="observation">Observasi</Tabs.Tab>

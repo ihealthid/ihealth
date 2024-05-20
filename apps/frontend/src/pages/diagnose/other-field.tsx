@@ -5,7 +5,7 @@ import {
 import { Textarea } from "@mantine/core";
 
 interface OtherFieldProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 export const OtherField = ({ encounterId }: OtherFieldProps) => {

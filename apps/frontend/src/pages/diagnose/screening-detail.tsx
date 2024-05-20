@@ -4,7 +4,7 @@ import { Box, Card, SimpleGrid, Text, Title } from "@mantine/core";
 import { useCallback, useMemo } from "react";
 
 interface ScreeningDetailProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 export function ScreeningDetail({

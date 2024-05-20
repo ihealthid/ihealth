@@ -4,7 +4,7 @@ import { PaginationResult } from "@/types/pagination-result";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
 
 export type PrescriptionItem = {
-  id: number;
+  id: string;
   medication: Medication;
   quantity: number;
   note?: string;
@@ -15,9 +15,9 @@ export type PrescriptionItem = {
 };
 
 export type PostPrescriptionItemInput = {
-  id?: number;
-  encounterId?: number;
-  medicationId: number;
+  id?: string;
+  encounterId?: string;
+  medicationId: string;
   quantity: number;
   doses: number;
   frequency: number;
@@ -47,7 +47,7 @@ const prescriptionItemApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Prescription", "PrescriptionItem"],
     }),
-    deletePrescriptionItem: mutation<unknown, number>({
+    deletePrescriptionItem: mutation<unknown, string>({
       query: (id) => ({
         url: `/prescription-items/${id}`,
         method: "delete",

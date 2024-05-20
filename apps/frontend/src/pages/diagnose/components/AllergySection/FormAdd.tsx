@@ -1,5 +1,5 @@
 import { FormProvider } from "@/components/form-provider";
-import { usePostPatientAllergyMutation } from "@/services/api/allergy";
+import { useCreatePatientAllergyMutation } from "@/services/api/allergy";
 import { DisclosureAction } from "@/types/disclosure";
 import {
   Alert,
@@ -18,7 +18,7 @@ import { IconInfoCircle } from "@tabler/icons-react";
 import { forwardRef, useImperativeHandle } from "react";
 
 interface FormAddProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 export const FormAdd = forwardRef<DisclosureAction, FormAddProps>(
@@ -27,7 +27,7 @@ export const FormAdd = forwardRef<DisclosureAction, FormAddProps>(
 
     useImperativeHandle(ref, () => ({
       open,
-      close
+      close,
     }));
 
     return (
@@ -38,7 +38,7 @@ export const FormAdd = forwardRef<DisclosureAction, FormAddProps>(
       >
         <Modal.Body>
           <FormProvider
-            useMutate={usePostPatientAllergyMutation}
+            useMutate={useCreatePatientAllergyMutation}
             initialValues={{ encounterId, name: "", level: 1 }}
             onSuccess={close}
           >
@@ -99,5 +99,5 @@ export const FormAdd = forwardRef<DisclosureAction, FormAddProps>(
         </Modal.Body>
       </Modal>
     );
-  }
+  },
 );

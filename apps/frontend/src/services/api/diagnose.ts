@@ -1,28 +1,29 @@
 import { ClassificationDisease } from "./classification-disease";
 import { mainApi } from "./main";
+
 export type DiagnoseStatus = {
-  id: number;
+  id: string;
   name: string;
   order: number;
 };
 
 export type Diagnose = {
-  id: number;
-  encounterId: number;
+  id: string;
+  encounterId: string;
   subjective?: string;
   objective?: string;
   assessment?: string;
   plan?: string;
   status: DiagnoseStatus;
-  classificationDiseaseId?: number;
+  classificationDiseaseId?: string;
   classificationDisease?: ClassificationDisease;
   createdAt: string;
   updatedAt: string;
 };
 
 type PutDiagnoseInput = {
-  encounterId: number;
-  classificationDiseaseId?: number;
+  encounterId: string;
+  classificationDiseaseId?: string;
   subjective?: string;
   objective?: string;
   assessment?: string;
@@ -31,7 +32,7 @@ type PutDiagnoseInput = {
 
 const diagnoseApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    getDiagnose: builder.query<{ data: Diagnose }, { encounterId: number }>({
+    getDiagnose: builder.query<{ data: Diagnose }, { encounterId: string }>({
       query: ({ encounterId }) => ({
         url: `/diagnoses/encounter/${encounterId}`,
       }),
@@ -45,7 +46,7 @@ const diagnoseApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Diagnose", "Encounter"],
     }),
-    postDiagnose: builder.mutation<unknown, number>({
+    postDiagnose: builder.mutation<unknown, string>({
       query: (id) => ({
         url: `/diagnoses/encounter/${id}`,
         method: "post",

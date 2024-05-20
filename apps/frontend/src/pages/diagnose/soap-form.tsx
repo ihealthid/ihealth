@@ -6,7 +6,7 @@ import {
 import { SimpleGrid, Textarea } from "@mantine/core";
 
 interface SOAPFormProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 export function SOAPForm({ encounterId }: Readonly<SOAPFormProps>) {

@@ -8,7 +8,7 @@ export const PrescriptionTable = ({
   encounterId,
   id,
 }: {
-  encounterId: number;
+  encounterId: string;
   id: string;
 }) => {
   const [refetch, { data }] = useLazyGetPrescriptionByEncounterIdQuery();

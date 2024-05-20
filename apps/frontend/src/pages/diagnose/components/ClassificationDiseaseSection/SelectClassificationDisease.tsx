@@ -3,25 +3,17 @@ import { Select, SelectProps } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 import { useMemo } from "react";
 
-interface SelectClassificationDiseaseProps
-  extends Omit<SelectProps, "onChange" | "value" | "defaultValue"> {
-  onChange?: (value: number | null) => void;
-  value?: null | number;
-  defaultValue?: null | number;
-}
+interface SelectClassificationDiseaseProps extends Omit<SelectProps, "data"> {}
 
-export const SelectClassificationDisease = ({
-  value,
-  defaultValue,
-  onChange,
-  ...props
-}: SelectClassificationDiseaseProps) => {
+export const SelectClassificationDisease = (
+  props: SelectClassificationDiseaseProps,
+) => {
   const [search, setSearch] = useDebouncedState("", 300);
   const { data } = useGetClassificationDiseaseGroupQuery({
     page: 1,
     limit: 25,
     search,
-    grouping: true
+    grouping: true,
   });
 
   const options = useMemo(() => {
@@ -39,15 +31,12 @@ export const SelectClassificationDisease = ({
   return (
     <Select
       {...props}
-      value={value?.toString()}
-      defaultValue={defaultValue?.toString()}
       data={options}
       limit={10}
       searchable
       clearable
       searchValue={search}
       onSearchChange={setSearch}
-      onChange={(val) => onChange?.(val ? parseInt(val) : null)}
     />
   );
 };

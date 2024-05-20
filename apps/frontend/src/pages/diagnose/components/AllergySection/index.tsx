@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { DisclosureAction } from "@/types/disclosure";
 
 interface AllergySectionProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 export const AllergySection = ({ encounterId }: AllergySectionProps) => {

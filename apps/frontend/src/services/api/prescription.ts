@@ -5,7 +5,7 @@ import { PaginationResult } from "@/types/pagination-result";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
 
 export type Prescription = {
-  id: number;
+  id: string;
   items: PrescriptionItem[];
   status: number;
   createdAt: string;
@@ -29,14 +29,14 @@ const prescriptionApi = mainApi.injectEndpoints({
     }),
     getPrescription: builder.query<
       { data: Prescription & { encounter?: { patient: Patient } } },
-      number
+      string
     >({
       query: (id) => ({
         url: `/prescriptions/${id}`,
       }),
       providesTags: ["Prescription", "PrescriptionItem"],
     }),
-    getPrescriptionByEncounterId: builder.query<{ data: Prescription }, number>(
+    getPrescriptionByEncounterId: builder.query<{ data: Prescription }, string>(
       {
         query: (id) => ({
           url: `/prescriptions/encounter/${id}`,
@@ -51,7 +51,7 @@ const prescriptionApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Prescription", "PrescriptionItem"],
     }),
-    donePrescription: builder.mutation<PostPrescriptionResult, number>({
+    donePrescription: builder.mutation<PostPrescriptionResult, string>({
       query: (id) => ({
         url: "/prescriptions/done",
         method: "post",

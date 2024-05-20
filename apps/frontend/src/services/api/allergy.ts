@@ -1,3 +1,4 @@
+import { PaginationQueryParams } from "@/types/pagination-query-params";
 import { mainApi } from "./main";
 
 export type Allergy = {
@@ -7,7 +8,7 @@ export type Allergy = {
 };
 
 type PatientAllergy = {
-  id: number;
+  id: string;
   severity: number;
   allergy: Allergy;
   createdAt: string;
@@ -15,7 +16,7 @@ type PatientAllergy = {
 };
 
 type PostPatientAllergyInput = {
-  encounterId: number;
+  encounterId: string;
   name: string;
   level: number;
 };
@@ -26,25 +27,26 @@ type GetPatientAllergyResult = {
 
 const allergyApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    postPatientAllergy: builder.mutation<unknown, PostPatientAllergyInput>({
+    createPatientAllergy: builder.mutation<unknown, PostPatientAllergyInput>({
       query: (body) => ({
-        url: `/patient-allergies/encounter`,
+        url: `/patient-allergies`,
         method: "post",
         body,
       }),
-      invalidatesTags: ["Allergy"],
+      invalidatesTags: ["PatientAllergy"],
     }),
     getPatientAllergy: builder.query<
       GetPatientAllergyResult,
-      { encounterId: number }
+      PaginationQueryParams
     >({
-      query: ({ encounterId }) => ({
-        url: "/patient-allergies/encounter/" + encounterId,
+      query: (params) => ({
+        url: "/patient-allergies",
+        params,
       }),
       providesTags: ["PatientAllergy"],
     }),
   }),
 });
 
-export const { usePostPatientAllergyMutation, useGetPatientAllergyQuery } =
+export const { useCreatePatientAllergyMutation, useGetPatientAllergyQuery } =
   allergyApi;

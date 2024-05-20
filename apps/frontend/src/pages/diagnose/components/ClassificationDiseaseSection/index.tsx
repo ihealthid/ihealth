@@ -8,7 +8,7 @@ import { SelectClassificationDisease } from "./SelectClassificationDisease";
 import { Card, CardSection, Title } from "@mantine/core";
 
 interface ClassificationDiseaseSectionProps {
-  encounterId: number;
+  encounterId: string;
 }
 
 const getDetail = (data?: Diagnose) => {

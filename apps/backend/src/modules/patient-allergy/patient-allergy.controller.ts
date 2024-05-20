@@ -29,7 +29,7 @@ export class PatientAllergyController {
     });
   }
 
-  @Post('/encounter')
+  @Post()
   async createByEncounter(
     @Body() { encounterId, name, level }: AllergyByEncounterCreateRequest,
   ) {

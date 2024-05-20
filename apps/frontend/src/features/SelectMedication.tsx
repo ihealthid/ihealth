@@ -4,7 +4,7 @@ import { useDebouncedState } from "@mantine/hooks";
 import { useMemo, useState } from "react";
 
 interface SelectMedicationProps {
-  onChange(value: number | null, item?: Medication): void;
+  onChange(value: string | null, item?: Medication): void;
 }
 
 export const SelectMedication = ({ onChange }: SelectMedicationProps) => {
@@ -27,7 +27,7 @@ export const SelectMedication = ({ onChange }: SelectMedicationProps) => {
           {item.name}
         </Combobox.Option>
       )),
-    [data]
+    [data],
   );
 
   const [value, setValue] = useState("");
@@ -37,7 +37,7 @@ export const SelectMedication = ({ onChange }: SelectMedicationProps) => {
       store={combobox}
       onOptionSubmit={(value) => {
         const val = JSON.parse(value);
-        onChange(value ? parseInt(val.id, 10) : null, val);
+        onChange(val.id, val);
         setValue(val.name);
         combobox.closeDropdown();
       }}
