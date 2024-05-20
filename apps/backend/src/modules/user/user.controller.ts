@@ -16,9 +16,9 @@ import {
 } from 'src/decorators/pagination.decorator';
 import { contains } from 'src/helpers/search-contains';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { User } from './user';
-import { FindOneOptions, In, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, In, Repository } from 'typeorm';
 import { Role } from '../role/role';
 
 @Controller({
@@ -26,10 +26,8 @@ import { Role } from '../role/role';
 })
 export class UserController {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(Role)
-    private roleRepository: Repository<Role>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Post()
@@ -38,40 +36,48 @@ export class UserController {
     @Body() { fullName, roles, password, ...data }: UserCreateRequest,
   ) {
     const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
-    const user = this.userRepository.create({
+    const user = this.entityManager.create(User, {
       ...data,
       password: encryptedPassword,
     });
 
-    user.roles = await this.roleRepository.find({
+    user.roles = await this.entityManager.find(Role, {
       where: {
         id: In(roles),
       },
     });
 
-    return this.userRepository.save(user);
+    return this.entityManager.save(user);
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip, filter }: PaginationQuery) {
-    return this.userRepository.findAndCount({
-      take,
-      skip,
-      where: filter,
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(User, {
+      ...paginationQuery,
       relations: {
         roles: true,
       },
     });
   }
 
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async update(@Param('id') id: string) {
+    const user = await this.entityManager.findOneOrFail(User, {
+      where: {
+        id,
+      },
+    });
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.userRepository.findOneByOrFail({
+  async delete(@Param('id') id: string) {
+    const user = await this.entityManager.findOneByOrFail(User, {
       id,
     });
 
-    return this.userRepository.delete(user);
+    return this.entityManager.delete(User, user);
   }
 }

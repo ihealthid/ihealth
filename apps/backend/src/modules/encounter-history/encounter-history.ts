@@ -12,8 +12,8 @@ import {
 
 @Entity()
 export class EncounterHistory {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -22,7 +22,7 @@ export class EncounterHistory {
   updatedAt: Date;
 
   @Column()
-  encounterId: number;
+  encounterId: string;
 
   @ManyToOne(() => Encounter)
   @JoinColumn()

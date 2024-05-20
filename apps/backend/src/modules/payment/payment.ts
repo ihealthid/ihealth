@@ -13,8 +13,8 @@ import { Encounter } from '../encounter/encounter';
 
 @Entity()
 export class Payment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   amount: number;
@@ -26,14 +26,14 @@ export class Payment {
   updatedAt: Date;
 
   @Column()
-  statusId: number;
+  statusId: string;
 
   @ManyToOne(() => PaymentStatus)
   @JoinColumn()
   status: PaymentStatus;
 
   @Column()
-  encounterId: number;
+  encounterId: string;
 
   @OneToOne(() => Encounter)
   @JoinColumn()

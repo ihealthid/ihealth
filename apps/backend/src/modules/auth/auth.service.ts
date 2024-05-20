@@ -1,20 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 import { User } from '../user/user';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
     private jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, pass: string) {
-    const user = await this.userRepository.findOneBy({
+    const user = await this.entityManager.findOneBy(User, {
       username,
     });
 

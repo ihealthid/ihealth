@@ -14,8 +14,8 @@ import { PrescriptionStatus } from '../prescription-status/prescription-status';
 
 @Entity()
 export class Prescription {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -24,7 +24,7 @@ export class Prescription {
   updatedAt: Date;
 
   @Column()
-  encounterId: number;
+  encounterId: string;
 
   @ManyToOne(() => Encounter)
   @JoinColumn()
@@ -36,7 +36,7 @@ export class Prescription {
   @Column({
     nullable: true,
   })
-  statusId?: number;
+  statusId?: string;
 
   @ManyToOne(() => PrescriptionStatus)
   @JoinColumn()

@@ -13,8 +13,8 @@ import { MedicationStock } from '../medication-stock/medication-stock';
 
 @Entity()
 export class Medication {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,
@@ -34,7 +34,7 @@ export class Medication {
   updatedAt: Date;
 
   @Column()
-  doseFormId: number;
+  doseFormId: string;
 
   @ManyToOne(() => DoseForm)
   @JoinColumn()

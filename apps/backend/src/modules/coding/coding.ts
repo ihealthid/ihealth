@@ -8,8 +8,8 @@ import {
 
 @Entity()
 export class Coding {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   system: string;

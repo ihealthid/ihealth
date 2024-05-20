@@ -1,6 +1,6 @@
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { DoseForm } from './dose-form';
-import { Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Controller, Get } from '@nestjs/common';
 import {
   Pagination,
@@ -12,17 +12,12 @@ import {
 })
 export class DoseFormController {
   constructor(
-    @InjectRepository(DoseForm)
-    private doseFormRepository: Repository<DoseForm>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
-  async paginate(@Pagination() { take, skip, filter, sort }: PaginationQuery) {
-    return this.doseFormRepository.findAndCount({
-      take,
-      skip,
-      where: filter,
-      order: sort,
-    });
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(DoseForm, paginationQuery);
   }
 }

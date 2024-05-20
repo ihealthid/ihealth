@@ -15,8 +15,8 @@ import { CodeSystemProperty } from '../code-system-property/code-system-property
 
 @Entity()
 export class CodeSystem {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   system: string;
@@ -41,7 +41,7 @@ export class CodeSystem {
   updatedAt: Date;
 
   @Column()
-  typeId: number;
+  typeId: string;
 
   @ManyToOne(() => CodeSystemType)
   @JoinColumn()

@@ -10,11 +10,11 @@ import {
 
 @Entity()
 export class ActEncounterCode {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
-    unique: true
+    unique: true,
   })
   code: string;
 

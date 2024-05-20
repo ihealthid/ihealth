@@ -11,8 +11,8 @@ import { Brand } from '../brand/brand';
 
 @Entity()
 export class Consumable {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,
@@ -38,7 +38,7 @@ export class Consumable {
   price: number;
 
   @Column({
-    default: false
+    default: false,
   })
   isImported: boolean;
 
@@ -49,13 +49,13 @@ export class Consumable {
   updatedAt: Date;
 
   @Column()
-  brandId: number;
+  brandId: string;
 
   @ManyToOne(() => Brand)
   brand: Brand;
 
   @Column()
-  formTypeId: number;
+  formTypeId: string;
 
   @ManyToOne(() => FormType)
   formType: FormType;

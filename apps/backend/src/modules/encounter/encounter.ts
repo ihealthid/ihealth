@@ -18,8 +18,8 @@ import { Prescription } from '../prescription/prescription';
 
 @Entity()
 export class Encounter {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   periodStart: Date;
@@ -36,7 +36,7 @@ export class Encounter {
   updatedAt: Date;
 
   @Column()
-  actEncounterCodeId: number;
+  actEncounterCodeId: string;
 
   @ManyToOne(() => ActEncounterCode)
   @JoinColumn()
@@ -47,14 +47,14 @@ export class Encounter {
   patient: Patient;
 
   @Column()
-  healthcareServiceId: number;
+  healthcareServiceId: string;
 
   @ManyToOne(() => HealthcareService)
   @JoinColumn()
   healthcareService: HealthcareService;
 
   @Column()
-  patientConditionId: number;
+  patientConditionId: string;
 
   @ManyToOne(() => PatientCondition)
   @JoinColumn()

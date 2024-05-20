@@ -10,8 +10,8 @@ import { Observation } from '../observation/observation';
 
 @Entity()
 export class ObservationEntry {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   code: string;
@@ -29,7 +29,7 @@ export class ObservationEntry {
   updatedAt: Date;
 
   @Column()
-  observationId: number
+  observationId: string;
 
   @ManyToOne(() => Observation)
   observation: Observation;

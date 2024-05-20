@@ -14,11 +14,11 @@ export class ConsumableCreateRequest {
   @IsOptional()
   variant?: string;
 
-  @IsNumber()
-  formTypeId: number;
+  @IsString()
+  formTypeId: string;
 
-  @IsNumber()
-  brandId: number;
+  @IsString()
+  brandId: string;
 
   @IsString()
   @IsOptional()

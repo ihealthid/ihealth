@@ -35,9 +35,7 @@ export class DiagnoseController {
 
   @Get('/encounter/:encounterId')
   @UseGuards(AuthGuard)
-  async findByEncounterId(
-    @Param('encounterId', ParseIntPipe) encounterId: number,
-  ) {
+  async findByEncounterId(@Param('encounterId') encounterId: string) {
     return await this.entityManager.findOne(Diagnose, {
       where: {
         encounterId,
@@ -105,7 +103,7 @@ export class DiagnoseController {
 
   @Post('/encounter/:encounterId')
   @UseGuards(AuthGuard)
-  async finish(@Param('encounterId', ParseIntPipe) encounterId: number) {
+  async finish(@Param('encounterId') encounterId: string) {
     return await this.entityManager.transaction(async (trx) => {
       const prescriptionStatus = await trx.findOneBy(PrescriptionStatus, {
         code: 'request',

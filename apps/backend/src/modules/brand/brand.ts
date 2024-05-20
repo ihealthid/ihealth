@@ -10,8 +10,8 @@ import { Manufacture } from '../manufacture/manufacture';
 
 @Entity()
 export class Brand {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -23,7 +23,7 @@ export class Brand {
   updatedAt: Date;
 
   @Column()
-  manufactureId: number;
+  manufactureId: string;
 
   @ManyToOne(() => Manufacture)
   manufacture: Manufacture;

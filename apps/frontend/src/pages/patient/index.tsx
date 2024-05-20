@@ -57,7 +57,7 @@ export const Component = () => {
                 header: "Identitas",
                 render: (row) => (
                   <Group>
-                    {row.identifies.map((item) => (
+                    {row.identifies?.map((item) => (
                       <Tooltip label={item.system}>
                         <Badge variant="subtle">{item.value}</Badge>
                       </Tooltip>
@@ -100,7 +100,7 @@ export const Component = () => {
                                   <Badge variant="subtle">
                                     {address.address}
                                   </Badge>
-                                  {address.identifies.map((identity) => (
+                                  {address.identifies?.map((identity) => (
                                     <Badge variant="subtle">
                                       {identity.system.split("/").pop()}{" "}
                                       {identity.value}

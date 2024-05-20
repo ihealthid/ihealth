@@ -12,8 +12,8 @@ import { ObservationEntry } from '../observation-entry/observation-entry';
 
 @Entity()
 export class Observation {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -22,7 +22,7 @@ export class Observation {
   updatedAt: Date;
 
   @Column()
-  encounterId: number;
+  encounterId: string;
 
   @OneToOne(() => Encounter)
   encounter: Encounter;

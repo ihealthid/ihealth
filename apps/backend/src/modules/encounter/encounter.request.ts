@@ -1,12 +1,12 @@
-import { IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class EncounterInputRequest {
-  @IsNumber()
-  patientId: number;
+  @IsString()
+  patientId: string;
 
-  @IsNumber()
-  healthcareServiceId: number;
+  @IsString()
+  healthcareServiceId: string;
 
-  @IsNumber()
-  patientConditionId: number;
+  @IsString()
+  patientConditionId: string;
 }

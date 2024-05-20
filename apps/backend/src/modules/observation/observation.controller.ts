@@ -1,13 +1,12 @@
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Observation } from './observation';
-import { DataSource, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import {
   Body,
   Controller,
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -17,7 +16,6 @@ import {
 } from 'src/decorators/pagination.decorator';
 import { ObservationEntry } from '../observation-entry/observation-entry';
 import { ObservationEntryInput } from '../observation-entry/observation-entry.request';
-import { ObservationUpdateInput } from './observation.request';
 import { EncounterHistory } from '../encounter-history/encounter-history';
 import { EncounterStatus } from '../encounter-status/encounter-status';
 
@@ -26,29 +24,18 @@ import { EncounterStatus } from '../encounter-status/encounter-status';
 })
 export class ObservationController {
   constructor(
-    private dataSource: DataSource,
-    @InjectRepository(Observation)
-    private observationRepository: Repository<Observation>,
-    @InjectRepository(ObservationEntry)
-    private observationEntryRepository: Repository<ObservationEntry>,
-    @InjectRepository(EncounterHistory)
-    private encounterHistoryRepository: Repository<EncounterHistory>,
-    @InjectRepository(EncounterStatus)
-    private encounterStatusRepository: Repository<EncounterStatus>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
-  async paginate(@Pagination() { take, skip, filter }: PaginationQuery) {
-    return this.observationRepository.findAndCount({
-      take,
-      skip,
-      where: filter,
-    });
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(Observation, paginationQuery);
   }
 
   @Get(':id')
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.observationRepository.findOneOrFail({
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneOrFail(Observation, {
       where: {
         id,
       },
@@ -56,8 +43,8 @@ export class ObservationController {
   }
 
   @Get('/encounter/:id')
-  async findByEncounterId(@Param('id', ParseIntPipe) id: number) {
-    const observation = await this.observationRepository.findOne({
+  async findByEncounterId(@Param('id') id: string) {
+    const observation = await this.entityManager.findOne(Observation, {
       where: {
         encounterId: id,
       },
@@ -67,10 +54,10 @@ export class ObservationController {
     });
 
     if (!observation) {
-      const data = this.observationRepository.create({
+      const data = this.entityManager.create(Observation, {
         encounterId: id,
       });
-      return this.observationRepository.save(data);
+      return this.entityManager.save(data);
     }
 
     return observation;
@@ -78,18 +65,19 @@ export class ObservationController {
 
   @Post()
   async create(@Body() data: any) {
-    const observation = this.observationRepository.create({
+    const observation = this.entityManager.create(Observation, {
       encounterId: data.encounterId,
     });
-    return this.observationRepository.save(observation);
+    return this.entityManager.save(observation);
   }
 
   @Post(':id/entry')
   async upsertEntry(
-    @Param(':id', ParseIntPipe) observationId: number,
+    @Param('id') observationId: string,
     @Body() data: ObservationEntryInput,
   ) {
-    return this.observationEntryRepository.upsert(
+    return this.entityManager.upsert(
+      ObservationEntry,
       {
         observationId,
         ...data,
@@ -99,19 +87,16 @@ export class ObservationController {
   }
 
   @Put(':id')
-  async updateById(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() data: Record<string, any>,
-  ) {
-    const observation = await this.observationRepository.findOneOrFail({
+  async updateById(@Param('id') id: string, @Body() data: Record<string, any>) {
+    const observation = await this.entityManager.findOneOrFail(Observation, {
       where: {
         encounterId: id,
       },
     });
 
-    await this.dataSource.transaction(async (trx) => {
+    await this.entityManager.transaction(async (trx) => {
       for (const [key, value] of Object.entries(data)) {
-        const entry = this.observationEntryRepository.create({
+        const entry = this.entityManager.create(ObservationEntry, {
           observationId: observation.id,
           code: key,
           type: typeof value,
@@ -120,11 +105,11 @@ export class ObservationController {
         await trx.save(entry);
       }
 
-      const status = await this.encounterStatusRepository.findOneByOrFail({
+      const status = await this.entityManager.findOneByOrFail(EncounterStatus, {
         code: 'observed',
       });
 
-      const history = this.encounterHistoryRepository.create({
+      const history = this.entityManager.create(EncounterHistory, {
         encounterId: id,
         status,
       });
@@ -134,10 +119,10 @@ export class ObservationController {
   }
 
   @Delete(':id')
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
-    const observation = await this.observationRepository.findOneByOrFail({
+  async deleteById(@Param('id') id) {
+    const observation = await this.entityManager.findOneByOrFail(Observation, {
       id,
     });
-    await this.observationRepository.remove(observation);
+    await this.entityManager.remove(observation);
   }
 }

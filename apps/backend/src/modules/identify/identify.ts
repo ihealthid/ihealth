@@ -1,5 +1,5 @@
 import {
-    Column,
+  Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
@@ -8,8 +8,8 @@ import {
 
 @Entity()
 export class Identify {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   system: string;

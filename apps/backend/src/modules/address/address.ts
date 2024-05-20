@@ -3,22 +3,19 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Village } from '../village/village';
-import { Identify } from '../identify/identify';
 import { Patient } from '../patient/patient';
 import { AddressEntry } from '../address-entry/address-entry';
 
 @Entity()
 export class Address {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   address: string;
@@ -35,11 +32,11 @@ export class Address {
   @ManyToOne(() => Village)
   village: Village;
 
-  @OneToMany(() => AddressEntry, entry => entry.address)
+  @OneToMany(() => AddressEntry, (entry) => entry.address)
   entries: AddressEntry[];
 
   @Column()
-  patientId: number;
+  patientId: string;
 
   @ManyToOne(() => Patient)
   @JoinColumn()

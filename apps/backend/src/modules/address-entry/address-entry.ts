@@ -11,8 +11,8 @@ import { Address } from '../address/address';
 
 @Entity()
 export class AddressEntry {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   code: string;
@@ -27,7 +27,7 @@ export class AddressEntry {
   updatedAt: Date;
 
   @Column()
-  addressId: number;
+  addressId: string;
 
   @ManyToOne(() => Address)
   @JoinColumn()

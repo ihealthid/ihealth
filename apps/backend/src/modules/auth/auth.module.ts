@@ -6,12 +6,9 @@ import { jwtConstants } from './auth.constant';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../user/user';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

@@ -46,7 +46,7 @@ export class HealthcareServiceController {
 
   @Get('/:id')
   @UseGuards(AuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
+  async findById(@Param('id') id: string) {
     return this.entityManager.findOneByOrFail(HealthcareService, {
       id,
     });
@@ -55,7 +55,7 @@ export class HealthcareServiceController {
   @Put(':id')
   @UseGuards(AuthGuard)
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() data: Partial<HealthcareServiceInputRequest>,
   ) {
     const healthcareService = await this.entityManager.findOneByOrFail(
@@ -75,7 +75,7 @@ export class HealthcareServiceController {
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     const healthcareService = await this.entityManager.findOneByOrFail(
       HealthcareService,
       {

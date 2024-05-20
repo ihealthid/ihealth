@@ -8,11 +8,8 @@ import {
 
 @Entity()
 export class MaritalStatus {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  system: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,

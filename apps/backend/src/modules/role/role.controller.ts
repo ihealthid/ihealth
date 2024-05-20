@@ -38,7 +38,7 @@ export class RoleController {
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() data: Partial<RoleCreateRequest>,
   ) {
     const role = await this.roleRepository.findOneByOrFail({ id });
@@ -48,7 +48,7 @@ export class RoleController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
+  async findById(@Param('id') id: string) {
     return this.roleRepository.findOneByOrFail({ id });
   }
 
@@ -63,7 +63,7 @@ export class RoleController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     const role = await this.roleRepository.findOneByOrFail({ id });
     await this.roleRepository.delete(role);
     return role;

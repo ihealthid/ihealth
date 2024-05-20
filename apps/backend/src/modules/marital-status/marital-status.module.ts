@@ -5,7 +5,6 @@ import { MaritalStatusController } from './marital-status.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([MaritalStatus])],
-  providers: [],
   controllers: [MaritalStatusController],
 })
 export class MaritalStatusModule {}

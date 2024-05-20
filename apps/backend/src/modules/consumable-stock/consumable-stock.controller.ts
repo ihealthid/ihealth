@@ -1,14 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 import { ConsumableStock } from './consumable-stock';
 import {
   Pagination,
@@ -21,14 +13,13 @@ import { ConsumableStockInput } from './consumable-stock.request';
 })
 export class ConsumableStockController {
   constructor(
-    private dataSource: DataSource,
-    @InjectRepository(ConsumableStock)
-    private consumableStockRepository: Repository<ConsumableStock>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.consumableStockRepository.findAndCount({
+    return this.entityManager.findAndCount(ConsumableStock, {
       ...pagination,
     });
   }
@@ -41,12 +32,12 @@ export class ConsumableStockController {
       ...restData
     } = data;
 
-    const quantity = pcs * packs * boxes * cartons 
-    
+    const quantity = pcs * packs * boxes * cartons;
+
     let balance = quantity;
 
-    return this.dataSource.transaction(async (trx) => {
-      const prevItem = await this.consumableStockRepository.findOne({
+    return this.entityManager.transaction(async (trx) => {
+      const prevItem = await trx.findOne(ConsumableStock, {
         where: {
           consumableId,
         },
@@ -59,7 +50,7 @@ export class ConsumableStockController {
         balance += prevItem.balance;
       }
 
-      const stock = this.consumableStockRepository.create({
+      const stock = trx.create(ConsumableStock, {
         ...restData,
         consumableId,
         quantity,
@@ -71,8 +62,10 @@ export class ConsumableStockController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    const item = await this.consumableStockRepository.findOneByOrFail({ id });
-    return this.consumableStockRepository.remove(item);
+  async delete(@Param('id') id: string) {
+    const item = await this.entityManager.findOneByOrFail(ConsumableStock, {
+      id,
+    });
+    return this.entityManager.remove(item);
   }
 }

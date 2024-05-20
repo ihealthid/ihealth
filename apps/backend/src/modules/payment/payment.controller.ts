@@ -39,7 +39,7 @@ export class PaymentController {
   }
 
   @Get(':id')
-  async findById(@Param('id', ParseIntPipe) id: number) {
+  async findById(@Param('id') id: string) {
     const payment = await this.entityManager.findOneOrFail(Payment, {
       where: { id },
       relations: {

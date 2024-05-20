@@ -5,7 +5,6 @@ import { ActEncounterCodeController } from './act-encounter-code.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ActEncounterCode])],
-  providers: [],
   controllers: [ActEncounterCodeController],
 })
 export class ActEncounterModule {}

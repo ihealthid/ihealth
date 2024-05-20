@@ -10,6 +10,6 @@ export class MedicationInputRequest {
   @IsString()
   bpom: string;
 
-  @IsNumber()
-  doseFormId: number;
+  @IsString()
+  doseFormId: string;
 }

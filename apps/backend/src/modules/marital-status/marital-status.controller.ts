@@ -9,8 +9,8 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Pagination,
@@ -23,52 +23,52 @@ import { MaritalStatus } from './marital-status';
 })
 export class MaritalStatusController {
   constructor(
-    @InjectRepository(MaritalStatus)
-    private maritalStatusRepository: Repository<MaritalStatus>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip }: PaginationQuery) {
-    return this.maritalStatusRepository.findAndCount({
-      take,
-      skip,
-      order: {
-        display: 'ASC'
-      }
-    });
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(MaritalStatus, paginationQuery);
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.maritalStatusRepository.findOneByOrFail({ id });
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneByOrFail(MaritalStatus, { id });
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: any) {
-    const maritalStatus = this.maritalStatusRepository.create(data);
-    return this.maritalStatusRepository.save(maritalStatus);
+    const maritalStatus = this.entityManager.create(MaritalStatus, data);
+    return this.entityManager.save(maritalStatus);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async updateById(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
-    const maritalStatus = await this.maritalStatusRepository.findOneByOrFail({
-      id,
-    });
-    const uData = this.maritalStatusRepository.merge(maritalStatus, data);
-    return this.maritalStatusRepository.save(uData);
+  async updateById(@Param('id') id: string, @Body() data: any) {
+    const maritalStatus = await this.entityManager.findOneByOrFail(
+      MaritalStatus,
+      {
+        id,
+      },
+    );
+    const uData = this.entityManager.merge(MaritalStatus, maritalStatus, data);
+    return this.entityManager.save(uData);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
-    const maritalStatus = await this.maritalStatusRepository.findOneByOrFail({
-      id,
-    });
-    await this.maritalStatusRepository.remove(maritalStatus);
+  async deleteById(@Param('id') id: string) {
+    const maritalStatus = await this.entityManager.findOneByOrFail(
+      MaritalStatus,
+      {
+        id,
+      },
+    );
+    await this.entityManager.remove(maritalStatus);
     return maritalStatus;
   }
 }

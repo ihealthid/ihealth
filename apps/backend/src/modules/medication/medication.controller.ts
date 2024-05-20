@@ -39,7 +39,7 @@ export class MedicationController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
+  async findById(@Param('id') id: string) {
     return this.entityManager.findOneOrFail(Medication, { where: { id } });
   }
 
@@ -61,7 +61,7 @@ export class MedicationController {
 
   @Get('/:id/count')
   @UseGuards(AuthGuard)
-  async stockCounter(@Param('id', ParseIntPipe) id: number) {
+  async stockCounter(@Param('id') id: string) {
     const allStockQuery = this.entityManager.find(MedicationStock, {
       where: {
         medicationId: id,

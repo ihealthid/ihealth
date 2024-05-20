@@ -7,8 +7,8 @@ import {
 
 @Entity()
 export class Practitioner {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;

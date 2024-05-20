@@ -10,8 +10,8 @@ import { Consumable } from '../consumable/consumable';
 
 @Entity()
 export class ConsumableStock {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   quantity: number;
@@ -37,7 +37,7 @@ export class ConsumableStock {
   returnedAt?: Date;
 
   @Column()
-  consumableId: number;
+  consumableId: string;
 
   @ManyToOne(() => Consumable)
   consumable: Consumable;

@@ -1,8 +1,11 @@
 import { UnstyledButton, Group, Avatar, Text, rem } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import classes from "./style.module.css";
+import { useProfile } from "@/hooks/useProfile";
 
 export function UserButton() {
+  const [profile, setProfile] = useProfile()
+  
   return (
     <UnstyledButton className={classes.user}>
       <Group>
@@ -13,7 +16,7 @@ export function UserButton() {
 
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={500}>
-            Harriette Spoonlicker
+            {profile?.name}
           </Text>
 
           <Text c="dimmed" size="xs">

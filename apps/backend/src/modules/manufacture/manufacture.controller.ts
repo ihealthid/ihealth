@@ -8,9 +8,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Manufacture } from './manufacture';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import {
   Pagination,
   PaginationQuery,
@@ -21,42 +21,42 @@ import {
 })
 export class ManufactureController {
   constructor(
-    @InjectRepository(Manufacture)
-    private manufactureRepository: Repository<Manufacture>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
-  async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.manufactureRepository.findAndCount({
-      ...pagination,
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(Manufacture, {
+      ...paginationQuery,
     });
   }
 
   @Get(':id')
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.manufactureRepository.findOneByOrFail({ id });
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneByOrFail(Manufacture, { id });
   }
 
   @Post()
   async create(@Body() data: any) {
-    const manufacture = this.manufactureRepository.create(data);
-    return this.manufactureRepository.save(manufacture);
+    const manufacture = this.entityManager.create(Manufacture, data);
+    return this.entityManager.save(manufacture);
   }
 
   @Put(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
-    const manufacture = await this.manufactureRepository.findOneByOrFail({
+  async update(@Param('id') id: string, @Body() data: any) {
+    const manufacture = await this.entityManager.findOneByOrFail(Manufacture, {
       id,
     });
-    const uData = this.manufactureRepository.merge(manufacture, data);
-    return this.manufactureRepository.save(uData);
+    const uData = this.entityManager.merge(Manufacture, manufacture, data);
+    return this.entityManager.save(uData);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    const manufacture = await this.manufactureRepository.findOneByOrFail({
+  async delete(@Param('id') id: string) {
+    const manufacture = await this.entityManager.findOneByOrFail(Manufacture, {
       id,
     });
-    await this.manufactureRepository.remove(manufacture);
+    await this.entityManager.remove(manufacture);
   }
 }

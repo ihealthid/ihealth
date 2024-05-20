@@ -4,7 +4,5 @@ import { CodeSystemProperty } from './code-system-property';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CodeSystemProperty])],
-  providers: [],
-  controllers: [],
 })
 export class CodeSystemPropertyModule {}

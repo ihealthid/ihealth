@@ -12,8 +12,8 @@ import { Allergy } from '../allergy/allergy';
 
 @Entity()
 export class PatientAllergy {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   severity: number;
@@ -25,14 +25,14 @@ export class PatientAllergy {
   updatedAt: Date;
 
   @Column()
-  patientId: number;
+  patientId: string;
 
   @ManyToOne(() => Patient)
   @JoinColumn()
   patient: Patient;
 
   @Column()
-  allergyId: number;
+  allergyId: string;
 
   @ManyToOne(() => Allergy)
   @JoinColumn()

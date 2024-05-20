@@ -8,8 +8,8 @@ import {
 
 @Entity()
 export class CodeSystemType {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,

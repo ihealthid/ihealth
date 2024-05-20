@@ -12,8 +12,8 @@ import { CodeSystem } from '../code-system/code-system';
 
 @Entity()
 export class CodeSystemProperty {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   code: string;
@@ -42,7 +42,7 @@ export class CodeSystemProperty {
   @Column({
     nullable: true,
   })
-  valueCodingId?: number;
+  valueCodingId?: string;
 
   @ManyToOne(() => Coding)
   @JoinColumn()

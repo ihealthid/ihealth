@@ -3,20 +3,21 @@ import {
   IsNotEmptyObject,
   IsNumber,
   IsObject,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 
 class PrescriptionItem {
-  @IsNumber()
-  medicationId: number;
+  @IsString()
+  medicationId: string;
 
   @IsNumber()
   quantity: number;
 }
 
 export class PrescriptionCreateRequest {
-  @IsNumber()
-  encounterId?: number;
+  @IsString()
+  encounterId?: string;
 
   @IsDefined()
   @IsObject()

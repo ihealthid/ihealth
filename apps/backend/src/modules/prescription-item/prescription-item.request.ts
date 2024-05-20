@@ -1,16 +1,16 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PrescriptionItemRequest {
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  id?: number;
+  id?: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  encounterId?: number;
+  encounterId?: string;
 
-  @IsNumber()
-  medicationId: number;
+  @IsString()
+  medicationId: string;
 
   @IsNumber()
   quantity: number;

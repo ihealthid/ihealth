@@ -14,8 +14,8 @@ import {
 } from 'src/decorators/pagination.decorator';
 import { XMLParser } from 'fast-xml-parser';
 import { ClassificationDiseaseService } from './classification-disease.service';
-import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Not, Repository } from 'typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager, IsNull, Not } from 'typeorm';
 import { ClassificationDisease } from './classification-disease';
 
 @Controller({
@@ -24,8 +24,8 @@ import { ClassificationDisease } from './classification-disease';
 export class ClassificationDiseaseController {
   constructor(
     private service: ClassificationDiseaseService,
-    @InjectRepository(ClassificationDisease)
-    private diseaseRepository: Repository<ClassificationDisease>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Post('/import/xml')
@@ -39,21 +39,14 @@ export class ClassificationDiseaseController {
 
   @Get()
   async paginate(
-    @Pagination() { take, skip, filter, sort }: PaginationQuery,
+    @Pagination() paginationQuery: PaginationQuery,
     @Query('grouping', new ParseBoolPipe({ optional: true }))
     grouping?: boolean,
   ) {
-    return this.diseaseRepository.findAndCount({
-      take,
-      skip,
-      order: {
-        ...sort,
-        children: {
-          display: 'ASC',
-        },
-      },
+    return this.entityManager.findAndCount(ClassificationDisease, {
+      ...paginationQuery,
       where: {
-        ...filter,
+        ...paginationQuery.where,
         children: {
           parentId: grouping ? Not(IsNull()) : IsNull(),
         },

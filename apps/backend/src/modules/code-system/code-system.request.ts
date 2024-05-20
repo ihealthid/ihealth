@@ -1,8 +1,8 @@
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CodeSystemInputRequest {
-  @IsNumber()
-  typeId: number;
+  @IsString()
+  typeId: string;
 
   @IsString()
   system: string;
@@ -32,5 +32,5 @@ export class CodeSystemInputRequest {
     },
   )
   @IsOptional()
-  parentIds: number[];
+  parentIds: string[];
 }

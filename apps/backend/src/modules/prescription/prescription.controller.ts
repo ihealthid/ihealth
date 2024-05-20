@@ -38,7 +38,7 @@ export class PrescriptionController {
   }
 
   @Get('/:id')
-  async findById(@Param('id', ParseIntPipe) id: number) {
+  async findById(@Param('id') id: string) {
     return this.entityManager.findOneOrFail(Prescription, {
       where: { id },
       relations: {
@@ -53,9 +53,7 @@ export class PrescriptionController {
   }
 
   @Get('/encounter/:encounterId')
-  async findByEncounterId(
-    @Param('encounterId', ParseIntPipe) encounterId: number,
-  ) {
+  async findByEncounterId(@Param('encounterId') encounterId: string) {
     return await this.entityManager.findOne(Prescription, {
       where: {
         encounterId,

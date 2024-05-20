@@ -1,18 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AllergyByEncounterCreateRequest } from './patient-allergy.request';
 import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 import { Allergy } from '../allergy/allergy';
 import { Patient } from '../patient/patient';
 import { PatientAllergy } from './patient-allergy';
@@ -22,35 +15,17 @@ import { PatientAllergy } from './patient-allergy';
 })
 export class PatientAllergyController {
   constructor(
-    private dataSource: DataSource,
-    @InjectRepository(PatientAllergy)
-    private patientAllergyRepository: Repository<PatientAllergy>,
-    @InjectRepository(Allergy)
-    private allergyRepository: Repository<Allergy>,
-    @InjectRepository(Patient)
-    private patientRepository: Repository<Patient>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
-  @Get('/encounter/:id')
-  async paginateByEncounter(
-    @Pagination() { take, skip, filter, sort }: PaginationQuery,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
-    return this.patientAllergyRepository.findAndCount({
-      take,
-      skip,
-      where: {
-        ...filter,
-        patient: {
-          encounters: {
-            id,
-          },
-        },
-      },
-      order: sort,
+  @Get()
+  async paginateByEncounter(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(PatientAllergy, {
+      ...paginationQuery,
       relations: {
-        allergy: true
-      }
+        allergy: true,
+      },
     });
   }
 
@@ -58,25 +33,25 @@ export class PatientAllergyController {
   async createByEncounter(
     @Body() { encounterId, name, level }: AllergyByEncounterCreateRequest,
   ) {
-    await this.dataSource.transaction(async (trx) => {
-      let allergy = await this.allergyRepository.findOneBy({
+    await this.entityManager.transaction(async (trx) => {
+      let allergy = await trx.findOneBy(Allergy, {
         name,
       });
 
       if (!allergy) {
-        allergy = this.allergyRepository.create({
+        allergy = trx.create(Allergy, {
           name,
         });
         await trx.save(allergy);
       }
 
-      const patient = await this.patientRepository.findOneByOrFail({
+      const patient = await trx.findOneByOrFail(Patient, {
         encounters: {
           id: encounterId,
         },
       });
 
-      const patientAllergy = this.patientAllergyRepository.create({
+      const patientAllergy = trx.create(PatientAllergy, {
         allergy,
         patient,
         severity: level,

@@ -38,7 +38,7 @@ export class PatientConditionController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
+  async findById(@Param('id') id: string) {
     return this.patientConditionRepository.findOneByOrFail({ id });
   }
 
@@ -51,7 +51,7 @@ export class PatientConditionController {
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async updateById(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
+  async updateById(@Param('id') id: string, @Body() data: any) {
     const patientCondition =
       await this.patientConditionRepository.findOneByOrFail({
         id,
@@ -62,7 +62,7 @@ export class PatientConditionController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
+  async deleteById(@Param('id') id: string) {
     const patientCondition =
       await this.patientConditionRepository.findOneByOrFail({
         id,

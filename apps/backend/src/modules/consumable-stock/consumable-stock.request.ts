@@ -2,6 +2,7 @@ import {
   IsDateString,
   IsNumber,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 
@@ -23,8 +24,8 @@ class Packaging {
 }
 
 export class ConsumableStockInput {
-  @IsNumber()
-  consumableId: number;
+  @IsString()
+  consumableId: string;
 
   @ValidateNested()
   packaging: Packaging;

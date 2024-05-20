@@ -1,8 +1,8 @@
-import { IsNumber, IsDateString } from 'class-validator';
+import { IsNumber, IsDateString, IsString } from 'class-validator';
 
 export class MedicationStockInputRequest {
-  @IsNumber()
-  medicationId: number;
+  @IsString()
+  medicationId: string;
 
   @IsNumber()
   price: number;

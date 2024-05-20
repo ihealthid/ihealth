@@ -1,8 +1,8 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class AllergyByEncounterCreateRequest {
-  @IsNumber()
-  encounterId: number;
+  @IsString()
+  encounterId: string;
 
   @IsString()
   name: string;

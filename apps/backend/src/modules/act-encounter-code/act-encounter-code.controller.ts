@@ -4,13 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Pagination,
@@ -23,51 +22,56 @@ import { ActEncounterCode } from './act-encounter-code';
 })
 export class ActEncounterCodeController {
   constructor(
-    @InjectRepository(ActEncounterCode)
-    private actEncounterCodeRepository: Repository<ActEncounterCode>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip }: PaginationQuery) {
-    return this.actEncounterCodeRepository.findAndCount({
-      take,
-      skip,
-    });
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(ActEncounterCode, paginationQuery);
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.actEncounterCodeRepository.findOneByOrFail({ id });
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneByOrFail(ActEncounterCode, { id });
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: any) {
-    const actEncounterCode = this.actEncounterCodeRepository.create(data);
-    return this.actEncounterCodeRepository.save(actEncounterCode);
+    const actEncounterCode = this.entityManager.create(ActEncounterCode, data);
+    return this.entityManager.save(actEncounterCode);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async updateById(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
-    const actEncounterCode =
-      await this.actEncounterCodeRepository.findOneByOrFail({
+  async updateById(@Param('id') id: string, @Body() data: any) {
+    const actEncounterCode = await this.entityManager.findOneByOrFail(
+      ActEncounterCode,
+      {
         id,
-      });
-    const uData = this.actEncounterCodeRepository.merge(actEncounterCode, data);
-    return this.actEncounterCodeRepository.save(uData);
+      },
+    );
+    const uData = this.entityManager.merge(
+      ActEncounterCode,
+      actEncounterCode,
+      data,
+    );
+    return this.entityManager.save(uData);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
-    const actEncounterCode =
-      await this.actEncounterCodeRepository.findOneByOrFail({
+  async deleteById(@Param('id') id: string) {
+    const actEncounterCode = await this.entityManager.findOneByOrFail(
+      ActEncounterCode,
+      {
         id,
-      });
-    await this.actEncounterCodeRepository.remove(actEncounterCode);
+      },
+    );
+    await this.entityManager.remove(actEncounterCode);
     return actEncounterCode;
   }
 }

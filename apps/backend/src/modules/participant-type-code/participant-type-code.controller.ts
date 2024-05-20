@@ -4,13 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Pagination,
@@ -23,49 +22,62 @@ import { ParticipantTypeCode } from './participant-type-code';
 })
 export class ParticipantTypeCodeController {
   constructor(
-    @InjectRepository(ParticipantTypeCode)
-    private participantTypeCode: Repository<ParticipantTypeCode>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip }: PaginationQuery) {
-    return this.participantTypeCode.findAndCount({
-      take,
-      skip,
-    });
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(
+      ParticipantTypeCode,
+      paginationQuery,
+    );
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.participantTypeCode.findOneByOrFail({ id });
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneByOrFail(ParticipantTypeCode, { id });
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: any) {
-    const participantTypeCode = this.participantTypeCode.create(data);
-    return this.participantTypeCode.save(participantTypeCode);
+    const participantTypeCode = this.entityManager.create(
+      ParticipantTypeCode,
+      data,
+    );
+    return this.entityManager.save(participantTypeCode);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async updateById(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
-    const participantTypeCode = await this.participantTypeCode.findOneByOrFail({
-      id,
-    });
-    const uData = this.participantTypeCode.merge(participantTypeCode, data);
-    return this.participantTypeCode.save(uData);
+  async updateById(@Param('id') id: string, @Body() data: any) {
+    const participantTypeCode = await this.entityManager.findOneByOrFail(
+      ParticipantTypeCode,
+      {
+        id,
+      },
+    );
+    const uData = this.entityManager.merge(
+      ParticipantTypeCode,
+      participantTypeCode,
+      data,
+    );
+    return this.entityManager.save(ParticipantTypeCode, uData);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
-    const participantTypeCode = await this.participantTypeCode.findOneByOrFail({
-      id,
-    });
-    await this.participantTypeCode.remove(participantTypeCode);
+  async deleteById(@Param('id') id: string) {
+    const participantTypeCode = await this.entityManager.findOneByOrFail(
+      ParticipantTypeCode,
+      {
+        id,
+      },
+    );
+    await this.entityManager.remove(participantTypeCode);
     return participantTypeCode;
   }
 }

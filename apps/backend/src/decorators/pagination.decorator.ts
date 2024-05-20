@@ -7,6 +7,8 @@ export interface PaginationQuery {
   skip: number;
   sort: Record<string, any>;
   filter: Record<string, any>;
+  where: Record<string, any>;
+  order: Record<string, any>;
 }
 
 export const Pagination = createParamDecorator(

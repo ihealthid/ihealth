@@ -13,8 +13,8 @@ import { DiagnoseStatus } from '../diagnose-status/diagnose-status';
 
 @Entity()
 export class Diagnose {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     nullable: true,
@@ -43,7 +43,7 @@ export class Diagnose {
   updatedAt: Date;
 
   @Column()
-  encounterId: number;
+  encounterId: string;
 
   @ManyToOne(() => Encounter)
   @JoinColumn()
@@ -52,7 +52,7 @@ export class Diagnose {
   @Column({
     nullable: true,
   })
-  classificationDiseaseId?: number;
+  classificationDiseaseId?: string;
 
   @ManyToOne(() => ClassificationDisease)
   @JoinColumn()
@@ -61,7 +61,7 @@ export class Diagnose {
   @Column({
     nullable: true,
   })
-  statusId?: number;
+  statusId?: string;
 
   @ManyToOne(() => DiagnoseStatus)
   @JoinColumn()

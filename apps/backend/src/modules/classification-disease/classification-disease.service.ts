@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { isArray } from 'class-validator';
 import { ClassificationDiseaseGroup } from '../classification-disease-group/classification-disease-group';
-import { Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { ClassificationDisease } from './classification-disease';
 
 interface Diag {
@@ -34,10 +34,8 @@ interface Data {
 @Injectable()
 export class ClassificationDiseaseService {
   constructor(
-    @InjectRepository(ClassificationDiseaseGroup)
-    private groupRepository: Repository<ClassificationDiseaseGroup>,
-    @InjectRepository(ClassificationDisease)
-    private diseaseRepository: Repository<ClassificationDisease>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   private getName(value: string) {
@@ -51,7 +49,8 @@ export class ClassificationDiseaseService {
   async create(data: Data) {
     const { chapter } = data;
     for (const row of chapter) {
-      const parentGroup = await this.groupRepository.upsert(
+      const parentGroup = await this.entityManager.upsert(
+        ClassificationDiseaseGroup,
         {
           display: this.getName(row.desc),
           definition: this.getDescription(row.desc),
@@ -69,9 +68,10 @@ export class ClassificationDiseaseService {
     }
   }
 
-  private async createChildrenGroup(parentId: number, section: Section[]) {
+  private async createChildrenGroup(parentId: string, section: Section[]) {
     for (const row of section) {
-      const group = await this.groupRepository.upsert(
+      const group = await this.entityManager.upsert(
+        ClassificationDiseaseGroup,
         {
           parentId,
           display: this.getName(row.desc),
@@ -90,11 +90,12 @@ export class ClassificationDiseaseService {
   }
 
   private async createItem(
-    groupId: number,
+    groupId: string,
     diag: (Omit<Diag, 'inclusionTerm'> & { diag: Diag[] })[],
   ) {
     for (const row of diag) {
-      const item = await this.diseaseRepository.upsert(
+      const item = await this.entityManager.upsert(
+        ClassificationDisease,
         {
           groupId,
           display: row.name,
@@ -114,12 +115,13 @@ export class ClassificationDiseaseService {
   }
 
   private async createChildrenItem(
-    parentId: number,
-    groupId: number,
+    parentId: string,
+    groupId: string,
     diag: (Diag & { inclusionTerm: { note: string } })[],
   ) {
     for (const row of diag) {
-      await this.diseaseRepository.upsert(
+      await this.entityManager.upsert(
+        ClassificationDisease,
         {
           parentId,
           display: row.name,

@@ -1,8 +1,8 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class DiagnoseUpsertRequest {
-  @IsNumber()
-  encounterId: number;
+  @IsString()
+  encounterId: string;
 
   @IsString()
   @IsOptional()
@@ -20,7 +20,7 @@ export class DiagnoseUpsertRequest {
   @IsOptional()
   plan?: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  classificationDiseaseId?: number;
+  classificationDiseaseId?: string;
 }

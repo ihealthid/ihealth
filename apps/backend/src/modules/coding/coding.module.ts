@@ -4,7 +4,5 @@ import { Coding } from './coding';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Coding])],
-  providers: [],
-  controllers: [],
 })
 export class CodingModule {}

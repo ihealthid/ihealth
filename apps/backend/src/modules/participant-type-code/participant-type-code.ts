@@ -10,8 +10,8 @@ import {
 
 @Entity()
 export class ParticipantTypeCode {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   system: string;
@@ -25,7 +25,7 @@ export class ParticipantTypeCode {
   display: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   definition?: string;
 
@@ -43,7 +43,7 @@ export class ParticipantTypeCode {
   @Column({
     nullable: true,
   })
-  parentId?: number;
+  parentId?: string;
 
   @ManyToOne(() => ParticipantTypeCode)
   @JoinColumn()

@@ -4,7 +4,6 @@ import { Identify } from './identify';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Identify])],
-  providers: [],
   controllers: [],
 })
 export class IdentifyModule {}

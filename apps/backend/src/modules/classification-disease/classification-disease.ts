@@ -10,8 +10,8 @@ import { ClassificationDiseaseGroup } from '../classification-disease-group/clas
 
 @Entity()
 export class ClassificationDisease {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,
@@ -24,7 +24,7 @@ export class ClassificationDisease {
   definition?: string;
 
   @Column()
-  groupId: number;
+  groupId: string;
 
   @ManyToOne(() => ClassificationDiseaseGroup)
   group: ClassificationDiseaseGroup;
@@ -32,7 +32,7 @@ export class ClassificationDisease {
   @Column({
     nullable: true,
   })
-  parentId?: number;
+  parentId?: string;
 
   @ManyToOne(() => ClassificationDisease)
   @JoinColumn()

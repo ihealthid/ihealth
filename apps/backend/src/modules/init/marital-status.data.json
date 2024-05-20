@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "code": "M",
+      "display": "Married"
+    },
+    {
+      "code": "U",
+      "display": "Unmarried"
+    }
+  ]
+}

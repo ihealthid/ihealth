@@ -12,9 +12,9 @@ import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Encounter } from './encounter';
-import { DataSource, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Patient } from '../patient/patient';
 import { EncounterHistory } from '../encounter-history/encounter-history';
 import { Participant } from '../participant/participant';
@@ -29,34 +29,15 @@ import { HealthcareService } from '../healthcare-service/healthcare-service';
 })
 export class EncounterController {
   constructor(
-    @InjectRepository(Patient)
-    private patientRepository: Repository<Patient>,
-    @InjectRepository(PatientCondition)
-    private patientConditionRepository: Repository<PatientCondition>,
-    @InjectRepository(HealthcareService)
-    private healthcareServiceRepository: Repository<HealthcareService>,
-    @InjectRepository(Encounter)
-    private encounterRepository: Repository<Encounter>,
-    @InjectRepository(EncounterStatus)
-    private encounterStatusRepository: Repository<EncounterStatus>,
-    @InjectRepository(ParticipantTypeCode)
-    private participantTypeCodeRepository: Repository<ParticipantTypeCode>,
-    @InjectRepository(Participant)
-    private participantRepository: Repository<Participant>,
-    @InjectRepository(EncounterHistory)
-    private encounterHistoryRepository: Repository<EncounterHistory>,
-    @InjectRepository(ActEncounterCode)
-    private actEncounterCodeRepository: Repository<ActEncounterCode>,
-    private dataSource: DataSource,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   @UseGuards(AuthGuard)
-  async paginate(@Pagination() { take, skip, filter }: PaginationQuery) {
-    return this.encounterRepository.findAndCount({
-      take,
-      skip,
-      where: filter,
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(Encounter, {
+      ...paginationQuery,
       relations: {
         patient: true,
         healthcareService: true,
@@ -71,32 +52,28 @@ export class EncounterController {
   @Post()
   @UseGuards(AuthGuard)
   async create(@Request() req, @Body() data: EncounterInputRequest) {
-    await this.dataSource.transaction(async (trx) => {
-      const patient = await this.patientRepository.findOneByOrFail({
+    await this.entityManager.transaction(async (trx) => {
+      const patient = await trx.findOneByOrFail(Patient, {
         id: data.patientId,
       });
 
-      const patientCondition =
-        await this.patientConditionRepository.findOneByOrFail({
-          id: data.patientConditionId,
-        });
+      const patientCondition = await trx.findOneByOrFail(PatientCondition, {
+        id: data.patientConditionId,
+      });
 
-      const participantType =
-        await this.participantTypeCodeRepository.findOneByOrFail({
-          code: 'ADM',
-        });
+      const participantType = await trx.findOneByOrFail(ParticipantTypeCode, {
+        code: 'ADM',
+      });
 
-      const actEncounterCode =
-        await this.actEncounterCodeRepository.findOneByOrFail({
-          code: 'AMB',
-        });
+      const actEncounterCode = await trx.findOneByOrFail(ActEncounterCode, {
+        code: 'AMB',
+      });
 
-      const healthcareService =
-        await this.healthcareServiceRepository.findOneByOrFail({
-          id: data.healthcareServiceId,
-        });
+      const healthcareService = await trx.findOneByOrFail(HealthcareService, {
+        id: data.healthcareServiceId,
+      });
 
-      const encounter = this.encounterRepository.create({
+      const encounter = trx.create(Encounter, {
         patient,
         actEncounterCode,
         healthcareService,
@@ -105,18 +82,18 @@ export class EncounterController {
       });
       await trx.save(encounter);
 
-      const participant = this.participantRepository.create({
+      const participant = trx.create(Participant, {
         encounterId: encounter.id,
         userId: req.user.sub,
         type: participantType,
       });
       await trx.save(participant);
 
-      const status = await this.encounterStatusRepository.findOneByOrFail({
+      const status = await this.entityManager.findOneByOrFail(EncounterStatus, {
         code: 'registered',
       });
 
-      const history = this.encounterHistoryRepository.create({
+      const history = trx.create(EncounterHistory, {
         status,
         encounter,
       });

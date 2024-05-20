@@ -93,7 +93,7 @@ export class PrescriptionItemController {
 
   @Delete('/:id')
   @UseGuards(AuthGuard)
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     return this.entityManager.delete(PrescriptionItem, {
       id,
     });

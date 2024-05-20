@@ -5,7 +5,6 @@ import { ParticipantTypeCodeController } from './participant-type-code.controlle
 
 @Module({
   imports: [TypeOrmModule.forFeature([ParticipantTypeCode])],
-  providers: [],
   controllers: [ParticipantTypeCodeController],
 })
 export class ParticipantTypeCodeModule {}

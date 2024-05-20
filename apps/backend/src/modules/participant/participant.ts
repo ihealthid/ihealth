@@ -9,13 +9,12 @@ import {
 } from 'typeorm';
 import { Encounter } from '../encounter/encounter';
 import { ParticipantTypeCode } from '../participant-type-code/participant-type-code';
-import { Practitioner } from '../practitioner/practitioner';
 import { User } from '../user/user';
 
 @Entity()
 export class Participant {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -24,7 +23,7 @@ export class Participant {
   updatedAt: Date;
 
   @Column()
-  encounterId: number;
+  encounterId: string;
 
   @ManyToOne(() => Encounter)
   @JoinColumn()
@@ -35,7 +34,7 @@ export class Participant {
   type: ParticipantTypeCode;
 
   @Column()
-  userId: number;
+  userId: string;
 
   @ManyToOne(() => User)
   @JoinColumn()

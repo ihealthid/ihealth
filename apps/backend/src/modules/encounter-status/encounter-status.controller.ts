@@ -9,8 +9,8 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Pagination,
@@ -23,51 +23,56 @@ import { EncounterStatus } from './encounter-status';
 })
 export class EncounterStatusController {
   constructor(
-    @InjectRepository(EncounterStatus)
-    private encounterStatusRepository: Repository<EncounterStatus>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip }: PaginationQuery) {
-    return this.encounterStatusRepository.findAndCount({
-      take,
-      skip,
-    });
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(EncounterStatus, paginationQuery);
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.encounterStatusRepository.findOneByOrFail({ id });
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneByOrFail(EncounterStatus, { id });
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: any) {
-    const encounterStatus = this.encounterStatusRepository.create(data);
-    return this.encounterStatusRepository.save(encounterStatus);
+    const encounterStatus = this.entityManager.create(EncounterStatus, data);
+    return this.entityManager.save(encounterStatus);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async updateById(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
-    const encounterStatus =
-      await this.encounterStatusRepository.findOneByOrFail({
+  async updateById(@Param('id') id: string, @Body() data: any) {
+    const encounterStatus = await this.entityManager.findOneByOrFail(
+      EncounterStatus,
+      {
         id,
-      });
-    const uData = this.encounterStatusRepository.merge(encounterStatus, data);
-    return this.encounterStatusRepository.save(uData);
+      },
+    );
+    const uData = this.entityManager.merge(
+      EncounterStatus,
+      encounterStatus,
+      data,
+    );
+    return this.entityManager.save(uData);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
-    const encounterStatus =
-      await this.encounterStatusRepository.findOneByOrFail({
+  async deleteById(@Param('id') id: string) {
+    const encounterStatus = await this.entityManager.findOneByOrFail(
+      EncounterStatus,
+      {
         id,
-      });
-    await this.encounterStatusRepository.remove(encounterStatus);
+      },
+    );
+    await this.entityManager.remove(encounterStatus);
     return encounterStatus;
   }
 }

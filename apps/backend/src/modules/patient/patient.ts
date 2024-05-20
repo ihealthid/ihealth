@@ -15,8 +15,8 @@ import { PatientAllergy } from '../patient-allergy/patient-allergy';
 
 @Entity()
 export class Patient {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   fullName: string;

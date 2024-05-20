@@ -10,8 +10,8 @@ import { PatientAllergy } from '../patient-allergy/patient-allergy';
 
 @Entity()
 export class Allergy {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,

@@ -50,6 +50,10 @@ import { MedicationStockModule } from './modules/medication-stock/medication-sto
 import { PrescriptionStatusModule } from './modules/prescription-status/prescription-status.module';
 import { DiagnoseStatusModule } from './modules/diagnose-status/diagnose-status.module';
 import { ParticipantModule } from './modules/participant/participant.module';
+import { ClassificationDiseaseGroupModule } from './modules/classification-disease-group/classification-disease-group.module';
+import { AddressEntryModule } from './modules/address-entry/address-entry.module';
+import { EncounterHistoryModule } from './modules/encounter-history/encounter-history.module';
+import { ObservationEntryModule } from './modules/observation-entry/observation-entry.module';
 
 @Module({
   imports: [
@@ -97,12 +101,14 @@ import { ParticipantModule } from './modules/participant/participant.module';
     CodeSystemTypeModule,
     CodeSystemModule,
     AddressModule,
+    AddressEntryModule,
     PatientModule,
 
     ActEncounterModule,
     ParticipantTypeCodeModule,
     MaritalStatusModule,
     EncounterStatusModule,
+    EncounterHistoryModule,
     PatientConditionModule,
 
     PaymentStatusModule,
@@ -112,10 +118,12 @@ import { ParticipantModule } from './modules/participant/participant.module';
 
     EncounterModule,
     ObservationModule,
+    ObservationEntryModule,
     DiagnoseStatusModule,
     DiagnoseModule,
     ParticipantModule,
     ClassificationDiseaseModule,
+    ClassificationDiseaseGroupModule,
     PrescriptionStatusModule,
     PrescriptionModule,
     PrescriptionItemModule,

@@ -10,8 +10,8 @@ import { Medication } from '../medication/medication';
 
 @Entity()
 export class MedicationStock {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   quantity: number;
@@ -26,7 +26,7 @@ export class MedicationStock {
   updatedAt: Date;
 
   @Column()
-  medicationId: number;
+  medicationId: string;
 
   @ManyToOne(() => Medication)
   medication: Medication;

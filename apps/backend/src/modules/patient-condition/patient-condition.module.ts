@@ -5,7 +5,6 @@ import { PatientConditionController } from './patient-condition.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PatientCondition])],
-  providers: [],
   controllers: [PatientConditionController],
 })
 export class PatientConditionModule {}

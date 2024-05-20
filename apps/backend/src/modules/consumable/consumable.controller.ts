@@ -4,28 +4,28 @@ import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Consumable } from './consumable';
-import { Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 
 @Controller({
   path: 'consumables',
 })
 export class ConsumableController {
   constructor(
-    @InjectRepository(Consumable)
-    private consumableRepository: Repository<Consumable>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Post()
   async create(@Body() data: ConsumableCreateRequest) {
-    const consumable = this.consumableRepository.create(data);
-    return this.consumableRepository.save(consumable);
+    const consumable = this.entityManager.create(Consumable, data);
+    return this.entityManager.save(consumable);
   }
 
   @Get()
   async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.consumableRepository.findAndCount({
+    return this.entityManager.findAndCount(Consumable, {
       ...pagination,
       relations: {
         brand: {

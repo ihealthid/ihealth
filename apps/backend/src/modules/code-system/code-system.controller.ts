@@ -9,8 +9,8 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, EntityManager, In, Repository } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Pagination,
@@ -22,52 +22,30 @@ import { CodeSystemType } from '../code-system-type/code-system-type';
 import { CodeSystemProperty } from '../code-system-property/code-system-property';
 import { Coding } from '../coding/coding';
 
-interface Property {
-  code: string;
-  valueCode?: string;
-  valueBoolean?: boolean;
-  valueString?: string;
-  valueCoding?: {
-    system: string;
-    code: string;
-  };
-}
-
 @Controller({
   path: 'code-systems',
 })
 export class CodeSystemController {
   constructor(
-    @InjectRepository(CodeSystem)
-    private codeSystemRepository: Repository<CodeSystem>,
-    @InjectRepository(CodeSystemProperty)
-    private codeSystemPropertyRepository: Repository<CodeSystemProperty>,
-    @InjectRepository(Coding)
-    private codingRepository: Repository<Coding>,
-    @InjectRepository(CodeSystemType)
-    private codeSystemTypeRepository: Repository<CodeSystemType>,
-    private dataSource: DataSource,
-  ) { }
+    @InjectEntityManager()
+    private entityManager: EntityManager,
+  ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(
-    @Pagination() { take, skip, filter }: PaginationQuery,
-  ) {
-    return this.codeSystemRepository.findAndCount({
-      take,
-      skip,
+  async paginate(@Pagination() paginationQuery: PaginationQuery) {
+    return this.entityManager.findAndCount(CodeSystem, {
+      ...paginationQuery,
       relations: {
         type: true,
       },
-      where: filter,
     });
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async findById(@Param('id', ParseIntPipe) id: number) {
-    return this.codeSystemRepository.findOneByOrFail({ id });
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneByOrFail(CodeSystem, { id });
   }
 
   @Post()
@@ -76,32 +54,32 @@ export class CodeSystemController {
     @Body()
     { parentIds, notSelectable, isActive, ...data }: CodeSystemInputRequest,
   ) {
-    const codeSystem = this.codeSystemRepository.create(data);
-    codeSystem.parents = await this.codeSystemRepository.find({
+    const codeSystem = this.entityManager.create(CodeSystem, data);
+    codeSystem.parents = await this.entityManager.find(CodeSystem, {
       where: {
         id: In(parentIds),
       },
     });
-    return await this.codeSystemRepository.save(codeSystem);
+    return await this.entityManager.save(codeSystem);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async updateById(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
-    const codeSystem = await this.codeSystemRepository.findOneByOrFail({
+  async updateById(@Param('id') id: string, @Body() data: any) {
+    const codeSystem = await this.entityManager.findOneByOrFail(CodeSystem, {
       id,
     });
-    const uData = this.codeSystemRepository.merge(codeSystem, data);
-    return this.codeSystemRepository.save(uData);
+    const uData = this.entityManager.merge(CodeSystem, codeSystem, data);
+    return this.entityManager.save(uData);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async deleteById(@Param('id', ParseIntPipe) id: number) {
-    const codeSystem = await this.codeSystemRepository.findOneByOrFail({
+  async deleteById(@Param('id') id: string) {
+    const codeSystem = await this.entityManager.findOneByOrFail(CodeSystem, {
       id,
     });
-    await this.codeSystemRepository.remove(codeSystem);
+    await this.entityManager.remove(codeSystem);
     return codeSystem;
   }
 }
