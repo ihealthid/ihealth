@@ -31,7 +31,6 @@ import { IdentifyModule } from './modules/identify/identifier.module';
 import { AddressModule } from './modules/address/address.module';
 import { CodingModule } from './modules/coding/coding.module';
 import { CodeSystemPropertyModule } from './modules/code-system-property/code-system-property.module';
-import { ActEncounterModule } from './modules/act-encounter-code/act-encounter-code.module';
 import { ParticipantTypeCodeModule } from './modules/participant-type-code/participant-type-code.module';
 import { PractitionerModule } from './modules/practitioner/practitioner.module';
 import { MaritalStatusModule } from './modules/marital-status/marital-status.module';
@@ -105,7 +104,6 @@ import { EncounterActModule } from './modules/encounter-act/encounter-act.module
     AddressEntryModule,
     PatientModule,
 
-    ActEncounterModule,
     ParticipantTypeCodeModule,
     MaritalStatusModule,
     EncounterStatusModule,

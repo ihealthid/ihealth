@@ -45,8 +45,6 @@ export const router = createBrowserRouter([
       load("/observation/:id", () => import("./pages/observation")),
       load("/user", () => import("./pages/user")),
       load("/waiting-list", () => import("./pages/waiting-list")),
-
-      load("/act-encounter-code", () => import("./pages/act-encounter-code")),
       load(
         "/participant-type-code",
         () => import("./pages/participant-type-code"),
