@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 export const AddSection = forwardRef<DisclosureAction>((_, ref) => {
   const [opened, { open, close }] = useDisclosure();
   const params = useParams();
-  const consumableId = parseInt(params.id!);
+  const consumableId = params.id!;
   useImperativeHandle(ref, () => ({
     open,
     close,

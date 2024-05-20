@@ -54,10 +54,6 @@ export const Component = () => {
             )}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
-              },
-              {
                 keyIndex: "quantity",
                 header: "Quantity",
               },
@@ -89,7 +85,7 @@ export const Component = () => {
                     label: "Delete",
                     onClick(row) {
                       deleteConfirmation("Delete Stock", () =>
-                        deleteMutation(row.id)
+                        deleteMutation(row.id),
                       );
                     },
                   },

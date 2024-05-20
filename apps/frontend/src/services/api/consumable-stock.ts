@@ -5,7 +5,7 @@ import { EntityResponse } from "@/types/entity-response";
 import { Consumable } from "./consumable";
 
 export interface ConsumableStock {
-  id: number;
+  id: string;
   quantity: number;
   balance: number;
   price: number;
@@ -13,7 +13,7 @@ export interface ConsumableStock {
   createdAt: string;
   updatedAt: string;
   returnedAt: string;
-  consumableId: number;
+  consumableId: string;
   consumable: Consumable;
 }
 
@@ -21,7 +21,7 @@ interface ConsumableStockInput {
   quantity: number;
   price: number;
   expiredAt: string;
-  consumableId: number;
+  consumableId: string;
   packaging: Record<string, string | number>;
 }
 
@@ -50,7 +50,7 @@ const api = mainApi.injectEndpoints({
       invalidatesTags: ["ConsumableStock"],
     }),
 
-    deleteConsumableStock: mutation<EntityResponse<ConsumableStock>, number>({
+    deleteConsumableStock: mutation<EntityResponse<ConsumableStock>, string>({
       query: (id) => ({
         url: "/consumable-stocks/" + id,
         method: "delete",
