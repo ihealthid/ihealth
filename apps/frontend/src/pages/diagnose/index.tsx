@@ -11,6 +11,7 @@ import { PrescriptionForm } from "./components/PrescriptionForm";
 import { Footer } from "./components/Footer";
 import { OtherField } from "./other-field";
 import { AllergySection } from "./components/AllergySection";
+import { EncounterAct } from "./components/EncounterAct";
 
 export const Component = () => {
   const params = useParams();
@@ -34,7 +35,7 @@ export const Component = () => {
             <Tabs defaultValue="diagnosis">
               <Tabs.List>
                 <Tabs.Tab value="diagnosis">Diagnosis</Tabs.Tab>
-                <Tabs.Tab value="allergy">Alergi</Tabs.Tab>
+                <Tabs.Tab value="allergy">Allergy</Tabs.Tab>
               </Tabs.List>
 
               <Box p={16}>
@@ -46,17 +47,15 @@ export const Component = () => {
                         <InputLabel ta="center">Plan</InputLabel>
                       </Card.Section>
                       <Card.Section>
+                        <Box p="md">
+                          <OtherField encounterId={id} />
+                        </Box>
                         <Tabs orientation="vertical">
                           <Tabs.List>
                             <Tabs.Tab value="prescription">
                               Prescription
                             </Tabs.Tab>
-                            <Tabs.Tab value="inject">Injection</Tabs.Tab>
-                            <Tabs.Tab value="reference">Rujuk</Tabs.Tab>
-                            <Tabs.Tab value="observation">Observasi</Tabs.Tab>
-                            <Tabs.Tab value="inpatient" disabled>
-                              Rawat Inap
-                            </Tabs.Tab>
+                            <Tabs.Tab value="encounter-act">Tindakan</Tabs.Tab>
                             <Tabs.Tab value="other">Lainnya</Tabs.Tab>
                           </Tabs.List>
 
@@ -79,8 +78,8 @@ export const Component = () => {
                             </Grid>
                           </Tabs.Panel>
 
-                          <Tabs.Panel value="other" p={8}>
-                            <OtherField encounterId={id} />
+                          <Tabs.Panel value="encounter-act">
+                            <EncounterAct encounterId={id} />
                           </Tabs.Panel>
                         </Tabs>
                       </Card.Section>

@@ -31,14 +31,14 @@ type PutDiagnoseInput = {
 };
 
 const diagnoseApi = mainApi.injectEndpoints({
-  endpoints: (builder) => ({
-    getDiagnose: builder.query<{ data: Diagnose }, { encounterId: string }>({
+  endpoints: ({ mutation, query }) => ({
+    getDiagnose: query<{ data: Diagnose }, { encounterId: string }>({
       query: ({ encounterId }) => ({
         url: `/diagnoses/encounter/${encounterId}`,
       }),
       providesTags: ["Diagnose"],
     }),
-    putDiagnose: builder.mutation<unknown, PutDiagnoseInput>({
+    putDiagnose: mutation<unknown, PutDiagnoseInput>({
       query: (body) => ({
         url: `/diagnoses`,
         method: "put",
@@ -46,7 +46,7 @@ const diagnoseApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Diagnose", "Encounter"],
     }),
-    postDiagnose: builder.mutation<unknown, string>({
+    postDiagnose: mutation<unknown, string>({
       query: (id) => ({
         url: `/diagnoses/encounter/${id}`,
         method: "post",

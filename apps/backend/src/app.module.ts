@@ -54,6 +54,7 @@ import { AddressEntryModule } from './modules/address-entry/address-entry.module
 import { EncounterHistoryModule } from './modules/encounter-history/encounter-history.module';
 import { ObservationEntryModule } from './modules/observation-entry/observation-entry.module';
 import { EncounterActModule } from './modules/encounter-act/encounter-act.module';
+import { DiagnoseEncounterActModule } from './modules/diagnose-encounter-act/diagnose-encounter-act.module';
 
 @Module({
   imports: [
@@ -122,6 +123,7 @@ import { EncounterActModule } from './modules/encounter-act/encounter-act.module
     ObservationEntryModule,
     DiagnoseStatusModule,
     DiagnoseModule,
+    DiagnoseEncounterActModule,
     ParticipantModule,
     ClassificationDiseaseModule,
     ClassificationDiseaseGroupModule,

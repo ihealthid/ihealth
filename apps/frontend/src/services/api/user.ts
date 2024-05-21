@@ -4,7 +4,7 @@ import { PaginationResult } from "@/types/pagination-result";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
 
 export type User = {
-  id: number;
+  id: string;
   fullName: string;
   username: string;
   createdAt: string;

@@ -3,14 +3,12 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { DiagnoseUpsertRequest } from './diagnose.request';
-import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { EntityManager } from 'typeorm';
 import { Diagnose } from './diagnose';
 import { InjectEntityManager } from '@nestjs/typeorm';
@@ -23,6 +21,7 @@ import { EncounterHistory } from '../encounter-history/encounter-history';
 import { DiagnoseStatus } from '../diagnose-status/diagnose-status';
 import { Payment } from '../payment/payment';
 import { PaymentStatus } from '../payment-status/payment-status';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
   path: 'diagnoses',
@@ -34,7 +33,7 @@ export class DiagnoseController {
   ) {}
 
   @Get('/encounter/:encounterId')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findByEncounterId(@Param('encounterId') encounterId: string) {
     return await this.entityManager.findOne(Diagnose, {
       where: {
@@ -47,7 +46,7 @@ export class DiagnoseController {
   }
 
   @Put()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async upsert(
     @Request() { user },
     @Body()
@@ -102,7 +101,7 @@ export class DiagnoseController {
   }
 
   @Post('/encounter/:encounterId')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async finish(@Param('encounterId') encounterId: string) {
     return await this.entityManager.transaction(async (trx) => {
       const prescriptionStatus = await trx.findOneBy(PrescriptionStatus, {
