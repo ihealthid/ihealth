@@ -1,7 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 export const privateBaseQuery = () =>
   fetchBaseQuery({
-    baseUrl: `http://localhost:3333`,
+    baseUrl: `http://192.168.1.10:3333`,
     prepareHeaders(headers) {
       const token = localStorage.getItem("access-token");
 

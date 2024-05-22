@@ -10,7 +10,7 @@ export const SelectAct = (props: SelectActProps) => {
   const options = useMemo(() => {
     if (!data) return [];
     return data.data.map((row) => ({
-      label: row.display,
+      label: row?.display,
       value: row.id,
     }));
   }, [data]);
