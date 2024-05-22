@@ -26,6 +26,7 @@ export const mainApi = createApi({
 
     "Encounter",
     "EncounterAct",
+    "EncounterActConsumable",
     "EncounterStatus",
 
     "Medication",

@@ -10,7 +10,7 @@ import {
   useDeleteDiagnoseEncounterActMutation,
   useGetDiagnoseEncounterActsQuery,
 } from "@/services/api/diagnose-encounter-act";
-import { SelectConsumable } from "./SelectConsumable";
+import { SelectConsumable } from "../../../../features/SelectConsumable";
 import { IconTrash } from "@tabler/icons-react";
 import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
 

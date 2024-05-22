@@ -2,12 +2,7 @@ import { Button, Card, CardSection, Flex, Title } from "@mantine/core";
 import { AddSection } from "./components/AddSection";
 import { useRef } from "react";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
-import {
-  IconEdit,
-  IconLinkPlus,
-  IconPlus,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
 import { EditSection } from "./components/EditSection";
 import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
@@ -16,10 +11,15 @@ import {
   useDeleteEncounterActMutation,
   useGetEncounterActsQuery,
 } from "@/services/api/encounter-act";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import {
+  EncounterActConsumable,
+  useGetEncounterActConsumablesQuery,
+} from "@/services/api/encounter-act-consumable";
 
 export const Component = () => {
-  const navigate = useNavigate();
+  const params = useParams();
+  const encounterActId = params.encounterActId as string;
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
 
@@ -29,7 +29,7 @@ export const Component = () => {
     <>
       <Card>
         <Flex justify="space-between">
-          <Title order={4}>Encounter Act</Title>
+          <Title order={4}>Encounter Act Consumable</Title>
           <Button
             onClick={() => addSectionRef.current?.open()}
             leftSection={<IconPlus />}
@@ -40,29 +40,25 @@ export const Component = () => {
 
         <CardSection>
           <ProTable
-            queryLoader={useGetEncounterActsQuery}
+            queryLoader={useGetEncounterActConsumablesQuery}
+            queryParams={{
+              "encounterActId:of": encounterActId,
+            }}
             cols={[
               {
-                keyIndex: "code",
-                header: "Code",
+                keyIndex: "consumable.name",
+                header: "Name",
               },
               {
-                keyIndex: "display",
-                header: "Display",
+                keyIndex: "quantity",
+                header: "Quantity",
               },
               {
-                keyIndex: "price",
+                keyIndex: "consumable.price",
                 header: "Price",
               },
-              createProTableColumnActions<EncounterAct>({
+              createProTableColumnActions<EncounterActConsumable>({
                 actions: [
-                  {
-                    icon: <IconLinkPlus />,
-                    label: "Add Consumable",
-                    onClick: (row) => {
-                      navigate(`/encounter-act-consumable/${row.id}`);
-                    },
-                  },
                   {
                     icon: <IconEdit />,
                     label: "Edit",

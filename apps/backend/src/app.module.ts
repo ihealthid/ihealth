@@ -55,6 +55,7 @@ import { EncounterHistoryModule } from './modules/encounter-history/encounter-hi
 import { ObservationEntryModule } from './modules/observation-entry/observation-entry.module';
 import { EncounterActModule } from './modules/encounter-act/encounter-act.module';
 import { DiagnoseEncounterActModule } from './modules/diagnose-encounter-act/diagnose-encounter-act.module';
+import { EncounterActConsumableModule } from './modules/encounter-act-consumable/encounter-act-consumable.module';
 
 @Module({
   imports: [
@@ -107,8 +108,6 @@ import { DiagnoseEncounterActModule } from './modules/diagnose-encounter-act/dia
 
     ParticipantTypeCodeModule,
     MaritalStatusModule,
-    EncounterStatusModule,
-    EncounterHistoryModule,
     PatientConditionModule,
 
     PaymentStatusModule,
@@ -116,8 +115,11 @@ import { DiagnoseEncounterActModule } from './modules/diagnose-encounter-act/dia
 
     PractitionerModule,
 
+    EncounterStatusModule,
+    EncounterHistoryModule,
     EncounterModule,
     EncounterActModule,
+    EncounterActConsumableModule,
 
     ObservationModule,
     ObservationEntryModule,

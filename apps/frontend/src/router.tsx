@@ -24,6 +24,10 @@ export const router = createBrowserRouter([
       load("/healthcare-service", () => import("./pages/healthcare-service")),
       load("/marital-status", () => import("./pages/marital-status")),
       load("/encounter-status", () => import("./pages/encounter-status")),
+      load(
+        "/encounter-act-consumable/:encounterActId",
+        () => import("./pages/encounter-act-consumable"),
+      ),
       load("/patient-condition", () => import("./pages/patient-condition")),
 
       // load('/dashboard', 'dashboard'),
