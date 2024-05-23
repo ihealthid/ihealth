@@ -1,0 +1,12 @@
+{
+  "data": [
+    {
+      "code": "cash",
+      "display": "Cash"
+    },
+    {
+      "code": "credit",
+      "display": "Credit"
+    }
+  ]
+}

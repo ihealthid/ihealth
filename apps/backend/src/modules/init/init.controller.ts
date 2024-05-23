@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { User } from '../user/user';
 import { Role } from '../role/role';
-import { EntityManager } from 'typeorm';
+import { EntityManager, EntityTarget } from 'typeorm';
 import { Province } from '../province/province';
 import { Regency } from '../regency/regency';
 import { District } from '../district/district';
@@ -21,6 +21,7 @@ import * as prescriptionStatusJson from './prescription-status.data.json';
 import * as paymentStatusJson from './payment-status.data.json';
 import * as maritalStatusJson from './marital-status.data.json';
 import * as encounterStatusJson from './encounter-status.data.json';
+import * as paymentMethodJson from './payment-method.data.json';
 
 import { DoseForm } from '../dose-form/dose-form';
 import { FormType } from '../form-type/form-type';
@@ -28,6 +29,8 @@ import { PrescriptionStatus } from '../prescription-status/prescription-status';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { MaritalStatus } from '../marital-status/marital-status';
 import { EncounterStatus } from '../encounter-status/encounter-status';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { PaymentMethd } from '../payment-method/payment-method';
 
 @Controller({
   path: 'init',
@@ -39,7 +42,7 @@ export class InitController {
   ) {}
 
   @Get()
-  async init(@Query('entity') entity: string) {
+  async main(@Query('entity') entity: string) {
     switch (entity) {
       case 'all': {
         await this.initUser();
@@ -52,8 +55,12 @@ export class InitController {
         await this.initFormType();
         await this.initPrescriptionStatus();
         await this.initEncounterStatus();
+        await this.init(PaymentMethd, paymentMethodJson.data, ['code']);
         return this.initPaymentStatus();
       }
+
+      case 'payment-method':
+        await this.init(PaymentMethd, paymentMethodJson.data, ['code']);
 
       case 'user':
         return await this.initUser();
@@ -85,6 +92,16 @@ export class InitController {
 
       case 'encounter-status':
         return this.initEncounterStatus();
+    }
+  }
+
+  async init<T>(
+    entity: EntityTarget<T>,
+    data: QueryDeepPartialEntity<T>[],
+    conflict: string[],
+  ) {
+    for (const row of data) {
+      await this.entityManager.upsert(entity, data, conflict);
     }
   }
 
