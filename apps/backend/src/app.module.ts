@@ -26,7 +26,6 @@ import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { InitModule } from './modules/init/init.module';
 import { CodeSystemTypeModule } from './modules/code-system-type/code-system-type.module';
-import { CodeSystemModule } from './modules/code-system/code-system.module';
 import { IdentifyModule } from './modules/identify/identifier.module';
 import { AddressModule } from './modules/address/address.module';
 import { CodingModule } from './modules/coding/coding.module';
