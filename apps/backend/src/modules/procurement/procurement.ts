@@ -21,11 +21,11 @@ export class Procurement {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
-  distributorId: string;
+  @Column({ nullable: true })
+  distributorId?: string;
 
   @ManyToOne(() => Distributor)
-  distributor: Distributor;
+  distributor?: Distributor;
 
   @Column({ nullable: true })
   paymentId?: string;

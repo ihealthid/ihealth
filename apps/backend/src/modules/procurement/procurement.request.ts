@@ -30,7 +30,8 @@ class MedicationItem {
 
 export class ProcurementInputRequest {
   @IsString()
-  distributorId: string;
+  @IsOptional()
+  distributorId?: string;
 
   @IsBoolean()
   @IsOptional()
