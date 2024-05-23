@@ -22,6 +22,7 @@ import { DiagnoseStatus } from '../diagnose-status/diagnose-status';
 import { Payment } from '../payment/payment';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { PaymentMethd } from '../payment-method/payment-method';
 
 @Controller({
   path: 'diagnoses',
@@ -142,12 +143,17 @@ export class DiagnoseController {
         code: 'pending',
       });
 
+      const paymentMethod = await trx.findOneByOrFail(PaymentMethd, {
+        code: 'cash',
+      });
+
       await trx.upsert(
         Payment,
         {
           amount: 1234,
           encounterId,
           status: paymentStatus,
+          method: paymentMethod,
         },
         ['encounterId'],
       );
