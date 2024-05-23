@@ -53,6 +53,8 @@ import { EncounterActModule } from './modules/encounter-act/encounter-act.module
 import { DiagnoseEncounterActModule } from './modules/diagnose-encounter-act/diagnose-encounter-act.module';
 import { EncounterActConsumableModule } from './modules/encounter-act-consumable/encounter-act-consumable.module';
 import { DistributorModule } from './modules/distributor/distributor.module';
+import { ProcurementModule } from './modules/procurement/procurement.module';
+import { PaymentMethodModule } from './modules/payment-method/payment-method.module';
 
 @Module({
   imports: [
@@ -84,6 +86,7 @@ import { DistributorModule } from './modules/distributor/distributor.module';
     ManufactureModule,
     BrandModule,
     DistributorModule,
+    ProcurementModule,
     FormTypeModule,
     DoseFormModule,
     MedicationModule,
@@ -105,6 +108,7 @@ import { DistributorModule } from './modules/distributor/distributor.module';
     MaritalStatusModule,
     PatientConditionModule,
 
+    PaymentMethodModule,
     PaymentStatusModule,
     PaymentModule,
 
