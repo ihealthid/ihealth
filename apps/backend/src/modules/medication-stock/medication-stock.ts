@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Medication } from '../medication/medication';
+import { Distributor } from '../distributor/distributor';
 
 @Entity()
 export class MedicationStock {
@@ -15,6 +16,19 @@ export class MedicationStock {
 
   @Column()
   quantity: number;
+
+  @Column()
+  price: number;
+
+  @Column({
+    default: 0,
+  })
+  discount: number;
+
+  @Column({
+    default: 0,
+  })
+  balance: number;
 
   @Column()
   expiredAt: Date;

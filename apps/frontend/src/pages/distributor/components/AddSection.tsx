@@ -2,7 +2,7 @@ import { FormProvider } from "@/components/form-provider";
 import { Button, Flex, Modal, Stack, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { forwardRef, useImperativeHandle } from "react";
-import { BrandForm } from "./DistributorForm";
+import { DistributorForm } from "./DistributorForm";
 import { DisclosureAction } from "@/types/disclosure";
 import { useCreateDistributorMutation } from "@/services/api/distributor";
 
@@ -24,7 +24,7 @@ export const AddSection = forwardRef<DisclosureAction>((_, ref) => {
         <FormProvider useMutate={useCreateDistributorMutation} onSuccess={close}>
           {(form) => (
             <Stack>
-              <BrandForm form={form} />
+              <DistributorForm form={form} />
               <Flex justify="end" mt={16}>
                 <Button type="submit">Save</Button>
               </Flex>

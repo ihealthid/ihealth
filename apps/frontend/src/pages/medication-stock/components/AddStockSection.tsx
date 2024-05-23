@@ -5,9 +5,10 @@ import { Button, Flex, Modal, NumberInput, Stack, Title } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { forwardRef, useImperativeHandle } from "react";
+import { SelectDistributor } from "./SelectDistributor";
 
 interface AddStockSectionProps {
-  medicationId: number;
+  medicationId: string;
 }
 
 export const AddStockSection = forwardRef<
@@ -33,13 +34,11 @@ export const AddStockSection = forwardRef<
           onSuccess={close}
           initialValues={{
             medicationId,
-            quantity: 0,
-            price: 0,
-            expiredAt: new Date(),
           }}
         >
           {(form) => (
             <Stack>
+              <SelectDistributor {...form.getInputProps("distributorId")} />
               <NumberInput
                 {...form.getInputProps("quantity")}
                 label="Kuantitas"

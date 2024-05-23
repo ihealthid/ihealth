@@ -72,7 +72,7 @@ export const Component = () => {
                     icon: <IconTrash />,
                     label: "Delete",
                     onClick(row) {
-                      deleteConfirmation("Delete Brand", () =>
+                      deleteConfirmation("Delete Distributor", () =>
                         deleteMutation(row.id),
                       );
                     },

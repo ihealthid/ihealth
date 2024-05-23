@@ -1,13 +1,16 @@
-import { Brand } from "@/services/api/brand";
+import { Distributor } from "@/services/api/distributor";
 import { TextInput } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 
-interface BrandFormProps {
+interface DistributorFormProps {
   form: UseFormReturnType<any>;
-  defaultData?: Brand;
+  defaultData?: Distributor;
 }
 
-export const BrandForm = ({ form, defaultData }: BrandFormProps) => {
+export const DistributorForm = ({
+  form,
+  defaultData,
+}: DistributorFormProps) => {
   return (
     <>
       <TextInput

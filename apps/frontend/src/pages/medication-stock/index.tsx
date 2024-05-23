@@ -19,7 +19,7 @@ import { useGetMedicationStocksQuery } from "@/services/api/medication-stock";
 export const Component = () => {
   const params = useParams();
   const addSectionRef = useRef<DisclosureAction>(null);
-  const medicationId = Number.parseInt(params.id as string);
+  const medicationId = params.id as string;
 
   const { data } = useGetMedicationStockCountQuery({ medicationId });
 

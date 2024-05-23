@@ -5,19 +5,19 @@ import { EntityResponse } from "@/types/entity-response";
 import { DoseForm } from "./dose-form";
 
 export type Medication = {
-  id: number;
+  id: string;
   bpom: string;
   name: string;
   price: number;
   quantity: number;
-  doseFormId: number;
+  doseFormId: string;
   doseForm: DoseForm;
   createdAt: string;
   updatedAt: string;
 };
 
 export type MedicationBatch = {
-  id: number;
+  id: string;
   quantity: number;
   price: number;
   status: string;
@@ -43,7 +43,7 @@ type GetMedicationStockResult = {
 
 const medicationApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
-    getMedication: builder.query<EntityResponse<Medication>, number>({
+    getMedication: builder.query<EntityResponse<Medication>, string>({
       query: (id) => ({
         url: "/medications/" + id,
       }),
@@ -60,7 +60,7 @@ const medicationApi = mainApi.injectEndpoints({
     }),
     getMedicationStockCount: builder.query<
       GetMedicationStockResult,
-      PaginationQueryParams & { medicationId: number }
+      PaginationQueryParams & { medicationId: string }
     >({
       query: ({ medicationId, ...params }) => ({
         url: `/medications/${medicationId}/count`,
@@ -78,7 +78,7 @@ const medicationApi = mainApi.injectEndpoints({
     }),
     putMedication: builder.mutation<
       unknown,
-      Partial<PostMedicationInput> & { id: number }
+      Partial<PostMedicationInput> & { id: string }
     >({
       query: ({ id, ...body }) => ({
         url: "/medications/" + id,
@@ -87,7 +87,7 @@ const medicationApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["Medication"],
     }),
-    deleteMedication: builder.mutation<unknown, number>({
+    deleteMedication: builder.mutation<unknown, string>({
       query: (id) => ({
         url: `/medications/${id}`,
         method: "delete",

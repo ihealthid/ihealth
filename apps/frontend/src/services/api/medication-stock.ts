@@ -3,20 +3,24 @@ import { mainApi } from "./main";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
 import { Medication } from "./medication";
 import { EntityResponse } from "@/types/entity-response";
+import { Distributor } from "./distributor";
 
 export interface MedicationStock {
-  id: number;
+  id: string;
   quantity: number;
   expiredAt: string;
   createdAt: string;
   updatedAt: string;
-  medicationId: number;
+  medicationId: string;
   medication: Medication;
+  distributorId: string;
+  distributor: Distributor;
 }
 
 interface MedicationStockInput {
   quantity: number;
-  medicationId: number;
+  medicationId: string;
+  distributorId: string;
   expiredAt: string;
 }
 

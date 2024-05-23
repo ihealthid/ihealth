@@ -7,6 +7,7 @@ import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
+import { Procurement } from '../procurement/procurement';
 
 @Controller({
   path: 'medication-stocks',
@@ -29,7 +30,14 @@ export class MedicationStockController {
 
   @Post()
   async create(@Body() data: MedicationStockInputRequest) {
-    const batch = this.entityManager.create(MedicationStock, data);
-    return this.entityManager.save(batch);
+    await this.entityManager.transaction(async (trx) => {
+      const stock = trx.create(MedicationStock, data);
+      await this.entityManager.save(stock);
+
+      const procurement = trx.create(Procurement, {
+        distributorId: data.distributorId,
+      });
+      await trx.save(procurement);
+    });
   }
 }

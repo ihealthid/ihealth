@@ -4,6 +4,9 @@ export class MedicationStockInputRequest {
   @IsString()
   medicationId: string;
 
+  @IsString()
+  distributorId: string;
+
   @IsNumber()
   price: number;
 
