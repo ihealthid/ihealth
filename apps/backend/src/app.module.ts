@@ -98,10 +98,6 @@ import { EncounterActConsumableModule } from './modules/encounter-act-consumable
     AuthModule,
 
     IdentifyModule,
-    CodingModule,
-    CodeSystemPropertyModule,
-    CodeSystemTypeModule,
-    CodeSystemModule,
     AddressModule,
     AddressEntryModule,
     PatientModule,

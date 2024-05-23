@@ -45,6 +45,9 @@ export class PaymentController {
       relations: {
         encounter: {
           healthcareService: true,
+          diagnoseEncounterActs: {
+            consumable: true,
+          },
           prescriptions: {
             items: {
               medication: true,

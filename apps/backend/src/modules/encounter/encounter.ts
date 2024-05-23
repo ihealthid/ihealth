@@ -14,6 +14,7 @@ import { EncounterHistory } from '../encounter-history/encounter-history';
 import { HealthcareService } from '../healthcare-service/healthcare-service';
 import { PatientCondition } from '../patient-condition/patient-condition';
 import { Prescription } from '../prescription/prescription';
+import { DiagnoseEncounterAct } from '../diagnose-encounter-act/diagnose-encounter-act';
 
 @Entity()
 export class Encounter {
@@ -60,4 +61,7 @@ export class Encounter {
 
   @OneToMany(() => Prescription, (prescription) => prescription.encounter)
   prescriptions: Prescription[];
+
+  @OneToMany(() => DiagnoseEncounterAct, (act) => act.encounterId)
+  diagnoseEncounterActs: DiagnoseEncounterAct[];
 }
