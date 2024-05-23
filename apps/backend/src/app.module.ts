@@ -25,7 +25,6 @@ import { ConfigModule } from '@nestjs/config';
 // import { SatuSehatModule } from './third-party/satu-sehat/satu-sehat.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { InitModule } from './modules/init/init.module';
-import { CodeSystemTypeModule } from './modules/code-system-type/code-system-type.module';
 import { IdentifyModule } from './modules/identify/identifier.module';
 import { AddressModule } from './modules/address/address.module';
 import { CodingModule } from './modules/coding/coding.module';
