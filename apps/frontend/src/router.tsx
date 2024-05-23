@@ -33,8 +33,10 @@ export const router = createBrowserRouter([
       // load('/dashboard', 'dashboard'),
       load("/diagnose/:id", () => import("./pages/diagnose")),
 
+      //Farmasi
       load("/manufacture", () => import("./pages/manufacture")),
       load("/brand", () => import("./pages/brand")),
+      load("/distributor", () => import("./pages/distributor")),
       load("/consumable", () => import("./pages/consumable")),
       load("/consumable/:id/stock", () => import("./pages/consumable-stock")),
       load("/medication", () => import("./pages/medication")),

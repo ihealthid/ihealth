@@ -79,6 +79,10 @@ export class PaymentController {
       }
     }
 
+    for (const acts of payment.encounter.diagnoseEncounterActs) {
+      
+    }
+
     return {
       paymentItems,
       subtotal,

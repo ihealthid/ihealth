@@ -52,6 +52,7 @@ import { ObservationEntryModule } from './modules/observation-entry/observation-
 import { EncounterActModule } from './modules/encounter-act/encounter-act.module';
 import { DiagnoseEncounterActModule } from './modules/diagnose-encounter-act/diagnose-encounter-act.module';
 import { EncounterActConsumableModule } from './modules/encounter-act-consumable/encounter-act-consumable.module';
+import { DistributorModule } from './modules/distributor/distributor.module';
 
 @Module({
   imports: [
@@ -82,6 +83,7 @@ import { EncounterActConsumableModule } from './modules/encounter-act-consumable
 
     ManufactureModule,
     BrandModule,
+    DistributorModule,
     FormTypeModule,
     DoseFormModule,
     MedicationModule,
@@ -90,6 +92,7 @@ import { EncounterActConsumableModule } from './modules/encounter-act-consumable
     ConsumableStockModule,
 
     HealthcareServiceModule,
+    // ObservationEntryModule,
     UserModule,
     AuthModule,
 
@@ -113,8 +116,8 @@ import { EncounterActConsumableModule } from './modules/encounter-act-consumable
     EncounterActModule,
     EncounterActConsumableModule,
 
-    ObservationModule,
-    ObservationEntryModule,
+    // ObservationModule,
+    // ObservationEntryModule,
     DiagnoseStatusModule,
     DiagnoseModule,
     DiagnoseEncounterActModule,

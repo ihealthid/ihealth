@@ -68,6 +68,7 @@ const Navbar = () => {
                 label: "Patient Condition",
                 link: "/patient-condition",
               },
+              //Farmasi
               {
                 label: "Manufacture",
                 link: "/manufacture",
@@ -76,6 +77,10 @@ const Navbar = () => {
                 label: "Brand",
                 link: "/brand",
               },
+              {
+                label: "Distributor",
+                link: "/distributor"
+              }
             ]}
             icon={IconDatabase}
           />

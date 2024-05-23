@@ -17,6 +17,7 @@ export const mainApi = createApi({
 
     "Manufacture",
     "Brand",
+    "Distributor",
     "FormType",
     "Consumable",
     "ConsumableStock",
