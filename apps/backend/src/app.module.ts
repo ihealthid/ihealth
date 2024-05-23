@@ -27,7 +27,6 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { InitModule } from './modules/init/init.module';
 import { IdentifyModule } from './modules/identify/identifier.module';
 import { AddressModule } from './modules/address/address.module';
-import { CodingModule } from './modules/coding/coding.module';
 import { ParticipantTypeCodeModule } from './modules/participant-type-code/participant-type-code.module';
 import { PractitionerModule } from './modules/practitioner/practitioner.module';
 import { MaritalStatusModule } from './modules/marital-status/marital-status.module';
