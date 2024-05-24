@@ -57,6 +57,7 @@ import { ProcurementModule } from './modules/procurement/procurement.module';
 import { PaymentMethodModule } from './modules/payment-method/payment-method.module';
 import { EncounterPaymentModule } from './modules/encounter-payment/encounter-payment.module';
 import { IngredientModule } from './modules/ingredient/ingredient.module';
+import { MedicationIngredientModule } from './modules/medication-ingredient/medication-ingredient.module';
 
 @Module({
   imports: [
@@ -93,6 +94,7 @@ import { IngredientModule } from './modules/ingredient/ingredient.module';
     DoseFormModule,
     IngredientModule,
     MedicationModule,
+    MedicationIngredientModule,
     MedicationStockModule,
     ConsumableModule,
     ConsumableStockModule,
