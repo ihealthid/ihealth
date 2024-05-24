@@ -4,59 +4,56 @@ import {
   CardSection,
   Flex,
   Group,
-  NumberFormatter,
   TextInput,
   Title,
 } from "@mantine/core";
 import { AddSection } from "./components/AddSection";
-import {
-  IconBox,
-  IconEdit,
-  IconLeaf,
-  IconPlus,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRef } from "react";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
-import {
-  Medication,
-  useDeleteMedicationMutation,
-  useGetMedicationsQuery,
-} from "@/services/api/medication";
-import { useNavigate } from "react-router-dom";
 import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
 import { EditSection } from "./components/EditSection";
 import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
+import {
+  MedicationIngredient,
+  useDeleteMedicationIngredientMutation,
+  useGetMedicationIngredientsQuery,
+} from "@/services/api/medication-ingredient";
+import { useParams } from "react-router-dom";
 
 export const Component = () => {
-  const navigate = useNavigate();
+  const params = useParams();
+  const medicationId = params.medicationId as string;
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
-  const [deleteMedication] = useDeleteMedicationMutation();
+  const [deleteMutation] = useDeleteMedicationIngredientMutation();
 
   return (
     <>
       <Card>
         <Flex justify="space-between" align="center">
-          <Title order={4}>Medication</Title>
+          <Title order={4}>Medication Ingredient</Title>
 
           <Button
             leftSection={<IconPlus />}
             onClick={() => addSectionRef.current?.open()}
           >
-            Add New
+            Add Ingredient
           </Button>
         </Flex>
         <CardSection>
           <ProTable
-            queryLoader={useGetMedicationsQuery}
+            queryLoader={useGetMedicationIngredientsQuery}
+            queryParams={{
+              "medicationId:of": medicationId,
+            }}
             headerSection={(filter) => (
               <Group p="md">
                 <TextInput
                   placeholder="Search ..."
                   onChange={(e) =>
                     filter({
-                      "display:iLike": e.currentTarget.value,
+                      "name:iLike": e.currentTarget.value,
                     })
                   }
                 />
@@ -64,37 +61,20 @@ export const Component = () => {
             )}
             cols={[
               {
-                keyIndex: "name",
-                header: "Nama",
+                keyIndex: "ingredient.name",
+                header: "Ingredient Name",
               },
               {
-                keyIndex: "bpom",
-                header: "BPOM",
+                keyIndex: "quantity",
+                header: "Quantity",
               },
               {
-                keyIndex: "price",
-                header: "Harga",
-                render: (row) => (
-                  <NumberFormatter value={row.price} thousandSeparator />
-                ),
+                keyIndex: "unit",
+                header: "Unit",
               },
-              createProTableColumnActions<Medication>({
+              createProTableColumnActions<MedicationIngredient>({
                 keyIndex: "id",
                 actions: [
-                  {
-                    icon: <IconLeaf />,
-                    label: "Ingredients",
-                    onClick: (row) => {
-                      navigate(`/medication-ingredient/${row.id}`);
-                    },
-                  },
-                  {
-                    icon: <IconBox />,
-                    label: "Stocks",
-                    onClick(row) {
-                      navigate(`/medication-stock/${row.id}`);
-                    },
-                  },
                   {
                     icon: <IconEdit />,
                     label: "Edit",
@@ -106,8 +86,8 @@ export const Component = () => {
                     icon: <IconTrash />,
                     label: "Delete",
                     onClick(row) {
-                      deleteConfirmation("Delete Medication", () =>
-                        deleteMedication(row.id),
+                      deleteConfirmation("Delete Brand", () =>
+                        deleteMutation(row.id),
                       );
                     },
                   },

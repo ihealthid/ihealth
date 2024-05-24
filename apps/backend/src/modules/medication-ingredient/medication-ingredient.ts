@@ -17,7 +17,9 @@ export class MedicationIngredient {
   @Column()
   quantity: number;
 
-  @Column()
+  @Column({
+    default: 'mg'
+  })
   unit: string;
 
   @CreateDateColumn()

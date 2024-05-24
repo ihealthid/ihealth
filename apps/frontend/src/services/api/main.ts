@@ -32,6 +32,7 @@ export const mainApi = createApi({
 
     "Ingredient",
     "Medication",
+    "MedicationIngredient",
     "MedicationStock",
 
     "Patient",
