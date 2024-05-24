@@ -65,7 +65,7 @@ export const Component = () => {
             cols={[
               {
                 keyIndex: "name",
-                header: "Nama",
+                header: "Name",
               },
               {
                 keyIndex: "bpom",
@@ -73,10 +73,14 @@ export const Component = () => {
               },
               {
                 keyIndex: "price",
-                header: "Harga",
+                header: "Price",
                 render: (row) => (
                   <NumberFormatter value={row.price} thousandSeparator />
                 ),
+              },
+              {
+                keyIndex: "doseForm.display",
+                header: "Dose Form",
               },
               createProTableColumnActions<Medication>({
                 keyIndex: "id",

@@ -11,6 +11,10 @@
     {
       "display": "Tablet",
       "definition": "Tablet"
+    },
+    {
+      "display": "Syrup",
+      "definition": "Syrup"
     }
   ]
 }

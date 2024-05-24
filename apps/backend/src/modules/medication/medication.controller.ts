@@ -40,6 +40,7 @@ export class MedicationController {
         ingredients: {
           ingredient: true,
         },
+        doseForm: true
       },
     });
   }
@@ -60,7 +61,7 @@ export class MedicationController {
   @Put(':id')
   @UseGuards(AuthGuard)
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() data: Partial<MedicationInputRequest>,
   ) {
     return await this.entityManager.update(Medication, { id }, data);

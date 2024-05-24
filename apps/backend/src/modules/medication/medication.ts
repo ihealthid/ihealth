@@ -19,8 +19,9 @@ export class Medication {
 
   @Column({
     unique: true,
+    nullable: true,
   })
-  bpom: string;
+  bpom?: string;
 
   @Column()
   name: string;
