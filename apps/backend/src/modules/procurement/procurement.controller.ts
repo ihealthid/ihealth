@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { Procurement } from './procurement';
@@ -77,5 +77,13 @@ export class ProcurementController {
       });
       await trx.save(payment);
     });
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    const procurement = await this.entityManager.findOneByOrFail(Procurement, {
+      id,
+    });
+    return this.entityManager.remove(procurement);
   }
 }

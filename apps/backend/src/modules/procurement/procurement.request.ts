@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsDateString,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -40,5 +41,6 @@ export class ProcurementInputRequest {
   @ValidateNested({
     each: true,
   })
+  @IsNotEmpty()
   items: MedicationItem[];
 }
