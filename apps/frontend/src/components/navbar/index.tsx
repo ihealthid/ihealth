@@ -82,6 +82,10 @@ const Navbar = () => {
                 label: "Distributor",
                 link: "/distributor",
               },
+              {
+                label: "Ingredient",
+                link: "/ingredient",
+              },
             ]}
             icon={IconDatabase}
           />

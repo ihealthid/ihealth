@@ -45,6 +45,7 @@ export const router = createBrowserRouter([
       load("/order-add/:id", () => import("./pages/order-add")),
       load("/order-detail/:id", () => import("./pages/order-detail")),
       load("/procurement", () => import("./pages/procurement")),
+      load("/ingredient", () => import("./pages/ingredient")),
 
       load("/patient", () => import("./pages/patient")),
       load("/payment", () => import("./pages/payment")),

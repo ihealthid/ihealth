@@ -30,8 +30,10 @@ export const mainApi = createApi({
     "EncounterActConsumable",
     "EncounterStatus",
 
+    "Ingredient",
     "Medication",
     "MedicationStock",
+
     "Patient",
     "PrescriptionItem",
     "Prescription",
