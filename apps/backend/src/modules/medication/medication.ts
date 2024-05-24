@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { DoseForm } from '../dose-form/dose-form';
 import { MedicationStock } from '../medication-stock/medication-stock';
+import { MedicationIngredient } from '../medication-ingredient/medication-ingredient';
 
 @Entity()
 export class Medication {
@@ -42,4 +43,7 @@ export class Medication {
 
   @OneToMany(() => MedicationStock, (stock) => stock.medication)
   stocks: MedicationStock[];
+
+  @OneToMany(() => MedicationIngredient, (ingredient) => ingredient.medication)
+  ingredients: MedicationIngredient[];
 }

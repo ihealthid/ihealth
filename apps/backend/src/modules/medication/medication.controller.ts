@@ -34,7 +34,14 @@ export class MedicationController {
   @Get()
   @UseGuards(AuthGuard)
   async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Medication, paginationQuery);
+    return this.entityManager.findAndCount(Medication, {
+      ...paginationQuery,
+      relations: {
+        ingredients: {
+          ingredient: true,
+        },
+      },
+    });
   }
 
   @Get(':id')
