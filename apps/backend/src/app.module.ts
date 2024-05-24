@@ -55,6 +55,7 @@ import { EncounterActConsumableModule } from './modules/encounter-act-consumable
 import { DistributorModule } from './modules/distributor/distributor.module';
 import { ProcurementModule } from './modules/procurement/procurement.module';
 import { PaymentMethodModule } from './modules/payment-method/payment-method.module';
+import { EncounterPaymentModule } from './modules/encounter-payment/encounter-payment.module';
 
 @Module({
   imports: [
@@ -119,6 +120,7 @@ import { PaymentMethodModule } from './modules/payment-method/payment-method.mod
     EncounterModule,
     EncounterActModule,
     EncounterActConsumableModule,
+    EncounterPaymentModule,
 
     // ObservationModule,
     // ObservationEntryModule,

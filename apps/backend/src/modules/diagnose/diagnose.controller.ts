@@ -19,10 +19,10 @@ import { PrescriptionStatus } from '../prescription-status/prescription-status';
 import { EncounterStatus } from '../encounter-status/encounter-status';
 import { EncounterHistory } from '../encounter-history/encounter-history';
 import { DiagnoseStatus } from '../diagnose-status/diagnose-status';
-import { Payment } from '../payment/payment';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaymentMethd } from '../payment-method/payment-method';
+import { EncounterPayment } from '../encounter-payment/encounter-payment';
 
 @Controller({
   path: 'diagnoses',
@@ -147,16 +147,15 @@ export class DiagnoseController {
         code: 'cash',
       });
 
-      await trx.upsert(
-        Payment,
-        {
+      const payment = trx.create(EncounterPayment, {
+        payment: {
           amount: 1234,
-          encounterId,
           status: paymentStatus,
           method: paymentMethod,
         },
-        ['encounterId'],
-      );
+        encounterId,
+      });
+      await trx.save(payment);
 
       const diagnoseStatus = await trx.findOneBy(DiagnoseStatus, {
         code: 'done',

@@ -16,6 +16,9 @@ export class DiagnoseEncounterAct {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  quantity: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

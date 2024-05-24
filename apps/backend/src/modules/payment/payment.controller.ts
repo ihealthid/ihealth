@@ -15,6 +15,7 @@ import { EntityManager } from 'typeorm';
 import { Payment } from './payment';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { DonePaymentInputRequest } from './payment.request';
+import { EncounterPayment } from '../encounter-payment/encounter-payment';
 
 @Controller({
   path: '/payments',
@@ -27,20 +28,23 @@ export class PaymentController {
 
   @Get()
   async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.entityManager.findAndCount(Payment, {
+    return this.entityManager.findAndCount(EncounterPayment, {
       ...pagination,
       relations: {
         encounter: {
           patient: true,
         },
-        status: true,
+        payment: {
+          method: true,
+          status: true,
+        },
       },
     });
   }
 
   @Get(':id')
   async findById(@Param('id') id: string) {
-    const payment = await this.entityManager.findOneOrFail(Payment, {
+    const payment = await this.entityManager.findOneOrFail(EncounterPayment, {
       where: { id },
       relations: {
         encounter: {
@@ -54,6 +58,7 @@ export class PaymentController {
             },
           },
         },
+        payment: true,
       },
     });
 
@@ -80,7 +85,11 @@ export class PaymentController {
     }
 
     for (const acts of payment.encounter.diagnoseEncounterActs) {
-      
+      subtotal += acts.consumable.price * acts.quantity;
+      paymentItems.push({
+        name: acts.consumable.name,
+        subtotal: acts.consumable.price * acts.quantity,
+      });
     }
 
     return {

@@ -48,6 +48,7 @@ export const mainApi = createApi({
     "ParticipantTypeCode",
     "PatientCondition",
 
+    "Procurement",
     "Payment",
   ],
   endpoints: () => ({}),

@@ -10,6 +10,7 @@ import {
   IconList,
   IconMedicineSyrup,
   IconRegistered,
+  IconTruck,
   IconUsersGroup,
 } from "@tabler/icons-react";
 
@@ -79,8 +80,8 @@ const Navbar = () => {
               },
               {
                 label: "Distributor",
-                link: "/distributor"
-              }
+                link: "/distributor",
+              },
             ]}
             icon={IconDatabase}
           />
@@ -97,6 +98,11 @@ const Navbar = () => {
             label="Consumable"
             link="/consumable"
             icon={IconMedicineSyrup}
+          />
+          <LinksGroup
+            label="Procurement"
+            link="/procurement"
+            icon={IconTruck}
           />
           <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
             Resepsionis

@@ -1,13 +1,17 @@
 import { Medication, useGetMedicationsQuery } from "@/services/api/medication";
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface SelectMedicationProps {
+  value?: string | null;
   onChange(value: string | null, item?: Medication): void;
 }
 
-export const SelectMedication = ({ onChange }: SelectMedicationProps) => {
+export const SelectMedication = ({
+  onChange,
+  value: val,
+}: SelectMedicationProps) => {
   const combobox = useCombobox({
     onDropdownOpen() {
       combobox.focusSearchInput();
@@ -30,7 +34,14 @@ export const SelectMedication = ({ onChange }: SelectMedicationProps) => {
     [data],
   );
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (val === null) {
+      combobox.resetSelectedOption();
+      setValue("");
+    }
+  }, [val]);
 
   return (
     <Combobox
@@ -46,7 +57,7 @@ export const SelectMedication = ({ onChange }: SelectMedicationProps) => {
         <TextInput
           label="Medication"
           placeholder="Select Medication"
-          value={value}
+          value={value ?? ""}
           onFocus={() => combobox.openDropdown()}
           onClick={() => combobox.openDropdown()}
           onBlur={() => combobox.closeDropdown()}

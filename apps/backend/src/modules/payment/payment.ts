@@ -38,11 +38,4 @@ export class Payment {
 
   @ManyToOne(() => PaymentMethd)
   method: PaymentMethd;
-
-  @Column()
-  encounterId: string;
-
-  @OneToOne(() => Encounter)
-  @JoinColumn()
-  encounter: Encounter;
 }
