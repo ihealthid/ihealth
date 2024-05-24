@@ -5,6 +5,7 @@ import {
   Flex,
   Group,
   NumberFormatter,
+  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -16,7 +17,7 @@ import {
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
 import {
   Medication,
@@ -27,9 +28,11 @@ import { useNavigate } from "react-router-dom";
 import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
 import { EditSection } from "./components/EditSection";
 import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
+import { Sortable } from "@/components/Sortable";
 
 export const Component = () => {
   const navigate = useNavigate();
+  const [sort, setSort] = useState<string[]>([]);
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
   const [deleteMedication] = useDeleteMedicationMutation();
@@ -50,6 +53,7 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetMedicationsQuery}
+            sort={sort}
             headerSection={(filter) => (
               <Group p="md">
                 <TextInput
@@ -65,7 +69,12 @@ export const Component = () => {
             cols={[
               {
                 keyIndex: "name",
-                header: "Name",
+                header: (
+                  <Group>
+                    <Text>Name</Text>
+                    <Sortable onChange={(val) => setSort([`name:${val}`])} />
+                  </Group>
+                ),
               },
               {
                 keyIndex: "bpom",

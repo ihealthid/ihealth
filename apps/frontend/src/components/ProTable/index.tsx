@@ -25,12 +25,13 @@ interface ProTableProps<TData> {
   >;
   queryParams?: Record<string, any>;
   pathParams?: Record<string, any>;
+  sort?: string[];
   headerSection?: (
     setter: (
       statePartial:
         | Partial<Record<string, any>>
-        | ((currentState: Record<string, any>) => Partial<Record<string, any>>)
-    ) => void
+        | ((currentState: Record<string, any>) => Partial<Record<string, any>>),
+    ) => void,
   ) => React.ReactNode;
 }
 
@@ -39,6 +40,7 @@ export const ProTable = <TData extends Record<string, any>>({
   queryLoader: useQueryLoader,
   queryParams = {},
   pathParams = {},
+  sort = [],
   rowsPerPage = 10,
   headerSection,
 }: ProTableProps<TData>) => {
@@ -49,8 +51,9 @@ export const ProTable = <TData extends Record<string, any>>({
     ...pathParams,
     page,
     filter: Array.from(Object.entries({ ...queryParams, ...filter })).map(
-      (val) => val.join(":")
+      (val) => val.join(":"),
     ),
+    sort,
   });
 
   const pages = useMemo(() => {

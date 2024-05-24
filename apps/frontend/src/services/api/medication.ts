@@ -53,8 +53,9 @@ const medicationApi = mainApi.injectEndpoints({
       PaginationResult<Medication>,
       PaginationQueryParams
     >({
-      query: () => ({
+      query: (params) => ({
         url: "/medications",
+        params,
       }),
       providesTags: ["Medication"],
     }),
