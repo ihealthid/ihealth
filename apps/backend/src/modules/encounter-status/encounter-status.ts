@@ -24,6 +24,9 @@ export class EncounterStatus {
   })
   definition?: string;
 
+  @Column()
+  order: number
+
   @CreateDateColumn()
   createdAt: Date;
 

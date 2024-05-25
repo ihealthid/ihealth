@@ -17,6 +17,7 @@ import {
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
 import { EncounterStatus } from './encounter-status';
+import { FilterOperator, Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'encounter-statuses',
@@ -29,8 +30,14 @@ export class EncounterStatusController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(EncounterStatus, paginationQuery);
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(EncounterStatus), {
+      nullSort: 'last',
+      sortableColumns: ['code', 'display'],
+      filterableColumns: {
+        order: [FilterOperator.LTE]
+      }
+    });
   }
 
   @Get(':id')

@@ -87,7 +87,9 @@ export const Component = () => {
             <Group p="md">
               <TextInput placeholder="Pencarian" onChange={(event) => {}} />
               <SelectEncounterStatus
-                filter={["order.lte|2"]}
+                query={{
+                  'filter.order': "$lte:2",
+                }}
                 onChange={(val) => setter({ "status:of": val })}
               />
               <DateInput

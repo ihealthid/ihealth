@@ -3,16 +3,16 @@ import { MultiSelect, MultiSelectProps, Skeleton } from "@mantine/core";
 import { useMemo } from "react";
 
 interface SelectEncounterStatusProps extends Omit<MultiSelectProps, "filter"> {
-  filter?: string[];
+  query?: {
+    [key: string]: string;
+  };
 }
 
 export const SelectEncounterStatus = ({
-  filter,
+  query = {},
   ...props
 }: SelectEncounterStatusProps) => {
-  const { data, isLoading } = useGetEncounterStatusesQuery({
-    filter,
-  });
+  const { data, isLoading } = useGetEncounterStatusesQuery(query);
 
   const options = useMemo(() => {
     if (!data) return [];
