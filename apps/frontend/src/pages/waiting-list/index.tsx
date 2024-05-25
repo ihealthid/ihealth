@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 import { Sortable } from "@/components/Sortable";
 import { generateBetweenDateFilter } from "@/utils/generateBetweenDateFilter";
+import _ from "lodash";
 
 export const Component = () => {
   const navigate = useNavigate();
@@ -94,10 +95,10 @@ export const Component = () => {
                   "filter.order": "$lte:2",
                 }}
                 onChange={(val) => {
-                  if (val.length === 0) {
-                    q.delete("filter.status.id");
+                  if (_.isEmpty(val)) {
+                    q.delete("filter.histories.status.id");
                   } else {
-                    q.set("filter.status.id", "$in:" + val.join(","));
+                    q.set("filter.histories.status.id", "$in:" + val.join(","));
                   }
                 }}
               />
