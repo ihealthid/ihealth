@@ -1,5 +1,4 @@
 import {
-  Badge,
   Card,
   CardSection,
   Flex,
@@ -7,8 +6,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { AppointmentTableRef } from "./components/AppointmentTable";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { DateInput } from "@mantine/dates";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
 import { Encounter, useGetEncountersQuery } from "@/services/api/encounter";

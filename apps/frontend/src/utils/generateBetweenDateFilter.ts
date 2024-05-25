@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 export const generateBetweenDateFilter = (date = new Date()) => {
   const startDate = new Date(
     Date.UTC(
