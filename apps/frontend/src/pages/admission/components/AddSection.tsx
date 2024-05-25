@@ -1,7 +1,7 @@
 import { FormProvider } from "@/components/form-provider";
 import { Button, Flex, Modal, ModalBody, Stack, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { SelectPatientConditionCode } from "./SelectPatientConditionCode";
+import { SelectPatientCondition } from "./SelectPatientCondition";
 import { SelectPatient } from "./SelectPatient";
 import { SelectService } from "./SelectService";
 import { forwardRef, useImperativeHandle } from "react";
@@ -30,7 +30,7 @@ export const AddSection = forwardRef<AddSectionRef>((_, ref) => {
         <FormProvider useMutate={usePostEncounterMutation} onSuccess={close}>
           {(form) => (
             <Stack>
-              <SelectPatientConditionCode
+              <SelectPatientCondition
                 onChange={(e) =>
                   e && form.setFieldValue("patientConditionId", e)
                 }

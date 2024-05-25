@@ -1,22 +1,16 @@
+import { useCreateSelectOptions } from "@/hooks/useCreateSelectOptions";
 import { useGetPatientConditionsQuery } from "@/services/api/patient-condition";
 import { Select, SelectProps } from "@mantine/core";
 
-interface SelectPatientConditionCodeProps extends Omit<SelectProps, "data"> {}
+interface SelectPatientConditionProps extends Omit<SelectProps, "data"> {}
 
-export const SelectPatientConditionCode = (
-  props: SelectPatientConditionCodeProps,
-) => {
+export const SelectPatientCondition = (props: SelectPatientConditionProps) => {
   const { data } = useGetPatientConditionsQuery({
     page: 1,
     limit: 50,
   });
 
-  const options = data
-    ? data.data.map((item) => ({
-        value: item.id,
-        label: item.display,
-      }))
-    : [];
+  const options = useCreateSelectOptions(data?.data, "display", "id");
 
   return (
     <Select

@@ -14,7 +14,6 @@ import { IconPlus } from "@tabler/icons-react";
 import { DateInput } from "@mantine/dates";
 import { ProTable } from "@/components/ProTable";
 import { useGetEncountersQuery } from "@/services/api/encounter";
-import dayjs from "dayjs";
 import { DisclosureAction } from "@/types/disclosure";
 import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 import { generateBetweenDateFilter } from "@/utils/generateBetweenDateFilter";
