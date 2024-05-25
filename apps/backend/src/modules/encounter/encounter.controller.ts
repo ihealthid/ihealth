@@ -43,7 +43,7 @@ export class EncounterController {
       filterableColumns: {
         createdAt: [FilterOperator.BTW],
         'patient.fullName': [FilterOperator.ILIKE],
-        'status.id': [FilterOperator.IN],
+        'histories.status.id': [FilterOperator.IN],
       },
       relations: {
         patient: true,
