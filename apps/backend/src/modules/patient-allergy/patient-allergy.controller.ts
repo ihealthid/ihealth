@@ -9,6 +9,12 @@ import { EntityManager } from 'typeorm';
 import { Allergy } from '../allergy/allergy';
 import { Patient } from '../patient/patient';
 import { PatientAllergy } from './patient-allergy';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'patient-allergies',
@@ -20,9 +26,17 @@ export class PatientAllergyController {
   ) {}
 
   @Get()
-  async paginateByEncounter(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(PatientAllergy, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(PatientAllergy), {
+      sortableColumns: ['allergy.name', 'severity'],
+      nullSort: 'last',
+      defaultSortBy: [['allergy.name', 'ASC']],
+      searchableColumns: ['allergy.name'],
+      filterableColumns: {
+        'allergy.name': [FilterOperator.ILIKE],
+        'patient.encounters.id': [FilterOperator.EQ],
+        severity: [FilterOperator.LTE, FilterOperator.GTE],
+      },
       relations: {
         allergy: true,
       },

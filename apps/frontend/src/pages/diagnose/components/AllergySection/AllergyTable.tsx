@@ -8,7 +8,9 @@ interface AllergyTableProps {
 
 export const AllergyTable = ({ encounterId }: AllergyTableProps) => {
   const { data } = useGetPatientAllergyQuery({
-    filter: [`patient.encounters.id:of:${encounterId}`],
+    page: 1,
+    limit: 20,
+    "filter.encounterId": "$eq:" + encounterId,
   });
 
   const rows = useMemo(
