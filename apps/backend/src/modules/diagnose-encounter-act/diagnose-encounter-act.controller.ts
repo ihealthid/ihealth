@@ -10,12 +10,9 @@ import {
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { DiagnoseEncounterAct } from './diagnose-encounter-act';
 import { DiagnoseEncounterActInputRequest } from './diagnose-encounter-act.request';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'diagnose-encounter-acts',
@@ -28,16 +25,20 @@ export class DiagnoseEncounterActController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(DiagnoseEncounterAct, {
-      ...paginationQuery,
-      relations: {
-        encounter: true,
-        encounterAct: true,
-        user: true,
-        consumable: true,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(
+      query,
+      this.entityManager.getRepository(DiagnoseEncounterAct),
+      {
+        sortableColumns: ['createdAt'],
+        relations: {
+          encounter: true,
+          encounterAct: true,
+          user: true,
+          consumable: true,
+        },
       },
-    });
+    );
   }
 
   @Post()
