@@ -1,6 +1,6 @@
+import { useCreateSelectOptions } from "@/hooks/useCreateSelectOptions";
 import { useGetHealthcareServicesQuery } from "@/services/api/healthcare-service";
 import { Select, SelectProps } from "@mantine/core";
-import { useMemo } from "react";
 
 interface SelectServiceProps extends Omit<SelectProps, "data"> {}
 
@@ -10,16 +10,7 @@ export const SelectService = (props: SelectServiceProps) => {
     limit: 20,
   });
 
-  const options = useMemo(
-    () =>
-      data
-        ? data.data.map((item) => ({
-            value: item.id,
-            label: item.name,
-          }))
-        : [],
-    [data],
-  );
+  const options = useCreateSelectOptions(data?.data, "name", "id");
 
   return (
     <Select
