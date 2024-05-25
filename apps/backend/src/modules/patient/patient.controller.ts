@@ -8,17 +8,19 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PatientCreateRequest } from './patient.request';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { AuthGuard } from '../auth/auth.guard';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { Patient } from './patient';
 import { EntityManager } from 'typeorm';
 import { Identify } from '../identify/identify';
 import { Address } from '../address/address';
 import { AddressEntry } from '../address-entry/address-entry';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
   path: 'patients',
@@ -30,10 +32,15 @@ export class PatientController {
   ) {}
 
   @Get()
-  @UseGuards(AuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Patient, {
-      ...paginationQuery,
+  @UseGuards(JwtAuthGuard)
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Patient), {
+      nullSort: 'last',
+      sortableColumns: ['createdAt', 'fullName'],
+      filterableColumns: {
+        fullName: [FilterOperator.ILIKE],
+        'identifies.value': [FilterOperator.ILIKE],
+      },
       relations: {
         identifies: true,
         addresses: {
@@ -51,7 +58,7 @@ export class PatientController {
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
     return this.entityManager.findOneOrFail(Patient, {
       where: { id },
@@ -62,6 +69,7 @@ export class PatientController {
   }
 
   @Get('/encounter/:id')
+  @UseGuards(JwtAuthGuard)
   async findByEncounterId(@Param('id') id: string) {
     return this.entityManager.findOne(Patient, {
       where: {
@@ -86,6 +94,7 @@ export class PatientController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(@Body() data: PatientCreateRequest) {
     const {
       fullName,
@@ -173,7 +182,7 @@ export class PatientController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
     @Body() data: Partial<PatientCreateRequest>,

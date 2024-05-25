@@ -1,31 +1,21 @@
-import { Patient } from "@/services/api/patient";
-import { Group, Modal, Select, TextInput, Title } from "@mantine/core";
-import { useDisclosure, useSetState } from "@mantine/hooks";
+import { Patient, useGetPatientsQuery } from "@/services/api/patient";
+import { Group, Modal, TextInput, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useCallback, useState } from "react";
-import { TablePatient } from "./TablePatient";
-
-const searchOptions = [
-  {
-    value: "fullName:iLike",
-    label: "Find by name",
-  },
-  {
-    value: "identifies.value:iLike",
-    label: "Find by NIK",
-  },
-];
+import { ProTable, createProTableColumnActions } from "@/components/ProTable";
+import { humanizedDate } from "@/utils/date";
+import { IconChecklist } from "@tabler/icons-react";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
+import _ from "lodash";
 
 interface SelectPatientProps {
   onChange?: (id: string | null) => void;
 }
 
 export const SelectPatient = ({ onChange }: SelectPatientProps) => {
+  const paginateQuery = usePaginateQuery();
   const [selected, setSelected] = useState<Patient | null>(null);
   const [opened, { open, close }] = useDisclosure();
-  const [search, setSearch] = useSetState({
-    key: searchOptions[0].value,
-    value: "",
-  });
 
   const onSelect = useCallback(
     (row: Patient) => {
@@ -52,25 +42,48 @@ export const SelectPatient = ({ onChange }: SelectPatientProps) => {
         title={<Title order={4}>Cari Pasien</Title>}
       >
         <Modal.Body>
-          <Group>
-            <Select
-              value={search.key}
-              data={searchOptions}
-              onChange={(e) => e && setSearch({ key: e })}
-            />
-            <TextInput
-              style={{ flex: 1 }}
-              placeholder="Search..."
-              onChange={(e) => {
-                setSearch({ value: e.currentTarget.value.trim() });
-              }}
-            />
-          </Group>
-          <TablePatient
-            search={{
-              [search.key]: search.value,
-            }}
-            onSelect={onSelect}
+          <ProTable
+            queryLoader={useGetPatientsQuery}
+            query={paginateQuery.get()}
+            cols={[
+              {
+                keyIndex: "fullName",
+                header: "Name",
+              },
+              {
+                header: "Born Date",
+                render: (row) => humanizedDate(row.birthDate),
+              },
+              createProTableColumnActions<Patient>({
+                actions: [
+                  {
+                    icon: <IconChecklist />,
+                    label: "Select",
+                    onClick: (row) => {
+                      onSelect(row);
+                    },
+                  },
+                ],
+              }),
+            ]}
+            headerSection={(q) => (
+              <Group>
+                <TextInput
+                  style={{ flex: 1 }}
+                  placeholder="Search..."
+                  onChange={(e) => {
+                    const val = e.currentTarget.value;
+                    if (_.isEmpty(val)) {
+                      q.delete("filter.fullName");
+                      q.delete("filter.identifies.value");
+                    } else {
+                      q.set("filter.fullName", "$or:$ilike:" + val);
+                      q.set("filter.identifies.value", "$or:$ilike:" + val);
+                    }
+                  }}
+                />
+              </Group>
+            )}
           />
         </Modal.Body>
       </Modal>
