@@ -12,6 +12,7 @@ export type Medication = {
   quantity: number;
   doseFormId: string;
   doseForm: DoseForm;
+  stock: string;
   createdAt: string;
   updatedAt: string;
 };

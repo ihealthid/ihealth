@@ -7,9 +7,9 @@ import {
   TextInput,
   useCombobox,
 } from "@mantine/core";
-import { useMap } from "@mantine/hooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import _ from "lodash";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 interface SelectMedicationProps {
   value?: string | null;
@@ -20,16 +20,18 @@ export const SelectMedication = ({
   onChange,
   value: val,
 }: SelectMedicationProps) => {
+  const paginateQuery = usePaginateQuery();
   const combobox = useCombobox({
     onDropdownOpen() {
       combobox.focusSearchInput();
     },
   });
-  const mapState = useMap<string, string>([]);
+
   const { data, isSuccess } = useGetMedicationsQuery({
     page: 1,
     limit: 10,
-    ..._.fromPairs(Array.from(mapState.entries())),
+    "filter.stock": "$gt:0",
+    ...paginateQuery.get(),
   });
 
   const options = useMemo(
@@ -39,6 +41,9 @@ export const SelectMedication = ({
           <Group>
             <Text>{item.name}</Text>
             <Badge variant="light">{item.doseForm.display}</Badge>
+            <Badge variant="light" color="blue">
+              {item.stock}
+            </Badge>
           </Group>
         </Combobox.Option>
       )),
@@ -49,10 +54,13 @@ export const SelectMedication = ({
 
   const onSearch = useCallback((val: string) => {
     if (val.length > 2) {
-      mapState.set("filter.name", "$or:$ilike:" + val);
-      mapState.set("filter.ingredients.ingredient.name", "$or:$ilike:" + val);
+      paginateQuery.set("filter.name", "$or:$ilike:" + val);
+      paginateQuery.set(
+        "filter.ingredients.ingredient.name",
+        "$or:$ilike:" + val,
+      );
     } else {
-      mapState.clear();
+      paginateQuery.clear();
     }
   }, []);
 

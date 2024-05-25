@@ -26,6 +26,11 @@ export class Medication {
   @Column()
   name: string;
 
+  @Column({
+    default: 0,
+  })
+  stock: number;
+
   @Column()
   price: number;
 

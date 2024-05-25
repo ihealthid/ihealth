@@ -47,24 +47,17 @@ export class MedicationController {
       searchableColumns: ['name', 'ingredients.ingredient.name'],
       filterableColumns: {
         name: [FilterOperator.ILIKE],
+        stock: [FilterOperator.GT],
         'ingredients.ingredient.name': [FilterOperator.ILIKE],
       },
       relations: {
         ingredients: {
           ingredient: true,
         },
-        doseForm: true
-      }
+        doseForm: true,
+        stocks: true,
+      },
     });
-    // return this.entityManager.findAndCount(Medication, {
-    //   ...paginationQuery,
-    //   relations: {
-    //     ingredients: {
-    //       ingredient: true,
-    //     },
-    //     doseForm: true,
-    //   },
-    // });
   }
 
   @Get(':id')
