@@ -15,6 +15,22 @@
     {
       "display": "Syrup",
       "definition": "Syrup"
+    },
+    {
+      "display": "Drop",
+      "definition": "drop"
+    },
+    {
+      "display": "Gel",
+      "definition": "Gel"
+    },
+    {
+      "display": "Salep",
+      "definition": "Salep"
+    },
+    {
+      "display": "Cream",
+      "definition": "Cream"
     }
   ]
 }

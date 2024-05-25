@@ -20,6 +20,12 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { Medication } from './medication';
 import { Between, EntityManager, LessThan, MoreThan } from 'typeorm';
 import { MedicationStock } from '../medication-stock/medication-stock';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'medications',
@@ -33,16 +39,32 @@ export class MedicationController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Medication, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Medication), {
+      sortableColumns: ['name', 'doseForm.display'],
+      nullSort: 'last',
+      defaultSortBy: [['name', 'ASC']],
+      searchableColumns: ['name', 'ingredients.ingredient.name'],
+      filterableColumns: {
+        name: [FilterOperator.ILIKE],
+        'ingredients.ingredient.name': [FilterOperator.ILIKE],
+      },
       relations: {
         ingredients: {
           ingredient: true,
         },
         doseForm: true
-      },
+      }
     });
+    // return this.entityManager.findAndCount(Medication, {
+    //   ...paginationQuery,
+    //   relations: {
+    //     ingredients: {
+    //       ingredient: true,
+    //     },
+    //     doseForm: true,
+    //   },
+    // });
   }
 
   @Get(':id')

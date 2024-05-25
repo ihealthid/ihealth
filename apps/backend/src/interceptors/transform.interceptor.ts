@@ -40,6 +40,10 @@ export class TransformInterceptor<T>
       }
     }
 
+    if (name === 'get') {
+      return data;
+    }
+
     return { data };
   }
 

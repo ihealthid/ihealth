@@ -33,12 +33,12 @@ export const PrescriptionForm = ({
           <SelectMedication
             onChange={(e) => e && form.setFieldValue("medicationId", e)}
           />
-          <NumberInput
-            {...form.getInputProps("quantity")}
-            label="Quantity"
-            placeholder="Enter quantity"
-          />
-          <SimpleGrid cols={2}>
+          <SimpleGrid cols={3}>
+            <NumberInput
+              {...form.getInputProps("quantity")}
+              label="Quantity"
+              placeholder="Enter quantity"
+            />
             <NumberInput
               {...form.getInputProps("doses")}
               label="Doses"

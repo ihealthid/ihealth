@@ -1,6 +1,6 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 import * as _ from 'lodash';
-import { Between, ILike, In } from 'typeorm';
+import { Between, ILike, In, Or } from 'typeorm';
 
 export interface PaginationQuery {
   take: number;
@@ -56,11 +56,21 @@ const createFilter = (data = '') => {
       return Between(start, end);
     },
   };
+
+  let hasOr = false;
   _.forEach(_.split(data, ',').filter(Boolean), (filter) => {
-    const [key, op, value] = _.split(filter, ':', 3);
-    if (value) {
+    const splitted = _.split(filter, ':', 4);
+    if (splitted.length > 3) {
+      const [comb, key, op, value] = splitted;
+      if (comb === 'or') {
+        hasOr = true;
+      }
+      _.set(o, key, operator[op](value));
+    } else {
+      const [key, op, value] = splitted;
       _.set(o, key, operator[op](value));
     }
   });
-  return o;
+
+  return hasOr ? _.flatMap(o) : o;
 };

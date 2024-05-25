@@ -1,7 +1,15 @@
 import { Medication, useGetMedicationsQuery } from "@/services/api/medication";
-import { Combobox, TextInput, useCombobox } from "@mantine/core";
-import { useDebouncedState } from "@mantine/hooks";
-import { useEffect, useMemo, useState } from "react";
+import {
+  Badge,
+  Combobox,
+  Group,
+  Text,
+  TextInput,
+  useCombobox,
+} from "@mantine/core";
+import { useMap } from "@mantine/hooks";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import _ from "lodash";
 
 interface SelectMedicationProps {
   value?: string | null;
@@ -17,24 +25,36 @@ export const SelectMedication = ({
       combobox.focusSearchInput();
     },
   });
-  const [search, setSearch] = useDebouncedState("", 1000);
+  const mapState = useMap<string, string>([]);
   const { data, isSuccess } = useGetMedicationsQuery({
     page: 1,
-    limit: 20,
-    search,
+    limit: 10,
+    ..._.fromPairs(Array.from(mapState.entries())),
   });
 
   const options = useMemo(
     () =>
       (data?.data ?? []).map((item) => (
         <Combobox.Option key={item.id} value={JSON.stringify(item)}>
-          {item.name}
+          <Group>
+            <Text>{item.name}</Text>
+            <Badge variant="light">{item.doseForm.display}</Badge>
+          </Group>
         </Combobox.Option>
       )),
     [data],
   );
 
   const [value, setValue] = useState<string | null>(null);
+
+  const onSearch = useCallback((val: string) => {
+    if (val.length > 2) {
+      mapState.set("filter.name", "$or:$ilike:" + val);
+      mapState.set("filter.ingredients.ingredient.name", "$or:$ilike:" + val);
+    } else {
+      mapState.clear();
+    }
+  }, []);
 
   useEffect(() => {
     if (val === null) {
@@ -69,7 +89,9 @@ export const SelectMedication = ({
           <>
             <Combobox.Search
               placeholder="Search..."
-              onChange={(e) => setSearch(e.currentTarget.value)}
+              onChange={(e) => {
+                onSearch(e.currentTarget.value);
+              }}
             />
             <Combobox.Options>{options}</Combobox.Options>
           </>

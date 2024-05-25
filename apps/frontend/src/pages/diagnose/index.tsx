@@ -60,22 +60,17 @@ export const Component = () => {
                           </Tabs.List>
 
                           <Tabs.Panel value="prescription" p={8}>
-                            <Grid columns={3}>
-                              <Grid.Col span={2}>
-                                <PrescriptionTable
-                                  id={prescriptionId}
-                                  encounterId={id}
-                                />
-                              </Grid.Col>
-
-                              <Grid.Col span={1}>
-                                <PrescriptionForm
-                                  key={prescriptionId}
-                                  encounterId={id}
-                                  onReset={() => setPrescriptionId(randomId())}
-                                />
-                              </Grid.Col>
-                            </Grid>
+                            <Stack gap="xl">
+                              <PrescriptionTable
+                                id={prescriptionId}
+                                encounterId={id}
+                              />
+                              <PrescriptionForm
+                                key={prescriptionId}
+                                encounterId={id}
+                                onReset={() => setPrescriptionId(randomId())}
+                              />
+                            </Stack>
                           </Tabs.Panel>
 
                           <Tabs.Panel value="encounter-act">

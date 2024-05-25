@@ -41,6 +41,7 @@
     "fast-xml-parser": "^4.3.6",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "nestjs-paginate": "^8.6.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

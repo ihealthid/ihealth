@@ -126,8 +126,8 @@ import { MedicationIngredientModule } from './modules/medication-ingredient/medi
     EncounterActConsumableModule,
     EncounterPaymentModule,
 
-    // ObservationModule,
-    // ObservationEntryModule,
+    ObservationModule,
+    ObservationEntryModule,
     DiagnoseStatusModule,
     DiagnoseModule,
     DiagnoseEncounterActModule,
