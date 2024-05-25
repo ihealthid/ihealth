@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Card,
   CardSection,
   Flex,
@@ -11,20 +10,24 @@ import {
 import { DateInput } from "@mantine/dates";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
 import { Encounter, useGetEncountersQuery } from "@/services/api/encounter";
-import {
-  IconSortAscending,
-  IconSortDescending,
-  IconStethoscope,
-} from "@tabler/icons-react";
+import { IconStethoscope } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { SelectEncounterStatus } from "@/features/SelectEncounterStatus";
-import { useMap } from "@mantine/hooks";
-import _ from "lodash";
-import dayjs from "dayjs";
+import { useEffect } from "react";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
+import { Sortable } from "@/components/Sortable";
+import { generateBetweenDateFilter } from "@/utils/generateBetweenDateFilter";
 
 export const Component = () => {
   const navigate = useNavigate();
-  const sorter = useMap([["status.order", "desc"]]);
+  const paginateQuery = usePaginateQuery();
+
+  useEffect(() => {
+    paginateQuery.set(
+      "filter.createdAt",
+      `$btw:${generateBetweenDateFilter()}`,
+    );
+  }, []);
 
   return (
     <Card>
@@ -35,8 +38,8 @@ export const Component = () => {
       <CardSection>
         <ProTable
           queryLoader={useGetEncountersQuery}
-          queryParams={{
-            "createdAt:dateAt": dayjs().format("YYYY-MM-DD"),
+          query={{
+            ...paginateQuery.get(),
           }}
           cols={[
             {
@@ -49,23 +52,11 @@ export const Component = () => {
                   <Text fw={700} size="sm">
                     Status
                   </Text>
-                  {sorter.get("status.order") === "desc" ? (
-                    <ActionIcon
-                      variant="subtle"
-                      size="sm"
-                      onClick={() => sorter.set("status.order", "asc")}
-                    >
-                      <IconSortAscending />
-                    </ActionIcon>
-                  ) : (
-                    <ActionIcon
-                      variant="subtle"
-                      size="sm"
-                      onClick={() => sorter.set("status.order", "desc")}
-                    >
-                      <IconSortDescending />
-                    </ActionIcon>
-                  )}
+                  <Sortable
+                    onChange={(sort) =>
+                      paginateQuery.set("sortBy", `status.order:${sort}`)
+                    }
+                  />
                 </Group>
               ),
               render: (row) =>
@@ -83,22 +74,48 @@ export const Component = () => {
               ],
             }),
           ]}
-          headerSection={(setter) => (
+          headerSection={(q) => (
             <Group p="md">
-              <TextInput placeholder="Pencarian" onChange={(event) => {}} />
+              <TextInput
+                placeholder="Pencarian"
+                onChange={(event) => {
+                  if (event.currentTarget.value.length > 0) {
+                    q.set(
+                      "filter.patient.fullName",
+                      "$ilike:" + event.currentTarget.value,
+                    );
+                  } else {
+                    q.delete("filter.patient.fullName");
+                  }
+                }}
+              />
               <SelectEncounterStatus
                 query={{
-                  'filter.order': "$lte:2",
+                  "filter.order": "$lte:2",
                 }}
-                onChange={(val) => setter({ "status:of": val })}
+                onChange={(val) => {
+                  if (val.length === 0) {
+                    q.delete("filter.status.id");
+                  } else {
+                    q.set("filter.status.id", "$in:" + val.join(","));
+                  }
+                }}
               />
               <DateInput
                 clearable
                 placeholder="Tanggal"
                 onChange={(val) => {
-                  setter({
-                    "createdAt:dateAt": dayjs(val).format("YYYY-MM-DD"),
-                  });
+                  if (val) {
+                    paginateQuery.set(
+                      "filter.createdAt",
+                      "$btw:" + generateBetweenDateFilter(val),
+                    );
+                  } else {
+                    paginateQuery.set(
+                      "filter.createdAt",
+                      "$btw:" + generateBetweenDateFilter(),
+                    );
+                  }
                 }}
               />
             </Group>

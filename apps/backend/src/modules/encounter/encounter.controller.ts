@@ -8,10 +8,6 @@ import {
 } from '@nestjs/common';
 import { EncounterInputRequest } from './encounter.request';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { Encounter } from './encounter';
 import { EntityManager } from 'typeorm';
@@ -22,6 +18,12 @@ import { ParticipantTypeCode } from '../participant-type-code/participant-type-c
 import { EncounterStatus } from '../encounter-status/encounter-status';
 import { PatientCondition } from '../patient-condition/patient-condition';
 import { HealthcareService } from '../healthcare-service/healthcare-service';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'encounters',
@@ -34,9 +36,15 @@ export class EncounterController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Encounter, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Encounter), {
+      nullSort: 'last',
+      sortableColumns: ['createdAt', 'patientCondition.code'],
+      filterableColumns: {
+        createdAt: [FilterOperator.BTW],
+        'patient.fullName': [FilterOperator.ILIKE],
+        'status.id': [FilterOperator.IN],
+      },
       relations: {
         patient: true,
         healthcareService: true,

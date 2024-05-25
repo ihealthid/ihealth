@@ -11,11 +11,11 @@ import {
 } from "@mantine/core";
 import { ProTableColumn, useCreateProTableRows } from "./useCreateProTableRows";
 import { QueryDefinition } from "@reduxjs/toolkit/query";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { PaginationResult } from "@/types/pagination-result";
-import { useSetState } from "@mantine/hooks";
 export { createProTableColumnActions } from "./ProTableColumnActions";
 import _ from "lodash";
+import { PaginateQuery, usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 interface ProTableProps<TData> {
   cols: ProTableColumn<TData>[];
@@ -23,43 +23,29 @@ interface ProTableProps<TData> {
   queryLoader: UseQuery<
     QueryDefinition<any, any, any, PaginationResult<TData>>
   >;
-  queryParams?: Record<string, any>;
   pathParams?: Record<string, any>;
-  sort?: string[];
-  headerSection?: (
-    setter: (
-      statePartial:
-        | Partial<Record<string, any>>
-        | ((currentState: Record<string, any>) => Partial<Record<string, any>>),
-    ) => void,
-  ) => React.ReactNode;
+  query?: { [key: string]: string };
+  headerSection?: (paginateQuery: PaginateQuery) => React.ReactNode;
 }
 
 export const ProTable = <TData extends Record<string, any>>({
   cols,
   queryLoader: useQueryLoader,
-  queryParams = {},
   pathParams = {},
-  sort = [],
   rowsPerPage = 10,
+  query = {},
   headerSection,
 }: ProTableProps<TData>) => {
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useSetState<Record<string, any>>({});
+  const paginateQuery = usePaginateQuery();
 
   const { data } = useQueryLoader({
-    ...pathParams,
     page,
-    filter: Array.from(Object.entries({ ...queryParams, ...filter })).map(
-      (val) => val.join(":"),
-    ),
-    sort,
+    limit: rowsPerPage,
+    ...pathParams,
+    ...query,
+    ...paginateQuery.get(),
   });
-
-  const pages = useMemo(() => {
-    if (!data) return 0;
-    return Math.ceil(data.total / rowsPerPage);
-  }, [data, rowsPerPage]);
 
   const rows = useCreateProTableRows({
     data: data?.data ?? [],
@@ -68,7 +54,7 @@ export const ProTable = <TData extends Record<string, any>>({
 
   return (
     <>
-      {headerSection?.(setFilter)}
+      {headerSection?.(paginateQuery)}
 
       <ScrollArea>
         <Table striped highlightOnHover>
@@ -84,7 +70,7 @@ export const ProTable = <TData extends Record<string, any>>({
       </ScrollArea>
 
       <Flex justify="end" p="md">
-        <Pagination total={pages} onChange={setPage} />
+        <Pagination total={data?.meta.totalPages ?? 0} onChange={setPage} />
       </Flex>
     </>
   );
