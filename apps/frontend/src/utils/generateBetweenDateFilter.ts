@@ -1,9 +1,27 @@
+import dayjs from "dayjs";
+
 export const generateBetweenDateFilter = (date = new Date()) => {
-  const startDate = new Date(date.toISOString());
-  startDate.setHours(0, 0, 0, 1);
+  const startDate = new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      0,
+      0,
+      0,
+    ),
+  );
+  const endDate = new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      23,
+      59,
+      59,
+      999,
+    ),
+  );
 
-  const endDate = new Date(date.toISOString());
-  endDate.setHours(23, 59, 59);
-
-  return `${startDate.toISOString()},${endDate.toISOString()}`;
+  return [startDate.toISOString(), endDate.toISOString()].join(",");
 };

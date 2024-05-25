@@ -8,18 +8,27 @@ import {
   Title,
 } from "@mantine/core";
 import { AppointmentTableRef } from "./components/AppointmentTable";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { DateInput } from "@mantine/dates";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
 import { Encounter, useGetEncountersQuery } from "@/services/api/encounter";
 import { IconStethoscope } from "@tabler/icons-react";
 import { SelectEncounterStatus } from "@/features/SelectEncounterStatus";
 import { useNavigate } from "react-router-dom";
-import { today } from "@/utils/date";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
+import { generateBetweenDateFilter } from "@/utils/generateBetweenDateFilter";
+import _ from "lodash";
 
 export const Component = () => {
-  const visitListTableRef = useRef<AppointmentTableRef>(null);
   const navigate = useNavigate();
+  const paginateQuery = usePaginateQuery();
+
+  useEffect(() => {
+    paginateQuery.set(
+      "filter.createdAt",
+      `$btw:${generateBetweenDateFilter()}`,
+    );
+  }, []);
 
   return (
     <Card>
@@ -30,10 +39,7 @@ export const Component = () => {
       <CardSection>
         <ProTable
           queryLoader={useGetEncountersQuery}
-          queryParams={{
-            // filter: ["status.order.gt|1"],
-            "createdAt:dateAt": today(),
-          }}
+          query={paginateQuery.get()}
           cols={[
             {
               keyIndex: "id",
@@ -61,28 +67,44 @@ export const Component = () => {
               ],
             }),
           ]}
-          headerSection={(setter) => (
+          headerSection={(q) => (
             <Group p="md">
               <TextInput
                 placeholder="Pencarian"
-                onChange={(event) =>
-                  setter({
-                    "patient.fullName:iLike": event.currentTarget.value,
-                  })
-                }
+                onChange={(event) => {
+                  const val = event.currentTarget.value;
+                  if (_.isEmpty(val)) {
+                    q.delete("filter.patient.fullName");
+                  } else {
+                    q.set("filter.patient.fullName", "$ilike:" + val);
+                  }
+                }}
               />
               <SelectEncounterStatus
-                filter={["order.gt|1"]}
-                onChange={(val) =>
-                  visitListTableRef.current?.setStatus(
-                    val.length > 0 ? val : ["screened"]
-                  )
-                }
+                query={{
+                  "filter.order": "$gt:1",
+                }}
+                onChange={(val) => {
+                  if (_.isEmpty(val)) {
+                    q.delete("filter.histories.status.id");
+                  } else {
+                    q.set("filter.histories.status.id", "$in:" + val.join(","));
+                  }
+                }}
               />
               <DateInput
                 clearable
                 placeholder="Tanggal"
-                onChange={(val) => visitListTableRef.current?.setDate(val)}
+                onChange={(val) => {
+                  if (val) {
+                    paginateQuery.set(
+                      "filter.createdAt",
+                      "$btw:" + generateBetweenDateFilter(val),
+                    );
+                  } else {
+                    paginateQuery.delete("filter.createdAt");
+                  }
+                }}
               />
             </Group>
           )}

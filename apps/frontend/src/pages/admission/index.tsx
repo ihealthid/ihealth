@@ -27,7 +27,7 @@ export const Component = () => {
   useEffect(() => {
     paginateQuery.set(
       "filter.createdAt",
-      `$btw:${generateBetweenDateFilter()}`,
+      "$btw:" + generateBetweenDateFilter(),
     );
   }, []);
 
