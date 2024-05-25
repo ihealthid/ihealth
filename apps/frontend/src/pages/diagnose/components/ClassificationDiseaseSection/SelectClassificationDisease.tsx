@@ -1,3 +1,4 @@
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 import { useGetClassificationDiseaseGroupQuery } from "@/services/api/classification-disease";
 import { Select, SelectProps } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
@@ -8,12 +9,13 @@ interface SelectClassificationDiseaseProps extends Omit<SelectProps, "data"> {}
 export const SelectClassificationDisease = (
   props: SelectClassificationDiseaseProps,
 ) => {
+  const paginateQuery = usePaginateQuery();
   const [search, setSearch] = useDebouncedState("", 300);
   const { data } = useGetClassificationDiseaseGroupQuery({
     page: 1,
     limit: 25,
-    search,
-    grouping: true,
+    "filter.children.parentId": "$not:null",
+    ...paginateQuery.get(),
   });
 
   const options = useMemo(() => {

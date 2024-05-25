@@ -17,6 +17,7 @@ import { ClassificationDiseaseService } from './classification-disease.service';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager, IsNull, Not } from 'typeorm';
 import { ClassificationDisease } from './classification-disease';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: '/classification-diseases',
@@ -38,22 +39,16 @@ export class ClassificationDiseaseController {
   }
 
   @Get()
-  async paginate(
-    @Pagination() paginationQuery: PaginationQuery,
-    @Query('grouping', new ParseBoolPipe({ optional: true }))
-    grouping?: boolean,
-  ) {
-    return this.entityManager.findAndCount(ClassificationDisease, {
-      ...paginationQuery,
-      where: {
-        ...paginationQuery.where,
-        children: {
-          parentId: grouping ? Not(IsNull()) : IsNull(),
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(
+      query,
+      this.entityManager.getRepository(ClassificationDisease),
+      {
+        sortableColumns: ['display'],
+        relations: {
+          children: true,
         },
       },
-      relations: {
-        children: true,
-      },
-    });
+    );
   }
 }
