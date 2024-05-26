@@ -1,21 +1,15 @@
 import {
   Controller,
   Get,
-  ParseBoolPipe,
   Post,
-  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { XMLParser } from 'fast-xml-parser';
 import { ClassificationDiseaseService } from './classification-disease.service';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { EntityManager, IsNull, Not } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { ClassificationDisease } from './classification-disease';
 import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 

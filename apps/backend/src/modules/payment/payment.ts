@@ -4,12 +4,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentStatus } from '../payment-status/payment-status';
-import { Encounter } from '../encounter/encounter';
 import { PaymentMethd } from '../payment-method/payment-method';
 
 @Entity()

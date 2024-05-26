@@ -23,6 +23,7 @@ import { PaymentStatus } from '../payment-status/payment-status';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaymentMethd } from '../payment-method/payment-method';
 import { EncounterPayment } from '../encounter-payment/encounter-payment';
+import { Payment } from '../payment/payment';
 
 @Controller({
   path: 'diagnoses',
@@ -147,15 +148,18 @@ export class DiagnoseController {
         code: 'cash',
       });
 
-      const payment = trx.create(EncounterPayment, {
-        payment: {
-          amount: 1234,
-          status: paymentStatus,
-          method: paymentMethod,
-        },
-        encounterId,
+      const payment = trx.create(Payment, {
+        amount: 1234,
+        status: paymentStatus,
+        method: paymentMethod,
       });
       await trx.save(payment);
+
+      const encounterPayment = trx.create(EncounterPayment, {
+        paymentId: payment.id,
+        encounterId,
+      });
+      await trx.save(encounterPayment);
 
       const diagnoseStatus = await trx.findOneBy(DiagnoseStatus, {
         code: 'done',

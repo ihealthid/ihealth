@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import {
@@ -16,6 +17,13 @@ import { Payment } from './payment';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { DonePaymentInputRequest } from './payment.request';
 import { EncounterPayment } from '../encounter-payment/encounter-payment';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
   path: '/payments',
@@ -27,9 +35,13 @@ export class PaymentController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.entityManager.findAndCount(EncounterPayment, {
-      ...pagination,
+  @UseGuards(JwtAuthGuard)
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(EncounterPayment), {
+      sortableColumns: ['createdAt'],
+      filterableColumns: {
+        createdAt: [FilterOperator.BTW],
+      },
       relations: {
         encounter: {
           patient: true,
@@ -43,6 +55,7 @@ export class PaymentController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
     const payment = await this.entityManager.findOneOrFail(EncounterPayment, {
       where: { id },
@@ -101,6 +114,7 @@ export class PaymentController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async pay(@Body() { id }: DonePaymentInputRequest) {
     const status = await this.entityManager.findOneByOrFail(PaymentStatus, {
       code: 'done',
