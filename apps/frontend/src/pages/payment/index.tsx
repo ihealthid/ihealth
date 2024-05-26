@@ -24,7 +24,7 @@ export const Component = () => {
                 header: "ID",
               },
               {
-                keyIndex: "encounterPayment.patient.fullName",
+                keyIndex: "encounterPayment.encounter.patient.fullName",
                 header: "Patient",
               },
               {

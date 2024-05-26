@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { Encounter } from '../encounter/encounter';
@@ -35,6 +37,7 @@ export class DiagnoseEncounterAct {
   encounterActId: string;
 
   @ManyToOne(() => EncounterAct)
+  @JoinColumn()
   encounterAct: EncounterAct;
 
   @Column()

@@ -88,28 +88,28 @@ export class MedicationController {
     const allStockQuery = this.entityManager.find(MedicationStock, {
       where: {
         medicationId: id,
-        expiredAt: MoreThan(dayjs().subtract(1, 'year').toDate()),
+        // expiredAt: MoreThan(dayjs().subtract(1, 'year').toDate()),
       },
     });
 
     const goodStockQuery = this.entityManager.find(MedicationStock, {
       where: {
         medicationId: id,
-        expiredAt: MoreThan(dayjs().add(3, 'months').toDate()),
+        // expiredAt: MoreThan(dayjs().add(3, 'months').toDate()),
       },
     });
 
     const beforeExpiresStockQuery = this.entityManager.find(MedicationStock, {
       where: {
         medicationId: id,
-        expiredAt: Between(dayjs().add(3, 'months').toDate(), new Date()),
+        // expiredAt: Between(dayjs().add(3, 'months').toDate(), new Date()),
       },
     });
 
     const expiredQuery = this.entityManager.find(MedicationStock, {
       where: {
         medicationId: id,
-        expiredAt: LessThan(new Date()),
+        // expiredAt: LessThan(new Date()),
       },
     });
 

@@ -17,7 +17,9 @@ export class MedicationStock {
   @Column()
   quantity: number;
 
-  @Column()
+  @Column({
+    default: 0
+  })
   price: number;
 
   @Column({
@@ -29,9 +31,6 @@ export class MedicationStock {
     default: 0,
   })
   balance: number;
-
-  @Column()
-  expiredAt: Date;
 
   @CreateDateColumn()
   createdAt: Date;

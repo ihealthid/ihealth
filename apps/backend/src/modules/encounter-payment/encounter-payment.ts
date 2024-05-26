@@ -25,7 +25,7 @@ export class EncounterPayment {
   @Column()
   paymentId: string;
 
-  @OneToOne(() => Payment)
+  @OneToOne(() => Payment, (payment) => payment.encounterPayment)
   @JoinColumn()
   payment: Payment;
 

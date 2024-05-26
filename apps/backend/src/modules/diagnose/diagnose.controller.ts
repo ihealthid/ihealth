@@ -155,8 +155,10 @@ export class DiagnoseController {
       });
       await trx.save(payment);
 
+      console.log(payment.id)
+
       const encounterPayment = trx.create(EncounterPayment, {
-        paymentId: payment.id,
+        payment,
         encounterId,
       });
       await trx.save(encounterPayment);

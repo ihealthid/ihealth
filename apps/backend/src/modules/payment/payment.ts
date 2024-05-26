@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -38,12 +37,6 @@ export class Payment {
   @ManyToOne(() => PaymentMethd)
   method: PaymentMethd;
 
-  @Column({
-    nullable: true,
-  })
-  encounterPaymentId?: string;
-
-  @OneToOne(() => EncounterPayment, encounter => encounter.payment)
-  @JoinColumn()
+  @OneToOne(() => EncounterPayment, (encounter) => encounter.payment)
   encounterPayment?: EncounterPayment;
 }
