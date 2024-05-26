@@ -59,20 +59,24 @@ export class PaymentController {
   @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
     const payment = await this.entityManager.findOneOrFail(EncounterPayment, {
-      where: { id },
+      where: { 
+        payment: {
+          id
+        }
+       },
       relations: {
-        encounter: {
-          healthcareService: true,
-          diagnoseEncounterActs: {
-            consumable: true,
-          },
-          prescriptions: {
-            items: {
-              medication: true,
-            },
-          },
-        },
-        payment: true,
+        // encounter: {
+          // healthcareService: true,
+          // diagnoseEncounterActs: {
+          //   consumable: true,
+          // },
+          // prescriptions: {
+          //   items: {
+          //     medication: true,
+          //   },
+          // },
+        // },
+        // payment: true,
       },
     });
 

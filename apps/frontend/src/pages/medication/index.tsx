@@ -29,9 +29,11 @@ import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
 import { EditSection } from "./components/EditSection";
 import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
 import { Sortable } from "@/components/Sortable";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const navigate = useNavigate();
+  const paginateQuery = usePaginateQuery();
   const [sort, setSort] = useState<string[]>([]);
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
@@ -53,15 +55,17 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetMedicationsQuery}
+            query={paginateQuery.get()}
             sort={sort}
-            headerSection={(filter) => (
+            headerSection={() => (
               <Group p="md">
                 <TextInput
                   placeholder="Search ..."
                   onChange={(e) =>
-                    filter({
-                      "display:iLike": e.currentTarget.value,
-                    })
+                    paginateQuery.set(
+                      "filter.name",
+                      "$ilike:" + e.currentTarget.value,
+                    )
                   }
                 />
               </Group>

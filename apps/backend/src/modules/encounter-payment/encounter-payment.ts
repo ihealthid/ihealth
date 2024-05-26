@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -25,6 +26,7 @@ export class EncounterPayment {
   paymentId: string;
 
   @OneToOne(() => Payment)
+  @JoinColumn()
   payment: Payment;
 
   @Column()
