@@ -35,6 +35,14 @@
     {
       "display": "Inject",
       "definition": "Inject"
+    },
+    {
+      "display": "Supplement",
+      "definition": "Sumpplement"
+    },
+    {
+      "display": "Sol",
+      "definition": "Sol"
     }
   ]
 }

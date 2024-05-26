@@ -34,7 +34,6 @@ import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 export const Component = () => {
   const navigate = useNavigate();
   const paginateQuery = usePaginateQuery();
-  const [sort, setSort] = useState<string[]>([]);
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
   const [deleteMedication] = useDeleteMedicationMutation();
@@ -56,7 +55,6 @@ export const Component = () => {
           <ProTable
             queryLoader={useGetMedicationsQuery}
             query={paginateQuery.get()}
-            sort={sort}
             headerSection={() => (
               <Group p="md">
                 <TextInput
@@ -76,7 +74,11 @@ export const Component = () => {
                 header: (
                   <Group>
                     <Text>Name</Text>
-                    <Sortable onChange={(val) => setSort([`name:${val}`])} />
+                    <Sortable
+                      onChange={(val) =>
+                        paginateQuery.set("sortBy", "name:" + val)
+                      }
+                    />
                   </Group>
                 ),
               },
