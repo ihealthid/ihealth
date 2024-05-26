@@ -3,13 +3,13 @@ import { mainApi } from "./main";
 import { PaginationResult } from "@/types/pagination-result";
 
 export type ClassificationDisease = {
-  id: number;
+  id: string;
   display: string;
   definition?: string;
 };
 
 export type ClassificationDiseaseGroup = {
-  id: number;
+  id: string;
   display: string;
   definition?: string;
   children: ClassificationDisease[];
@@ -33,10 +33,7 @@ const classificationDiseaseApi = mainApi.injectEndpoints({
     >({
       query: (params) => ({
         url: "/classification-diseases",
-        params: {
-          ...params,
-          grouping: true,
-        },
+        params,
       }),
       providesTags: ["ClassificationDisease"],
     }),

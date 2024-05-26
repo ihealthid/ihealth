@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { PaymentMethd } from '../payment-method/payment-method';
+import { EncounterPayment } from '../encounter-payment/encounter-payment';
 
 @Entity()
 export class Payment {
@@ -28,7 +30,6 @@ export class Payment {
   statusId: string;
 
   @ManyToOne(() => PaymentStatus)
-  @JoinColumn()
   status: PaymentStatus;
 
   @Column()
@@ -36,4 +37,13 @@ export class Payment {
 
   @ManyToOne(() => PaymentMethd)
   method: PaymentMethd;
+
+  @Column({
+    nullable: true,
+  })
+  encounterPaymentId?: string;
+
+  @OneToOne(() => EncounterPayment, encounter => encounter.payment)
+  @JoinColumn()
+  encounterPayment?: EncounterPayment;
 }

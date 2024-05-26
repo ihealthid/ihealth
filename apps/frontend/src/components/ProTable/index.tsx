@@ -15,36 +15,29 @@ import { useState } from "react";
 import { PaginationResult } from "@/types/pagination-result";
 export { createProTableColumnActions } from "./ProTableColumnActions";
 import _ from "lodash";
-import { PaginateQuery, usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 interface ProTableProps<TData> {
   cols: ProTableColumn<TData>[];
-  rowsPerPage?: number;
+  limit?: number;
   queryLoader: UseQuery<
     QueryDefinition<any, any, any, PaginationResult<TData>>
   >;
-  pathParams?: Record<string, any>;
-  query?: { [key: string]: string };
-  headerSection?: (paginateQuery: PaginateQuery) => React.ReactNode;
+  query?: { [key: string]: string | string[] };
+  headerSection?: () => React.ReactNode;
 }
 
 export const ProTable = <TData extends Record<string, any>>({
   cols,
   queryLoader: useQueryLoader,
-  pathParams = {},
-  rowsPerPage = 10,
-  query = {},
+  query,
+  limit = 10,
   headerSection,
 }: ProTableProps<TData>) => {
   const [page, setPage] = useState(1);
-  const paginateQuery = usePaginateQuery();
-
   const { data } = useQueryLoader({
-    page,
-    limit: rowsPerPage,
-    ...pathParams,
     ...query,
-    ...paginateQuery.get(),
+    page,
+    limit,
   });
 
   const rows = useCreateProTableRows({
@@ -54,7 +47,7 @@ export const ProTable = <TData extends Record<string, any>>({
 
   return (
     <>
-      {headerSection?.(paginateQuery)}
+      {headerSection?.()}
 
       <ScrollArea>
         <Table striped highlightOnHover>

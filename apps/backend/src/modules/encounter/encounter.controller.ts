@@ -41,7 +41,7 @@ export class EncounterController {
       nullSort: 'last',
       sortableColumns: ['createdAt', 'patientCondition.code'],
       filterableColumns: {
-        createdAt: [FilterOperator.BTW, FilterOperator.CONTAINS],
+        createdAt: [FilterOperator.BTW, FilterOperator.LTE, FilterOperator.GTE],
         'patient.fullName': [FilterOperator.ILIKE],
         'histories.status.id': [FilterOperator.IN],
       },

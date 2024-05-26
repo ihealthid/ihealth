@@ -1,11 +1,12 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Group } from "@mantine/core";
 import { Outlet } from "react-router-dom";
 import Navbar from "../navbar";
 import { useLoginChecker } from "@/hooks/useLoginChecker";
+import { Timer } from "../Timer";
 
 export const Component = () => {
-  useLoginChecker()
-  
+  useLoginChecker();
+
   return (
     <AppShell
       layout="alt"
@@ -14,7 +15,11 @@ export const Component = () => {
       p="lg"
       bg="gray.1"
     >
-      <AppShell.Header>Header</AppShell.Header>
+      <AppShell.Header>
+        <Group>
+          <Timer />
+        </Group>
+      </AppShell.Header>
       <AppShell.Navbar>
         <Navbar />
       </AppShell.Navbar>

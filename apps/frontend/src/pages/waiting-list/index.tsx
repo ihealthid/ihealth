@@ -14,20 +14,17 @@ import { IconStethoscope } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { SelectEncounterStatus } from "@/features/SelectEncounterStatus";
 import { useEffect } from "react";
-import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 import { Sortable } from "@/components/Sortable";
 import { generateBetweenDateFilter } from "@/utils/generateBetweenDateFilter";
 import _ from "lodash";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const navigate = useNavigate();
   const paginateQuery = usePaginateQuery();
 
   useEffect(() => {
-    paginateQuery.set(
-      "filter.createdAt",
-      `$btw:${generateBetweenDateFilter()}`,
-    );
+    paginateQuery.set("filter.createdAt", generateBetweenDateFilter());
   }, []);
 
   return (
@@ -39,9 +36,7 @@ export const Component = () => {
       <CardSection>
         <ProTable
           queryLoader={useGetEncountersQuery}
-          query={{
-            ...paginateQuery.get(),
-          }}
+          query={paginateQuery.get()}
           cols={[
             {
               keyIndex: "patient.fullName",
@@ -75,18 +70,18 @@ export const Component = () => {
               ],
             }),
           ]}
-          headerSection={(q) => (
+          headerSection={() => (
             <Group p="md">
               <TextInput
                 placeholder="Pencarian"
                 onChange={(event) => {
                   if (event.currentTarget.value.length > 0) {
-                    q.set(
+                    paginateQuery.set(
                       "filter.patient.fullName",
                       "$ilike:" + event.currentTarget.value,
                     );
                   } else {
-                    q.delete("filter.patient.fullName");
+                    paginateQuery.delete("filter.patient.fullName");
                   }
                 }}
               />
@@ -96,9 +91,12 @@ export const Component = () => {
                 }}
                 onChange={(val) => {
                   if (_.isEmpty(val)) {
-                    q.delete("filter.histories.status.id");
+                    paginateQuery.delete("filter.histories.status.id");
                   } else {
-                    q.set("filter.histories.status.id", "$in:" + val.join(","));
+                    paginateQuery.set(
+                      "filter.histories.status.id",
+                      "$in:" + val.join(","),
+                    );
                   }
                 }}
               />
@@ -109,12 +107,12 @@ export const Component = () => {
                   if (val) {
                     paginateQuery.set(
                       "filter.createdAt",
-                      "$btw:" + generateBetweenDateFilter(val),
+                      generateBetweenDateFilter(val),
                     );
                   } else {
                     paginateQuery.set(
                       "filter.createdAt",
-                      "$btw:" + generateBetweenDateFilter(),
+                      generateBetweenDateFilter(),
                     );
                   }
                 }}

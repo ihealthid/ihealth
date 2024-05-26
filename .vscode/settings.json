@@ -74,8 +74,7 @@
         "apps/frontend/src/components/DateFormatter.tsx": true,
         "apps/frontend/src/components/form-provider.tsx": true,
         "apps/frontend/src/components/Logo.tsx": true,
-        "apps/frontend/src/components/TablePaginator.tsx": true,
-        "apps/frontend/src/components/layout": true
+        "apps/frontend/src/components/TablePaginator.tsx": true
     },
     "hide-files.files": [
         "apps/frontend/src/services/database",
@@ -146,7 +145,6 @@
         "apps/frontend/src/components/DateFormatter.tsx",
         "apps/frontend/src/components/form-provider.tsx",
         "apps/frontend/src/components/Logo.tsx",
-        "apps/frontend/src/components/TablePaginator.tsx",
-        "apps/frontend/src/components/layout"
+        "apps/frontend/src/components/TablePaginator.tsx"
     ]
 }

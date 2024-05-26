@@ -11,7 +11,12 @@ import { ClassificationDiseaseService } from './classification-disease.service';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { ClassificationDisease } from './classification-disease';
-import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: '/classification-diseases',
@@ -39,6 +44,13 @@ export class ClassificationDiseaseController {
       this.entityManager.getRepository(ClassificationDisease),
       {
         sortableColumns: ['display'],
+        filterableColumns: {
+          'children.parentId': [FilterOperator.NULL],
+          'children.display': [FilterOperator.ILIKE],
+          'children.definition': [FilterOperator.ILIKE],
+          display: [FilterOperator.ILIKE],
+          definition: [FilterOperator.ILIKE],
+        },
         relations: {
           children: true,
         },

@@ -19,12 +19,11 @@ export const SelectClassificationDisease = (
 
   const options = useMemo(() => {
     if (!data) return [];
-
     return data.data.map((row) => ({
       group: `${row.display} - ${row.definition}`,
       items: row.children.map((item) => ({
         label: `${item.display} - ${item.definition}`,
-        value: item.id.toString(),
+        value: item.id,
       })),
     }));
   }, [data]);
@@ -33,14 +32,14 @@ export const SelectClassificationDisease = (
     <Select
       {...props}
       data={options}
-      limit={10}
       searchable
       clearable
       onSearchChange={(val) => {
         if (_.isEmpty(val)) {
           paginateQuery.clear();
         } else {
-          paginateQuery.set("filter.children.display", "$ilike:" + val);
+          paginateQuery.set("filter.children.display", "$or:$ilike:" + val);
+          paginateQuery.set("filter.children.definition", "$or:$ilike:" + val);
         }
       }}
     />

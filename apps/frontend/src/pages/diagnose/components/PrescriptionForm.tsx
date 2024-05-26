@@ -48,7 +48,6 @@ export const PrescriptionForm = ({
               {...form.getInputProps("frequency")}
               label="Frequency"
               placeholder="Select Frequency"
-              defaultValue={FREQUENCY_OPTIONS[0]}
               data={FREQUENCY_OPTIONS}
             />
           </SimpleGrid>

@@ -15,9 +15,9 @@ import { DateInput } from "@mantine/dates";
 import { ProTable } from "@/components/ProTable";
 import { useGetEncountersQuery } from "@/services/api/encounter";
 import { DisclosureAction } from "@/types/disclosure";
-import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 import { generateBetweenDateFilter } from "@/utils/generateBetweenDateFilter";
 import _ from "lodash";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const addSectionRef = useRef<DisclosureAction>(null);
@@ -25,10 +25,7 @@ export const Component = () => {
   const paginateQuery = usePaginateQuery();
 
   useEffect(() => {
-    paginateQuery.set(
-      "filter.createdAt",
-      "$btw:" + generateBetweenDateFilter(),
-    );
+    paginateQuery.set("filter.createdAt", generateBetweenDateFilter());
   }, []);
 
   return (
@@ -47,25 +44,31 @@ export const Component = () => {
         <ProTable
           queryLoader={useGetEncountersQuery}
           query={paginateQuery.get()}
-          headerSection={(q) => (
+          headerSection={() => (
             <Group p="md">
               <TextInput
                 placeholder="Pencarian"
                 onChange={(event) => {
                   const val = event.currentTarget.value;
                   if (_.isEmpty(val)) {
-                    q.delete("filter.patient.fullName");
+                    paginateQuery.delete("filter.patient.fullName");
                   } else {
-                    q.set("filter.patient.fullName", "$ilike:" + val);
+                    paginateQuery.set(
+                      "filter.patient.fullName",
+                      "$ilike:" + val,
+                    );
                   }
                 }}
               />
               <SelectEncounterStatus
                 onChange={(val) => {
                   if (_.isEmpty(val)) {
-                    q.delete("filter.histories.status.id");
+                    paginateQuery.delete("filter.histories.status.id");
                   } else {
-                    q.set("filter.histories.status.id", "$in:" + val.join(","));
+                    paginateQuery.set(
+                      "filter.histories.status.id",
+                      "$in:" + val.join(","),
+                    );
                   }
                 }}
               />
@@ -76,12 +79,12 @@ export const Component = () => {
                   if (val) {
                     paginateQuery.set(
                       "filter.createdAt",
-                      "$btw:" + generateBetweenDateFilter(val),
+                      generateBetweenDateFilter(val),
                     );
                   } else {
                     paginateQuery.set(
                       "filter.createdAt",
-                      "$btw:" + generateBetweenDateFilter(),
+                      generateBetweenDateFilter(),
                     );
                   }
                 }}
@@ -101,6 +104,10 @@ export const Component = () => {
               header: "Status",
               render: (row) =>
                 row.histories[row.histories.length - 1]?.status?.display,
+            },
+            {
+              keyIndex: "createdAt",
+              header: "Created Date",
             },
           ]}
         />

@@ -15,8 +15,8 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetPaymentsQuery}
-            queryParams={{
-              filter: ["status.order.gt|3"],
+            query={{
+              "filter.status.order": "$lt:3",
             }}
             cols={[
               {
@@ -24,7 +24,7 @@ export const Component = () => {
                 header: "ID",
               },
               {
-                keyIndex: "encounter.patient.fullName",
+                keyIndex: "encounterPayment.patient.fullName",
                 header: "Patient",
               },
               {

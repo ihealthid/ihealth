@@ -37,19 +37,20 @@ export class PaymentController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async get(@Paginate() query: PaginateQuery) {
-    return paginate(query, this.entityManager.getRepository(EncounterPayment), {
+    return paginate(query, this.entityManager.getRepository(Payment), {
       sortableColumns: ['createdAt'],
       filterableColumns: {
         createdAt: [FilterOperator.BTW],
+        'status.order': [FilterOperator.GT, FilterOperator.LT],
       },
       relations: {
-        encounter: {
-          patient: true,
+        encounterPayment: {
+          encounter: {
+            patient: true,
+          },
         },
-        payment: {
-          method: true,
-          status: true,
-        },
+        method: true,
+        status: true,
       },
     });
   }

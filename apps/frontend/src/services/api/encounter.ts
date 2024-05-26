@@ -4,9 +4,8 @@ import { Patient } from "./patient";
 import { Diagnose } from "./diagnose";
 import { mainApi } from "./main";
 import { PaginationResult } from "@/types/pagination-result";
-import { PaginationQueryParams } from "@/types/pagination-query-params";
-import { DateValue } from "@mantine/dates";
 import { EncounterStatus } from "./encounter-status";
+import { PaginationQueryParams } from "@/types/pagination-query-params";
 
 export type Encounter = {
   id: string;
@@ -36,10 +35,7 @@ const encounterApi = mainApi.injectEndpoints({
     }),
     getEncounters: builder.query<
       PaginationResult<Encounter>,
-      PaginationQueryParams & {
-        status?: string[];
-        date?: DateValue;
-      }
+      PaginationQueryParams
     >({
       query: (params) => ({
         url: "/encounters",
