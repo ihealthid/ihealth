@@ -4,35 +4,31 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
 import { RoleCreateRequest } from './role.request';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Role } from './role';
-import { Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: '/roles',
 })
 export class RoleController {
   constructor(
-    @InjectRepository(Role)
-    private roleRepository: Repository<Role>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: RoleCreateRequest) {
-    const role = this.roleRepository.create(data);
-    return this.roleRepository.save(role);
+    const role = this.entityManager.create(Role, data);
+    return this.entityManager.save(role);
   }
 
   @Put(':id')
@@ -41,31 +37,29 @@ export class RoleController {
     @Param('id') id: string,
     @Body() data: Partial<RoleCreateRequest>,
   ) {
-    const role = await this.roleRepository.findOneByOrFail({ id });
-    const uData = this.roleRepository.merge(role, data);
-    return this.roleRepository.save(uData);
+    const role = await this.entityManager.findOneByOrFail(Role, { id });
+    const uData = this.entityManager.merge(Role, role, data);
+    return this.entityManager.save(uData);
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
-    return this.roleRepository.findOneByOrFail({ id });
+    return this.entityManager.findOneByOrFail(Role, { id });
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip }: PaginationQuery) {
-    return this.roleRepository.findAndCount({
-      take,
-      skip,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Role), {
+      sortableColumns: ['name'],
     });
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
-    const role = await this.roleRepository.findOneByOrFail({ id });
-    await this.roleRepository.delete(role);
-    return role;
+    const role = await this.entityManager.findOneByOrFail(Role, { id });
+    await this.entityManager.delete(Role, role);
   }
 }
