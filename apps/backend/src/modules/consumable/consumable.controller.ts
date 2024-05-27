@@ -1,12 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ConsumableCreateRequest } from './consumable.request';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { Consumable } from './consumable';
 import { EntityManager } from 'typeorm';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'consumables',
@@ -24,9 +21,9 @@ export class ConsumableController {
   }
 
   @Get()
-  async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.entityManager.findAndCount(Consumable, {
-      ...pagination,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Consumable), {
+      sortableColumns: ['name'],
       relations: {
         brand: {
           manufacture: true,
