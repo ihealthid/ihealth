@@ -58,6 +58,7 @@ import { PaymentMethodModule } from './modules/payment-method/payment-method.mod
 import { EncounterPaymentModule } from './modules/encounter-payment/encounter-payment.module';
 import { IngredientModule } from './modules/ingredient/ingredient.module';
 import { MedicationIngredientModule } from './modules/medication-ingredient/medication-ingredient.module';
+import { MedicationInventoryModule } from './modules/medication-inventory/medication-inventory.module';
 
 @Module({
   imports: [
@@ -98,6 +99,7 @@ import { MedicationIngredientModule } from './modules/medication-ingredient/medi
     MedicationStockModule,
     ConsumableModule,
     ConsumableStockModule,
+    MedicationInventoryModule,
 
     HealthcareServiceModule,
     // ObservationEntryModule,

@@ -9,30 +9,20 @@ import {
 import { Medication } from '../medication/medication';
 
 @Entity()
-export class MedicationStock {
+export class MedicationInventory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   quantity: number;
 
-  @Column({
-    default: 0,
-  })
+  @Column()
   price: number;
 
   @Column({
     default: 0,
   })
   discount: number;
-
-  @Column({
-    default: 0,
-  })
-  balance: number;
-
-  @Column()
-  expiredAt: Date;
 
   @CreateDateColumn()
   createdAt: Date;

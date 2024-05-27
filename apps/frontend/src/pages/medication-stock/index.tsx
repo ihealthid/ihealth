@@ -15,11 +15,16 @@ import { useRef } from "react";
 import { ProTable } from "@/components/ProTable";
 import { DisclosureAction } from "@/types/disclosure";
 import { useGetMedicationStocksQuery } from "@/services/api/medication-stock";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const params = useParams();
   const addSectionRef = useRef<DisclosureAction>(null);
   const medicationId = params.id as string;
+
+  const queryParam = usePaginateQuery({
+    "filter.medicationId": "$eq:" + medicationId,
+  });
 
   const { data } = useGetMedicationStockCountQuery({ medicationId });
 
@@ -46,7 +51,7 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetMedicationStocksQuery}
-            pathParams={{ medicationId }}
+            query={queryParam.get()}
             cols={[
               {
                 keyIndex: "id",

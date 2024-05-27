@@ -4,10 +4,13 @@ import { EntityManager } from 'typeorm';
 import { MedicationStockInputRequest } from './medication-stock.request';
 import { MedicationStock } from './medication-stock';
 import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { Procurement } from '../procurement/procurement';
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
+import { MedicationInventory } from '../medication-inventory/medication-inventory';
+import { Medication } from '../medication/medication';
 
 @Controller({
   path: 'medication-stocks',
@@ -19,9 +22,12 @@ export class MedicationStockController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(MedicationStock, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(MedicationStock), {
+      sortableColumns: ['createdAt', 'balance', 'expiredAt'],
+      filterableColumns: {
+        medicationId: [FilterOperator.EQ],
+      },
       relations: {
         medication: true,
       },
@@ -34,10 +40,14 @@ export class MedicationStockController {
       const stock = trx.create(MedicationStock, data);
       await this.entityManager.save(stock);
 
-      const procurement = trx.create(Procurement, {
-        distributorId: data.distributorId,
+      const inventory = trx.create(MedicationInventory, data);
+      await trx.save(inventory);
+
+      const medication = await trx.findOne(Medication, {
+        where: { id: data.medicationId },
       });
-      await trx.save(procurement);
+      medication.stock = medication.stock + data.quantity;
+      await trx.save(medication);
     });
   }
 }

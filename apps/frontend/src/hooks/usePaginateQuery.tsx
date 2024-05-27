@@ -9,8 +9,10 @@ export interface PaginateQuery {
   };
 }
 
-export const usePaginateQuery = (): PaginateQuery => {
-  const mapper = useMap<string, string>([]);
+export const usePaginateQuery = (
+  defaultQuery: { [key: string]: string } = {},
+): PaginateQuery => {
+  const mapper = useMap<string, string>(Object.entries(defaultQuery));
 
   return {
     clear: mapper.clear,
