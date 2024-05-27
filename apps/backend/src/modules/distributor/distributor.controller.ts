@@ -8,13 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { EntityManager } from 'typeorm';
 import { Distributor } from './distributor';
 import { DistributorInputRequest } from './distributor.request';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'distributors',
@@ -26,8 +23,10 @@ export class DistributorController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Distributor, paginationQuery);
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Distributor), {
+      sortableColumns: ['name'],
+    });
   }
 
   @Get(':id')
