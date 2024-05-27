@@ -24,6 +24,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaymentMethd } from '../payment-method/payment-method';
 import { EncounterPayment } from '../encounter-payment/encounter-payment';
 import { Payment } from '../payment/payment';
+import { Encounter } from '../encounter/encounter';
 
 @Controller({
   path: 'diagnoses',
@@ -106,6 +107,13 @@ export class DiagnoseController {
   @UseGuards(JwtAuthGuard)
   async finish(@Param('encounterId') encounterId: string) {
     return await this.entityManager.transaction(async (trx) => {
+      const encounter = await trx.findOneOrFail(Encounter, {
+        where: { id: encounterId },
+        relations: {
+          patient: true
+        }
+      });
+
       const prescriptionStatus = await trx.findOneBy(PrescriptionStatus, {
         code: 'request',
       });
@@ -155,11 +163,12 @@ export class DiagnoseController {
       });
       await trx.save(payment);
 
-      console.log(payment.id)
+      console.log(payment.id);
 
       const encounterPayment = trx.create(EncounterPayment, {
         payment,
         encounterId,
+        patientId: encounter.patient.id,
       });
       await trx.save(encounterPayment);
 

@@ -1,65 +1,57 @@
-import { useLazyGetPrescriptionByEncounterIdQuery } from "@/services/api/prescription";
-import { useDeletePrescriptionItemMutation } from "@/services/api/prescription-item";
-import { Table, Flex, Tooltip, ActionIcon } from "@mantine/core";
+import { ProTable, createProTableColumnActions } from "@/components/ProTable";
+import {
+  PrescriptionItem,
+  useDeletePrescriptionItemMutation,
+  useGetPrescriptionItemsQuery,
+} from "@/services/api/prescription-item";
 import { IconTrash } from "@tabler/icons-react";
-import { useEffect } from "react";
 
-export const PrescriptionTable = ({
-  encounterId,
-  id,
-}: {
-  encounterId: string;
-  id: string;
-}) => {
-  const [refetch, { data }] = useLazyGetPrescriptionByEncounterIdQuery();
+export const PrescriptionTable = ({ encounterId }: { encounterId: string }) => {
   const [deleteMutate] = useDeletePrescriptionItemMutation();
 
-  useEffect(() => {
-    refetch(encounterId);
-  }, [encounterId, refetch, id]);
-
   return (
-    <Table withTableBorder striped highlightOnHover>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>No</Table.Th>
-          <Table.Th>Medication</Table.Th>
-          <Table.Th>Quantity</Table.Th>
-          <Table.Th>Doses / Frequency</Table.Th>
-          <Table.Th>Note</Table.Th>
-          <Table.Th></Table.Th>
-        </Table.Tr>
-      </Table.Thead>
-      <Table.Tbody>
-        {data?.data?.items?.map((item, i) => (
-          <Table.Tr key={item.id}>
-            <Table.Td>{i + 1}</Table.Td>
-            <Table.Td>{item.medication.name}</Table.Td>
-            <Table.Td>{item.quantity}</Table.Td>
-            <Table.Td>
-              {item.doses} / {item.frequency}
-            </Table.Td>
-            <Table.Td>{item.note}</Table.Td>
-            <Table.Td>
-              <Flex justify="end">
-                <Tooltip label="Delete">
-                  <ActionIcon
-                    variant="subtle"
-                    color="red"
-                    onClick={() => {
-                      deleteMutate(item.id).then(() => {
-                        refetch(encounterId);
-                      });
-                    }}
-                  >
-                    <IconTrash />
-                  </ActionIcon>
-                </Tooltip>
-              </Flex>
-            </Table.Td>
-          </Table.Tr>
-        ))}
-      </Table.Tbody>
-    </Table>
+    <>
+      <ProTable
+        queryLoader={useGetPrescriptionItemsQuery}
+        query={{
+          "filter.prescription.encounterId": "$eq:" + encounterId,
+        }}
+        cols={[
+          {
+            header: "No",
+            render: (_, index) => index + 1,
+          },
+          {
+            header: "Medication",
+            keyIndex: "medication.name",
+          },
+          {
+            header: "Quantity",
+            keyIndex: "quantity",
+          },
+          {
+            header: "Dose",
+            keyIndex: "doses",
+          },
+          {
+            header: "Freq",
+            keyIndex: "frequency",
+          },
+          {
+            header: "Note",
+            keyIndex: "note",
+          },
+          createProTableColumnActions<PrescriptionItem>({
+            actions: [
+              {
+                icon: <IconTrash />,
+                label: "Delete",
+                onClick: (data) => deleteMutate(data.id),
+              },
+            ],
+          }),
+        ]}
+      />
+    </>
   );
 };

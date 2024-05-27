@@ -12,6 +12,7 @@ import { Footer } from "./components/Footer";
 import { OtherField } from "./other-field";
 import { AllergySection } from "./components/AllergySection";
 import { EncounterAct } from "./components/EncounterAct";
+import { ProTable } from "@/components/ProTable";
 
 export const Component = () => {
   const params = useParams();
@@ -61,10 +62,7 @@ export const Component = () => {
 
                           <Tabs.Panel value="prescription" p={8}>
                             <Stack gap="xl">
-                              <PrescriptionTable
-                                id={prescriptionId}
-                                encounterId={id}
-                              />
+                              <PrescriptionTable encounterId={id} />
                               <PrescriptionForm
                                 key={prescriptionId}
                                 encounterId={id}

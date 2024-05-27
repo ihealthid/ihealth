@@ -66,6 +66,7 @@ export const {
   useGetPrescriptionByEncounterIdQuery,
   useLazyGetPrescriptionByEncounterIdQuery,
   useGetPrescriptionsQuery,
+  useLazyGetPrescriptionsQuery,
   useGetPrescriptionQuery,
   usePostPrescriptionMutation,
   useDonePrescriptionMutation,

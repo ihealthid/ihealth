@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Payment } from '../payment/payment';
 import { Encounter } from '../encounter/encounter';
+import { Patient } from '../patient/patient';
 
 @Entity()
 export class EncounterPayment {
@@ -34,4 +35,10 @@ export class EncounterPayment {
 
   @ManyToOne(() => Encounter)
   encounter: Encounter;
+
+  @Column()
+  patientId: string;
+
+  @ManyToOne(() => Patient)
+  patient: Patient;
 }

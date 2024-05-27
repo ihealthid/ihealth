@@ -5,7 +5,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  ParseIntPipe,
   Post,
   UnprocessableEntityException,
   UseGuards,
@@ -18,9 +17,11 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { Prescription } from '../prescription/prescription';
 import { Medication } from '../medication/medication';
 import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'prescription-items',
@@ -33,13 +34,15 @@ export class PrescriptionItemController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async paginateByPrescriptionId(
-    @Pagination() paginationQuery: PaginationQuery,
-  ) {
-    return this.entityManager.findAndCount(PrescriptionItem, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(PrescriptionItem), {
+      sortableColumns: ['createdAt'],
+      filterableColumns: {
+        'prescription.encounterId': [FilterOperator.EQ],
+      },
       relations: {
         medication: true,
+        prescription: true
       },
     });
   }

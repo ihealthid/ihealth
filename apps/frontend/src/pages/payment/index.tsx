@@ -21,21 +21,12 @@ export const Component = () => {
             query={queryParam.get()}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
-                sortable: (sort) =>
-                  queryParam.set(
-                    "sortBy",
-                    "id:" + sort,
-                  ),
-              },
-              {
-                keyIndex: "encounterPayment.encounter.patient.fullName",
+                keyIndex: "encounterPayment.patient.fullName",
                 header: "Patient",
                 sortable: (sort) =>
                   queryParam.set(
                     "sortBy",
-                    "encounterPayment.encounter.patient.fullName:" + sort,
+                    "encounterPayment.patient.fullName:" + sort,
                   ),
               },
               {
