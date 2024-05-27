@@ -9,13 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { EntityManager } from 'typeorm';
 import { EncounterAct } from './encounter-act';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'encounter-acts',
@@ -28,8 +25,10 @@ export class EncounterActController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(EncounterAct, paginationQuery);
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(EncounterAct), {
+      sortableColumns: ['code', 'display'],
+    });
   }
 
   @Get(':id')
