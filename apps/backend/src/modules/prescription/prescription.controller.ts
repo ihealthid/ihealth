@@ -1,19 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { Prescription } from './prescription';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { PrescriptionStatus } from '../prescription-status/prescription-status';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'prescriptions',
@@ -25,9 +15,9 @@ export class PrescriptionController {
   ) {}
 
   @Get()
-  async paginatePrescriptions(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Prescription, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Prescription), {
+      sortableColumns: ['createdAt'],
       relations: {
         encounter: {
           patient: true,
