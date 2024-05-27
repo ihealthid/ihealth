@@ -14,10 +14,11 @@ import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
-import { AuthGuard } from '../auth/auth.guard';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { HealthcareService } from './healthcare-service';
 import { EntityManager } from 'typeorm';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'healthcare-services',
@@ -29,7 +30,7 @@ export class HealthcareServiceController {
   ) {}
 
   @Post()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async create(@Body() data: HealthcareServiceInputRequest) {
     const healthcareService = this.entityManager.create(
       HealthcareService,
@@ -39,13 +40,19 @@ export class HealthcareServiceController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
-  async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.entityManager.findAndCount(HealthcareService, pagination);
+  @UseGuards(JwtAuthGuard)
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(
+      query,
+      this.entityManager.getRepository(HealthcareService),
+      {
+        sortableColumns: ['name'],
+      },
+    );
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
     return this.entityManager.findOneByOrFail(HealthcareService, {
       id,
@@ -53,7 +60,7 @@ export class HealthcareServiceController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
     @Body() data: Partial<HealthcareServiceInputRequest>,
@@ -74,7 +81,7 @@ export class HealthcareServiceController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
     const healthcareService = await this.entityManager.findOneByOrFail(
       HealthcareService,
