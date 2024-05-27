@@ -1,21 +1,19 @@
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Brand } from './brand';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import {
   Body,
   Controller,
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { BrandInputRequest } from './brand.request';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
   path: 'brands',
@@ -27,9 +25,10 @@ export class BrandController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() pagination: PaginationQuery) {
-    return this.entityManager.findAndCount(Brand, {
-      ...pagination,
+  @UseGuards(JwtAuthGuard)
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Brand), {
+      sortableColumns: ['name'],
       relations: {
         manufacture: true,
       },
@@ -37,6 +36,7 @@ export class BrandController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
     return this.entityManager.findOneOrFail(Brand, {
       where: {
@@ -49,12 +49,14 @@ export class BrandController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(@Body() data: BrandInputRequest) {
     const brand = this.entityManager.create(Brand, data);
     return this.entityManager.save(brand);
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
     @Body() data: Partial<BrandInputRequest>,
@@ -65,6 +67,7 @@ export class BrandController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
     const brand = await this.entityManager.findOneByOrFail(Brand, { id });
     return this.entityManager.remove(brand);
