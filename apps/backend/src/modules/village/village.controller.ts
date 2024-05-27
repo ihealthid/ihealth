@@ -2,45 +2,37 @@ import {
   Controller,
   Get,
   Post,
-  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as csv from 'csv-parse';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Village } from './village';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'villages',
 })
 export class VillageController {
   constructor(
-    @InjectRepository(Village)
-    private villageRepository: Repository<Village>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
-  async paginate(
-    @Pagination() { take, skip, sort, filter }: PaginationQuery,
-    @Query('districtId') districtId?: string,
-  ) {
-    const where: FindOptionsWhere<Village> = filter;
-
-    if (districtId) {
-      where.districtId = districtId;
-    }
-
-    return this.villageRepository.findAndCount({
-      take,
-      skip,
-      where,
-      order: sort,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Village), {
+      sortableColumns: ['name'],
+      filterableColumns: {
+        districtId: [FilterOperator.EQ],
+      },
     });
   }
 
@@ -60,7 +52,8 @@ export class VillageController {
     });
 
     for (const [id, districtId, name] of records) {
-      await this.villageRepository.upsert(
+      await this.entityManager.upsert(
+        Village,
         {
           id,
           name,

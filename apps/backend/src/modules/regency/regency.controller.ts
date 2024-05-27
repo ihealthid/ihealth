@@ -2,45 +2,37 @@ import {
   Controller,
   Get,
   Post,
-  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as csv from 'csv-parse';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Regency } from './regency';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'regencies',
 })
 export class RegencyController {
   constructor(
-    @InjectRepository(Regency)
-    private regencyRepository: Repository<Regency>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
-  async pagination(
-    @Pagination() { take, skip }: PaginationQuery,
-    @Query('provinceId')
-    provinceId?: string,
-  ) {
-    const where: FindOptionsWhere<Regency> = {};
-
-    if (provinceId) {
-      where.provinceId = provinceId;
-    }
-
-    return this.regencyRepository.findAndCount({
-      skip,
-      take,
-      where,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Regency), {
+      sortableColumns: ['name'],
+      filterableColumns: {
+        provinceId: [FilterOperator.EQ],
+      },
     });
   }
 
@@ -60,7 +52,8 @@ export class RegencyController {
     });
 
     for (const [id, provinceId, name] of records) {
-      await this.regencyRepository.upsert(
+      await this.entityManager.upsert(
+        Regency,
         {
           id,
           name,

@@ -7,30 +7,32 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as csv from 'csv-parse';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { Province } from './province';
-import {  Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'provinces',
 })
 export class ProvinceController {
   constructor(
-    @InjectRepository(Province)
-    private provinceRepository: Repository<Province>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
-  async paginate(@Pagination() { take, skip, sort, filter }: PaginationQuery) {
-    return this.provinceRepository.findAndCount({
-      skip,
-      take,
-      order: sort,
-      where: filter,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Province), {
+      sortableColumns: ['name'],
+      filterableColumns: {
+        name: [FilterOperator.ILIKE],
+      },
     });
   }
 
@@ -50,7 +52,8 @@ export class ProvinceController {
     });
 
     for (const [id, name] of records) {
-      await this.provinceRepository.upsert(
+      await this.entityManager.upsert(
+        Province,
         {
           id,
           name,
