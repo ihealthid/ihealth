@@ -11,11 +11,8 @@ import {
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { ParticipantTypeCode } from './participant-type-code';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'participant-type-codes',
@@ -28,10 +25,13 @@ export class ParticipantTypeCodeController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(
-      ParticipantTypeCode,
-      paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(
+      query,
+      this.entityManager.getRepository(ParticipantTypeCode),
+      {
+        sortableColumns: ['code', 'display'],
+      },
     );
   }
 
