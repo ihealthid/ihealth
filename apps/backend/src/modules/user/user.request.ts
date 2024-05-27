@@ -11,11 +11,8 @@ export class UserCreateRequest {
   @IsString()
   fullName: string;
 
-  @IsNumber(
-    {},
-    {
-      each: true,
-    },
-  )
-  roles: number[];
+  @IsString({
+    each: true,
+  })
+  roles: string[];
 }

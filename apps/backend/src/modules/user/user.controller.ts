@@ -20,6 +20,7 @@ import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { User } from './user';
 import { EntityManager, FindOneOptions, In, Repository } from 'typeorm';
 import { Role } from '../role/role';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'users',
@@ -52,9 +53,9 @@ export class UserController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(User, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(User), {
+      sortableColumns: ['fullName', 'username'],
       relations: {
         roles: true,
       },
@@ -63,12 +64,30 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async update(@Param('id') id: string) {
+  async update(
+    @Param('id') id: string,
+    @Body() data: Partial<UserCreateRequest>,
+  ) {
     const user = await this.entityManager.findOneOrFail(User, {
       where: {
         id,
       },
+      relations: {
+        roles: true,
+      },
     });
+
+    let roles: Role[] = [];
+
+    if (roles.length > 0) {
+      roles = await this.entityManager.find(Role, { where: { id: In(roles) } });
+    }
+
+    const uData = this.entityManager.merge(User, user, {
+      ...data,
+      roles,
+    });
+    await this.entityManager.save(uData);
   }
 
   @Delete(':id')
