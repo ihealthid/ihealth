@@ -9,65 +9,72 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Pagination,
   PaginationQuery,
 } from 'src/decorators/pagination.decorator';
 import { PatientCondition } from './patient-condition';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'patient-conditions',
 })
 export class PatientConditionController {
   constructor(
-    @InjectRepository(PatientCondition)
-    private patientConditionRepository: Repository<PatientCondition>,
+    @InjectEntityManager()
+    private entityManager: EntityManager,
   ) {}
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async paginate(@Pagination() { take, skip }: PaginationQuery) {
-    return this.patientConditionRepository.findAndCount({
-      take,
-      skip,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(PatientCondition), {
+      sortableColumns: ['display'],
     });
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   async findById(@Param('id') id: string) {
-    return this.patientConditionRepository.findOneByOrFail({ id });
+    return this.entityManager.findOneByOrFail(PatientCondition, { id });
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() data: any) {
-    const patientCondition = this.patientConditionRepository.create(data);
-    return this.patientConditionRepository.save(patientCondition);
+    const patientCondition = this.entityManager.create(PatientCondition, data);
+    return this.entityManager.save(patientCondition);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   async updateById(@Param('id') id: string, @Body() data: any) {
-    const patientCondition =
-      await this.patientConditionRepository.findOneByOrFail({
+    const patientCondition = await this.entityManager.findOneByOrFail(
+      PatientCondition,
+      {
         id,
-      });
-    const uData = this.patientConditionRepository.merge(patientCondition, data);
-    return this.patientConditionRepository.save(uData);
+      },
+    );
+    const uData = this.entityManager.merge(
+      PatientCondition,
+      patientCondition,
+      data,
+    );
+    return this.entityManager.save(uData);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async deleteById(@Param('id') id: string) {
-    const patientCondition =
-      await this.patientConditionRepository.findOneByOrFail({
+    const patientCondition = await this.entityManager.findOneByOrFail(
+      PatientCondition,
+      {
         id,
-      });
-    await this.patientConditionRepository.remove(patientCondition);
-    return;
+      },
+    );
+    await this.entityManager.remove(patientCondition);
   }
 }
