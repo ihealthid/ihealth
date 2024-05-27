@@ -2,15 +2,12 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { Procurement } from './procurement';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { ProcurementInputRequest } from './procurement.request';
 import { MedicationStock } from '../medication-stock/medication-stock';
 import { Payment } from '../payment/payment';
 import { PaymentStatus } from '../payment-status/payment-status';
 import { PaymentMethd } from '../payment-method/payment-method';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'procurements',
@@ -22,8 +19,10 @@ export class ProcurementController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Procurement, paginationQuery);
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Procurement), {
+      sortableColumns: ['createdAt'],
+    });
   }
 
   @Post()
