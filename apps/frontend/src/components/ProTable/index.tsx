@@ -8,6 +8,8 @@ import {
   Flex,
   Pagination,
   ScrollArea,
+  Group,
+  Text,
 } from "@mantine/core";
 import { ProTableColumn, useCreateProTableRows } from "./useCreateProTableRows";
 import { QueryDefinition } from "@reduxjs/toolkit/query";
@@ -15,6 +17,7 @@ import { useState } from "react";
 import { PaginationResult } from "@/types/pagination-result";
 export { createProTableColumnActions } from "./ProTableColumnActions";
 import _ from "lodash";
+import { Sortable } from "../Sortable";
 
 interface ProTableProps<TData> {
   cols: ProTableColumn<TData>[];
@@ -54,7 +57,16 @@ export const ProTable = <TData extends Record<string, any>>({
           <TableThead>
             <TableTr>
               {cols.map((col) => (
-                <TableTh ta={col.textAlign}>{col.header}</TableTh>
+                <TableTh ta={col.textAlign}>
+                  {col.sortable ? (
+                    <Group justify="space-between">
+                      <Text>{col.header}</Text>
+                      <Sortable onChange={col.sortable} />
+                    </Group>
+                  ) : (
+                    col.header
+                  )}
+                </TableTh>
               ))}
             </TableTr>
           </TableThead>

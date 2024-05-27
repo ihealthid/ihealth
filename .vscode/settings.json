@@ -67,14 +67,7 @@
         "apps/backend/src/decorators": true,
         "apps/backend/src/helpers": true,
         "apps/backend/src/third-party": true,
-        "apps/backend/src/main.ts": true,
-        "apps/frontend/src/components/navbar-links-group": true,
-        "apps/frontend/src/components/ProTable": true,
-        "apps/frontend/src/components/user-button": true,
-        "apps/frontend/src/components/DateFormatter.tsx": true,
-        "apps/frontend/src/components/form-provider.tsx": true,
-        "apps/frontend/src/components/Logo.tsx": true,
-        "apps/frontend/src/components/TablePaginator.tsx": true
+        "apps/backend/src/main.ts": true
     },
     "hide-files.files": [
         "apps/frontend/src/services/database",
@@ -138,13 +131,6 @@
         "apps/backend/src/decorators",
         "apps/backend/src/helpers",
         "apps/backend/src/third-party",
-        "apps/backend/src/main.ts",
-        "apps/frontend/src/components/navbar-links-group",
-        "apps/frontend/src/components/ProTable",
-        "apps/frontend/src/components/user-button",
-        "apps/frontend/src/components/DateFormatter.tsx",
-        "apps/frontend/src/components/form-provider.tsx",
-        "apps/frontend/src/components/Logo.tsx",
-        "apps/frontend/src/components/TablePaginator.tsx"
+        "apps/backend/src/main.ts"
     ]
 }

@@ -18,7 +18,7 @@ export const Sortable = ({ onChange }: SortableProps) => {
   }, [sort]);
 
   return (
-    <ActionIcon variant="transparent" onClick={onClick}>
+    <ActionIcon variant="subtle" onClick={onClick}>
       {sort === "ASC" ? <IconSortAscending2 /> : <IconSortDescending2 />}
     </ActionIcon>
   );

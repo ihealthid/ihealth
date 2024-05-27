@@ -6,6 +6,7 @@ export interface ProTableColumn<TData> {
   header?: React.ReactNode;
   copyable?: boolean;
   textAlign?: StyleProp<React.CSSProperties["textAlign"]>;
+  sortable?: (value: "ASC" | "DESC") => void;
   render?: (row: TData, index: number) => React.ReactNode;
 }
 

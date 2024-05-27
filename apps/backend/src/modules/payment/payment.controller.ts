@@ -1,17 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { EntityManager } from 'typeorm';
 import { Payment } from './payment';
 import { PaymentStatus } from '../payment-status/payment-status';
@@ -198,7 +186,7 @@ export class PaymentController {
             medicationId: item.medicationId,
             quantity: -item.quantity,
             balance: item.medication.stock - item.quantity,
-            price: item.medication.price
+            price: item.medication.price,
           });
 
           await trx.update(Medication, item.medication, {
