@@ -4,17 +4,13 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { Manufacture } from './manufacture';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
   path: 'manufactures',
@@ -26,9 +22,9 @@ export class ManufactureController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(Manufacture, {
-      ...paginationQuery,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(query, this.entityManager.getRepository(Manufacture), {
+      sortableColumns: ['name'],
     });
   }
 
