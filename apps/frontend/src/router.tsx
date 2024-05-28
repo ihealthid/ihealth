@@ -4,6 +4,7 @@ import { pharmacyRoutes } from "./pages/pharmacy/route";
 import { receptionistRoutes } from "./pages/reseptionist/route";
 import { nurseRoutes } from "./pages/nurse/route";
 import { doctorRoutes } from "./pages/doctor/route";
+import { cashierRoutes } from "./pages/cashier/route";
 
 const load = (...paths: (string | any | any[])[]) => ({
   path: paths[0],
@@ -18,4 +19,5 @@ export const router = createBrowserRouter([
   ...receptionistRoutes,
   ...nurseRoutes,
   ...doctorRoutes,
+  ...cashierRoutes,
 ]);

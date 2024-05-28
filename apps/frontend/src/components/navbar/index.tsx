@@ -79,6 +79,13 @@ const doctorNavs: { label: string; link: string }[] = [
   },
 ];
 
+const cashierNavs: { label: string; link: string }[] = [
+  {
+    label: "Payment",
+    link: "payment",
+  },
+];
+
 export const AdministratorNav = () => {
   return (
     <nav className={classes.navbar}>
@@ -187,6 +194,37 @@ export const DoctorNav = () => {
             <LinksGroup
               label={row.label}
               link={"/doctor/" + row.link}
+              icon={IconList}
+            />
+          ))}
+        </div>
+      </ScrollArea>
+
+      <div className={classes.footer}>
+        <UserButton />
+      </div>
+    </nav>
+  );
+};
+
+export const CashierNav = () => {
+  return (
+    <nav className={classes.navbar}>
+      <div className={classes.header}>
+        <Group justify="space-between">
+          <Logo style={{ width: rem(120) }} />
+          <Code fw={700}>v3.1.2</Code>
+        </Group>
+      </div>
+
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>
+          <LinksGroup label="Dashboard" link="/cashier" icon={IconDashboard} />
+          <div className={classes.line} />
+          {cashierNavs.map((row) => (
+            <LinksGroup
+              label={row.label}
+              link={"/cashier/" + row.link}
               icon={IconList}
             />
           ))}
