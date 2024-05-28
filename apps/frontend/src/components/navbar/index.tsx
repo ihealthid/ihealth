@@ -64,6 +64,10 @@ const pharmachyNavs: { label: string; link: string }[] = [
     label: "Medication",
     link: "medication",
   },
+  {
+    label: "Procurement",
+    link: "procurement",
+  },
 ];
 
 export const AdministratorNav = () => {
