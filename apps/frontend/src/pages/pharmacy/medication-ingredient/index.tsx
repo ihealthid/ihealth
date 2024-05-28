@@ -20,10 +20,15 @@ import {
   useGetMedicationIngredientsQuery,
 } from "@/services/api/medication-ingredient";
 import { useParams } from "react-router-dom";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const params = useParams();
   const medicationId = params.medicationId as string;
+
+  const queryParam = usePaginateQuery({
+    "filter.medicationId": "$eq:" + medicationId,
+  });
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
   const [deleteMutation] = useDeleteMedicationIngredientMutation();
@@ -44,17 +49,16 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetMedicationIngredientsQuery}
-            queryParams={{
-              "medicationId:of": medicationId,
-            }}
-            headerSection={(filter) => (
+            query={queryParam.get()}
+            headerSection={() => (
               <Group p="md">
                 <TextInput
                   placeholder="Search ..."
                   onChange={(e) =>
-                    filter({
-                      "name:iLike": e.currentTarget.value,
-                    })
+                    queryParam.set(
+                      "filter.name",
+                      "$ilike:" + e.currentTarget.value,
+                    )
                   }
                 />
               </Group>

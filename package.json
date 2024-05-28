@@ -11,6 +11,12 @@
   "devDependencies": {
     "@nx/js": "19.0.4",
     "@nx/workspace": "19.0.4",
-    "nx": "19.0.4"
+    "nx": "19.0.4",
+    "@types/bun": "latest"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }

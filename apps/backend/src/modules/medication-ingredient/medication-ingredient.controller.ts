@@ -8,13 +8,15 @@ import {
   Put,
 } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
 import { EntityManager } from 'typeorm';
 import { MedicationIngredient } from './medication-ingredient';
 import { MedicationIngredientInputRequest } from './medication-ingredient.request';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'medication-ingredients',
@@ -26,14 +28,21 @@ export class MedicationIngredientController {
   ) {}
 
   @Get()
-  async paginate(@Pagination() paginationQuery: PaginationQuery) {
-    return this.entityManager.findAndCount(MedicationIngredient, {
-      ...paginationQuery,
-      relations: {
-        medication: true,
-        ingredient: true,
+  async get(@Paginate() query: PaginateQuery) {
+    return paginate(
+      query,
+      this.entityManager.getRepository(MedicationIngredient),
+      {
+        sortableColumns: ['createdAt'],
+        filterableColumns: {
+          medicationId: [FilterOperator.EQ],
+        },
+        relations: {
+          medication: true,
+          ingredient: true,
+        },
       },
-    });
+    );
   }
 
   @Get(':id')

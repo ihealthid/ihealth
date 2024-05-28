@@ -17,7 +17,7 @@ import {
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { ProTable, createProTableColumnActions } from "@/components/ProTable";
 import {
   Medication,
@@ -104,14 +104,14 @@ export const Component = () => {
                     icon: <IconLeaf />,
                     label: "Ingredients",
                     onClick: (row) => {
-                      navigate(`/medication-ingredient/${row.id}`);
+                      navigate(`/pharmacy/medication-ingredient/${row.id}`);
                     },
                   },
                   {
                     icon: <IconBox />,
                     label: "Stocks",
                     onClick(row) {
-                      navigate(`/medication-stock/${row.id}`);
+                      navigate(`/pharmacy/medication-stock/${row.id}`);
                     },
                   },
                   {

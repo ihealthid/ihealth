@@ -11,8 +11,121 @@ import {
   IconMedicineSyrup,
   IconRegistered,
   IconTruck,
+  IconUser,
   IconUsersGroup,
 } from "@tabler/icons-react";
+
+const administratorNavs: { label: string; link: string }[] = [
+  { label: "Role", link: "role" },
+  { label: "User", link: "user" },
+  { label: "Area", link: "area" },
+  { label: "Classification Deasease", link: "classification-disease" },
+  { label: "Encounter Act", link: "encounter-act" },
+  {
+    label: "Participant Type Code",
+    link: "participant-type-code",
+  },
+  {
+    label: "Marital Status",
+    link: "marital-status",
+  },
+  {
+    label: "Encounter Status",
+    link: "encounter-status",
+  },
+  {
+    label: "Healthcare Service",
+    link: "healthcare-service",
+  },
+  {
+    label: "Patient Condition",
+    link: "patient-condition",
+  },
+];
+
+const pharmachyNavs: { label: string; link: string }[] = [
+  {
+    label: "Manufacture",
+    link: "manufacture",
+  },
+  {
+    label: "Brand",
+    link: "brand",
+  },
+  {
+    label: "Distributor",
+    link: "distributor",
+  },
+  {
+    label: "Ingredient",
+    link: "ingredient",
+  },
+  {
+    label: "Medication",
+    link: "medication",
+  },
+];
+
+export const AdministratorNav = () => {
+  return (
+    <nav className={classes.navbar}>
+      <div className={classes.header}>
+        <Group justify="space-between">
+          <Logo style={{ width: rem(120) }} />
+          <Code fw={700}>v3.1.2</Code>
+        </Group>
+      </div>
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>
+          <LinksGroup
+            label="Dashboard"
+            link="/administrator/"
+            icon={IconDashboard}
+          />
+          <div className={classes.line} />
+
+          <LinksGroup
+            label="Master Data"
+            icon={IconDatabase}
+            links={administratorNavs}
+          />
+        </div>
+      </ScrollArea>
+      <div className={classes.footer}>
+        <UserButton />
+      </div>
+    </nav>
+  );
+};
+
+export const PharmacyNav = () => {
+  return (
+    <nav className={classes.navbar}>
+      <div className={classes.header}>
+        <Group justify="space-between">
+          <Logo style={{ width: rem(120) }} />
+          <Code fw={700}>v3.1.2</Code>
+        </Group>
+      </div>
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>
+          <LinksGroup label="Dashboard" link="/pharmacy" icon={IconDashboard} />
+          <div className={classes.line} />
+          {pharmachyNavs.map((row) => (
+            <LinksGroup
+              label={row.label}
+              link={`/pharmacy/${row.link}`}
+              icon={IconUser}
+            />
+          ))}
+        </div>
+      </ScrollArea>
+      <div className={classes.footer}>
+        <UserButton />
+      </div>
+    </nav>
+  );
+};
 
 const Navbar = () => {
   return (
@@ -32,63 +145,7 @@ const Navbar = () => {
             Administrator
           </Text>
           <LinksGroup label="Pengguna" link="/user" icon={IconUsersGroup} />
-          <LinksGroup
-            label="Mater Data"
-            links={[
-              { label: "Hak Akses", link: "/role" },
 
-              {
-                label: "Wilayah Administrasi",
-                link: "/area",
-              },
-              {
-                label: "Classification Disease",
-                link: "/classification-disease",
-              },
-              {
-                label: "Encounter Act",
-                link: "/encounter-act",
-              },
-              {
-                label: "Participant Type Code",
-                link: "participant-type-code",
-              },
-              {
-                label: "Marital Status",
-                link: "marital-status",
-              },
-              {
-                label: "Encounter Status",
-                link: "encounter-status",
-              },
-              {
-                label: "Healthcare Service",
-                link: "/healthcare-service",
-              },
-              {
-                label: "Patient Condition",
-                link: "/patient-condition",
-              },
-              //Farmasi
-              {
-                label: "Manufacture",
-                link: "/manufacture",
-              },
-              {
-                label: "Brand",
-                link: "/brand",
-              },
-              {
-                label: "Distributor",
-                link: "/distributor",
-              },
-              {
-                label: "Ingredient",
-                link: "/ingredient",
-              },
-            ]}
-            icon={IconDatabase}
-          />
           <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
             Farmasi
           </Text>

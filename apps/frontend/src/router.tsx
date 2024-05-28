@@ -1,4 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
+import { administratorRoutes } from "./pages/administrator/route";
+import { pharmacyRoutes } from "./pages/pharmacy/route";
 
 const load = (...paths: (string | any | any[])[]) => ({
   path: paths[0],
@@ -8,60 +10,6 @@ const load = (...paths: (string | any | any[])[]) => ({
 
 export const router = createBrowserRouter([
   load("/login", () => import("./pages/login")),
-  {
-    path: "/",
-    lazy: () => import("./components/layout"),
-    children: [
-      load("/encounter-act", () => import("./pages/encounter-act")),
-      load("/admission", () => import("./pages/admission")),
-      load("/appointment", () => import("./pages/appointment")),
-      load("/area", () => import("./pages/area")),
-      load(
-        "/classification-disease",
-        () => import("./pages/classification-disease"),
-      ),
-
-      load("/healthcare-service", () => import("./pages/healthcare-service")),
-      load("/marital-status", () => import("./pages/marital-status")),
-      load("/encounter-status", () => import("./pages/encounter-status")),
-      load(
-        "/encounter-act-consumable/:encounterActId",
-        () => import("./pages/encounter-act-consumable"),
-      ),
-      load("/patient-condition", () => import("./pages/patient-condition")),
-
-      // load('/dashboard', 'dashboard'),
-      load("/diagnose/:id", () => import("./pages/diagnose")),
-
-      //Farmasi
-      load("/manufacture", () => import("./pages/manufacture")),
-      load("/brand", () => import("./pages/brand")),
-      load("/distributor", () => import("./pages/distributor")),
-      load("/consumable", () => import("./pages/consumable")),
-      load("/consumable/:id/stock", () => import("./pages/consumable-stock")),
-      load("/medication", () => import("./pages/medication")),
-      load("/medication-stock/:id", () => import("./pages/medication-stock")),
-      load("/order", () => import("./pages/order")),
-      load("/order-add/:id", () => import("./pages/order-add")),
-      load("/order-detail/:id", () => import("./pages/order-detail")),
-      load("/procurement", () => import("./pages/procurement")),
-      load("/ingredient", () => import("./pages/ingredient")),
-      load(
-        "/medication-ingredient/:medicationId",
-        () => import("./pages/medication-ingredient"),
-      ),
-
-      load("/patient", () => import("./pages/patient")),
-      load("/payment", () => import("./pages/payment")),
-      load("/payment/:id", () => import("./pages/payment-detail")),
-      load("/role", () => import("./pages/role")),
-      load("/observation/:id", () => import("./pages/observation")),
-      load("/user", () => import("./pages/user")),
-      load("/waiting-list", () => import("./pages/waiting-list")),
-      load(
-        "/participant-type-code",
-        () => import("./pages/participant-type-code"),
-      ),
-    ],
-  },
+  ...administratorRoutes,
+  ...pharmacyRoutes,
 ]);

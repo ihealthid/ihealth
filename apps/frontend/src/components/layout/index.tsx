@@ -1,10 +1,14 @@
 import { AppShell, Group } from "@mantine/core";
 import { Outlet } from "react-router-dom";
-import Navbar from "../navbar";
 import { useLoginChecker } from "@/hooks/useLoginChecker";
 import { Timer } from "../Timer";
+import { ReactNode } from "react";
 
-export const Component = () => {
+interface LayoutProps {
+  navbar: ReactNode;
+}
+
+export const Layout = (props: LayoutProps) => {
   useLoginChecker();
 
   return (
@@ -20,9 +24,7 @@ export const Component = () => {
           <Timer />
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar>
-        <Navbar />
-      </AppShell.Navbar>
+      <AppShell.Navbar>{props.navbar}</AppShell.Navbar>
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
