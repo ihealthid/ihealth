@@ -37,6 +37,9 @@ export const Component = () => {
         <ProTable
           queryLoader={useGetEncountersQuery}
           query={paginateQuery.get()}
+          options={{
+            pollingInterval: 100,
+          }}
           cols={[
             {
               keyIndex: "patient.fullName",

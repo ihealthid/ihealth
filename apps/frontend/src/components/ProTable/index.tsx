@@ -1,4 +1,7 @@
-import type { UseQuery } from "node_modules/@reduxjs/toolkit/dist/query/react/buildHooks";
+import type {
+  UseQuery,
+  UseQuerySubscription,
+} from "node_modules/@reduxjs/toolkit/dist/query/react/buildHooks";
 import {
   Table,
   TableThead,
@@ -27,6 +30,9 @@ interface ProTableProps<TData> {
   >;
   query?: { [key: string]: string | string[] };
   headerSection?: () => React.ReactNode;
+  options?: {
+    pollingInterval?: number;
+  };
 }
 
 export const ProTable = <TData extends Record<string, any>>({
@@ -35,13 +41,19 @@ export const ProTable = <TData extends Record<string, any>>({
   query,
   limit = 10,
   headerSection,
+  options = {},
 }: ProTableProps<TData>) => {
   const [page, setPage] = useState(1);
-  const { data } = useQueryLoader({
-    ...query,
-    page,
-    limit,
-  });
+  const { data } = useQueryLoader(
+    {
+      ...query,
+      page,
+      limit,
+    },
+    {
+      ...options,
+    },
+  );
 
   const rows = useCreateProTableRows({
     data: data?.data ?? [],

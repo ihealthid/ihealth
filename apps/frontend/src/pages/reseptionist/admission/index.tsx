@@ -7,7 +7,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { SelectEncounterStatus } from "../../features/SelectEncounterStatus";
+import { SelectEncounterStatus } from "../../../features/SelectEncounterStatus";
 import { useEffect, useRef } from "react";
 import { AddSection } from "./components/AddSection";
 import { IconPlus } from "@tabler/icons-react";

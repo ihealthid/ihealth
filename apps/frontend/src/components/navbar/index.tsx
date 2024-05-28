@@ -65,6 +65,17 @@ const pharmachyNavs: { label: string; link: string }[] = [
   },
 ];
 
+const receptionistNavs: { label: string; link: string }[] = [
+  {
+    label: "Admission",
+    link: "admission",
+  },
+  {
+    label: "Patient",
+    link: "patient",
+  },
+];
+
 const nurseNavs: { label: string; link: string }[] = [
   {
     label: "Waiting List",
@@ -135,6 +146,39 @@ export const PharmacyNav = () => {
             <LinksGroup
               label={row.label}
               link={`/pharmacy/${row.link}`}
+              icon={IconUser}
+            />
+          ))}
+        </div>
+      </ScrollArea>
+      <div className={classes.footer}>
+        <UserButton />
+      </div>
+    </nav>
+  );
+};
+
+export const ReceptionistNav = () => {
+  return (
+    <nav className={classes.navbar}>
+      <div className={classes.header}>
+        <Group justify="space-between">
+          <Logo style={{ width: rem(120) }} />
+          <Code fw={700}>v3.1.2</Code>
+        </Group>
+      </div>
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>
+          <LinksGroup
+            label="Dashboard"
+            link="/receptionist"
+            icon={IconDashboard}
+          />
+          <div className={classes.line} />
+          {receptionistNavs.map((row) => (
+            <LinksGroup
+              label={row.label}
+              link={`/receptionist/${row.link}`}
               icon={IconUser}
             />
           ))}
