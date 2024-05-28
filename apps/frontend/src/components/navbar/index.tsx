@@ -188,7 +188,7 @@ export const DoctorNav = () => {
 
       <ScrollArea className={classes.links}>
         <div className={classes.linksInner}>
-          <LinksGroup label="Dashboard" link="/" icon={IconDashboard} />
+          <LinksGroup label="Dashboard" link="/doctor" icon={IconDashboard} />
           <div className={classes.line} />
           {doctorNavs.map((row) => (
             <LinksGroup
