@@ -3,6 +3,7 @@ import { administratorRoutes } from "./pages/administrator/route";
 import { pharmacyRoutes } from "./pages/pharmacy/route";
 import { receptionistRoutes } from "./pages/reseptionist/route";
 import { nurseRoutes } from "./pages/nurse/route";
+import { doctorRoutes } from "./pages/doctor/route";
 
 const load = (...paths: (string | any | any[])[]) => ({
   path: paths[0],
@@ -16,4 +17,5 @@ export const router = createBrowserRouter([
   ...pharmacyRoutes,
   ...receptionistRoutes,
   ...nurseRoutes,
+  ...doctorRoutes,
 ]);

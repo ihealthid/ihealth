@@ -1,18 +1,13 @@
-import { Code, Group, ScrollArea, Text, rem } from "@mantine/core";
+import { Code, Group, ScrollArea, rem } from "@mantine/core";
 import { Logo } from "../Logo";
 import { UserButton } from "../user-button";
 import classes from "./style.module.css";
 import { LinksGroup } from "@/components/navbar-links-group";
 import {
-  IconCash,
   IconDashboard,
   IconDatabase,
   IconList,
-  IconMedicineSyrup,
-  IconRegistered,
-  IconTruck,
   IconUser,
-  IconUsersGroup,
 } from "@tabler/icons-react";
 
 const administratorNavs: { label: string; link: string }[] = [
@@ -74,6 +69,13 @@ const nurseNavs: { label: string; link: string }[] = [
   {
     label: "Waiting List",
     link: "waiting-list",
+  },
+];
+
+const doctorNavs: { label: string; link: string }[] = [
+  {
+    label: "Appoitment",
+    link: "appointment",
   },
 ];
 
@@ -167,7 +169,7 @@ export const NurseNav = () => {
   );
 };
 
-const Navbar = () => {
+export const DoctorNav = () => {
   return (
     <nav className={classes.navbar}>
       <div className={classes.header}>
@@ -181,59 +183,13 @@ const Navbar = () => {
         <div className={classes.linksInner}>
           <LinksGroup label="Dashboard" link="/" icon={IconDashboard} />
           <div className={classes.line} />
-          <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
-            Administrator
-          </Text>
-          <LinksGroup label="Pengguna" link="/user" icon={IconUsersGroup} />
-
-          <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
-            Farmasi
-          </Text>
-          <LinksGroup label="Pesanan" link="/order" icon={IconList} />
-          <LinksGroup
-            label="Obat - Obatan"
-            link="/medication"
-            icon={IconMedicineSyrup}
-          />
-          <LinksGroup
-            label="Consumable"
-            link="/consumable"
-            icon={IconMedicineSyrup}
-          />
-          <LinksGroup
-            label="Procurement"
-            link="/procurement"
-            icon={IconTruck}
-          />
-          <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
-            Resepsionis
-          </Text>
-          <LinksGroup
-            label="Pendaftaran"
-            link="/admission"
-            icon={IconRegistered}
-          />
-          <LinksGroup label="Pasien" link="/patient" icon={IconUsersGroup} />
-          <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
-            Perawat
-          </Text>
-          <LinksGroup
-            label="Daftar Tunggu"
-            link="/waiting-list"
-            icon={IconRegistered}
-          />
-          <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
-            Dokter
-          </Text>
-          <LinksGroup
-            label="Daftar Pertemuan"
-            link="/appointment"
-            icon={IconRegistered}
-          />
-          <Text size="xs" c="dimmed" fw={500} pl={16} py={8}>
-            Kasir
-          </Text>
-          <LinksGroup label="Pembayaran" link="/payment" icon={IconCash} />
+          {doctorNavs.map((row) => (
+            <LinksGroup
+              label={row.label}
+              link={"/doctor/" + row.link}
+              icon={IconList}
+            />
+          ))}
         </div>
       </ScrollArea>
 
@@ -243,5 +199,3 @@ const Navbar = () => {
     </nav>
   );
 };
-
-export default Navbar;
