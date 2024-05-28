@@ -14,8 +14,13 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string) {
-    const user = await this.entityManager.findOneBy(User, {
-      username,
+    const user = await this.entityManager.findOne(User, {
+      where: {
+        username,
+      },
+      relations: {
+        roles: true,
+      },
     });
 
     if (!user || !bcrypt.compareSync(pass, user.password)) {
@@ -31,6 +36,7 @@ export class AuthService {
     const payload = { username: user.username, sub: user.id };
     return {
       accessToken: this.jwtService.sign(payload),
+      user,
     };
   }
 }

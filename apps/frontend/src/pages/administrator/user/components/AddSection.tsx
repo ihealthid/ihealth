@@ -1,16 +1,12 @@
 import { FormProvider } from "@/components/form-provider";
-import { usePostUserMutation } from "@/services/api/user";
+import { useCreateUserMutation } from "@/services/api/user";
 import { Button, Flex, Modal, Stack, TextInput, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import SelectRole from "./SelectRole";
 import { forwardRef, useImperativeHandle } from "react";
+import { DisclosureAction } from "@/types/disclosure";
 
-export interface AddSectionRef {
-  open(): void;
-  close(): void;
-}
-
-export const AddSection = forwardRef<AddSectionRef>((_, ref) => {
+export const AddSection = forwardRef<DisclosureAction>((_, ref) => {
   const [opened, { open, close }] = useDisclosure();
 
   useImperativeHandle(ref, () => ({ open, close }));
@@ -19,10 +15,10 @@ export const AddSection = forwardRef<AddSectionRef>((_, ref) => {
     <Modal
       opened={opened}
       onClose={close}
-      title={<Title order={4}>Tambah Pengguna</Title>}
+      title={<Title order={4}>Add New User</Title>}
     >
       <Modal.Body>
-        <FormProvider useMutate={usePostUserMutation} onSuccess={close}>
+        <FormProvider useMutate={useCreateUserMutation} onSuccess={close}>
           {(form) => (
             <Stack>
               <TextInput

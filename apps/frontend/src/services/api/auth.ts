@@ -1,4 +1,5 @@
 import { mainApi } from "./main";
+import { User } from "./user";
 
 export type PostLoginInput = {
   username: string;
@@ -7,7 +8,8 @@ export type PostLoginInput = {
 
 export type PostLoginResult = {
   data: {
-    accessToken: string
+    accessToken: string;
+    user: User;
   };
 };
 

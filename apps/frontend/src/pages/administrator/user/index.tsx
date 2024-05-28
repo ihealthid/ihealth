@@ -8,30 +8,36 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { AddSection, AddSectionRef } from "./components/AddSection";
+import { AddSection } from "./components/AddSection";
 import { useRef } from "react";
-import { IconPlus } from "@tabler/icons-react";
-import { ProTable } from "@/components/ProTable";
-import { useGetUsersQuery } from "@/services/api/user";
+import { IconEdit, IconPlus } from "@tabler/icons-react";
+import { ProTable, createProTableColumnActions } from "@/components/ProTable";
+import { User, useGetUsersQuery } from "@/services/api/user";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
+import { EditSection } from "./components/EditSection";
+import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
 
 export const Component = () => {
-  const addSectionRef = useRef<AddSectionRef>(null);
+  const addSectionRef = useRef<DisclosureAction>(null);
+  const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
+  const paginateQuery = usePaginateQuery();
 
   return (
     <>
       <Card>
         <Flex justify="space-between">
-          <Title order={4}>Daftar Pengguna</Title>
+          <Title order={4}>Users</Title>
           <Button
             onClick={() => addSectionRef.current?.open()}
             leftSection={<IconPlus />}
           >
-            Tambah
+            Add New User
           </Button>
         </Flex>
         <CardSection>
           <ProTable
             queryLoader={useGetUsersQuery}
+            query={paginateQuery.get()}
             cols={[
               {
                 keyIndex: "id",
@@ -51,15 +57,27 @@ export const Component = () => {
                   </Group>
                 ),
               },
+              createProTableColumnActions<User>({
+                actions: [
+                  {
+                    icon: <IconEdit />,
+                    label: "Edit",
+                    onClick: (row) => {
+                      editSectionRef.current?.open(row.id);
+                    },
+                  },
+                ],
+              }),
             ]}
-            headerSection={(setter) => (
+            headerSection={() => (
               <Group p="md">
                 <TextInput
                   placeholder="Pencarian"
                   onChange={(e) => {
-                    setter({
-                      "username:iLike": e.currentTarget.value,
-                    });
+                    paginateQuery.set(
+                      "filter.username",
+                      "$ilike:" + e.currentTarget.value,
+                    );
                   }}
                 />
               </Group>
@@ -68,6 +86,7 @@ export const Component = () => {
         </CardSection>
       </Card>
       <AddSection ref={addSectionRef} />
+      <EditSection ref={editSectionRef} />
     </>
   );
 };

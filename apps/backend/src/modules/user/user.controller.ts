@@ -4,23 +4,23 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { UserCreateRequest } from './user.request';
 import * as bcrypt from 'bcrypt';
-import {
-  Pagination,
-  PaginationQuery,
-} from 'src/decorators/pagination.decorator';
-import { contains } from 'src/helpers/search-contains';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { User } from './user';
-import { EntityManager, FindOneOptions, In, Repository } from 'typeorm';
+import { EntityManager, In } from 'typeorm';
 import { Role } from '../role/role';
-import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
+import {
+  FilterOperator,
+  Paginate,
+  PaginateQuery,
+  paginate,
+} from 'nestjs-paginate';
 
 @Controller({
   path: 'users',
@@ -56,6 +56,9 @@ export class UserController {
   async get(@Paginate() query: PaginateQuery) {
     return paginate(query, this.entityManager.getRepository(User), {
       sortableColumns: ['fullName', 'username'],
+      filterableColumns: {
+        username: [FilterOperator.ILIKE],
+      },
       relations: {
         roles: true,
       },
@@ -64,9 +67,22 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneOrFail(User, {
+      where: {
+        id,
+      },
+      relations: {
+        roles: true,
+      },
+    });
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
-    @Body() data: Partial<UserCreateRequest>,
+    @Body() { password, ...data }: Partial<UserCreateRequest>,
   ) {
     const user = await this.entityManager.findOneOrFail(User, {
       where: {
@@ -79,13 +95,18 @@ export class UserController {
 
     let roles: Role[] = [];
 
-    if (roles.length > 0) {
-      roles = await this.entityManager.find(Role, { where: { id: In(roles) } });
+    if (data.roles?.length > 0) {
+      roles = await this.entityManager.find(Role, {
+        where: { id: In(data.roles) },
+      });
     }
 
     const uData = this.entityManager.merge(User, user, {
       ...data,
       roles,
+      password: password
+        ? bcrypt.hashSync(password, bcrypt.genSaltSync())
+        : undefined,
     });
     await this.entityManager.save(uData);
   }

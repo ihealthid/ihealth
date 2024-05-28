@@ -2,6 +2,7 @@ import { Role } from "./role";
 import { mainApi } from "./main";
 import { PaginationResult } from "@/types/pagination-result";
 import { PaginationQueryParams } from "@/types/pagination-query-params";
+import { EntityResponse } from "@/types/entity-response";
 
 export type User = {
   id: string;
@@ -20,15 +21,21 @@ type PostUserInput = {
 };
 
 const userApi = mainApi.injectEndpoints({
-  endpoints: (builder) => ({
-    getUsers: builder.query<PaginationResult<User>, PaginationQueryParams>({
+  endpoints: ({ query, mutation }) => ({
+    getUsers: query<PaginationResult<User>, PaginationQueryParams>({
       query: (params) => ({
         url: "/users",
         params,
       }),
       providesTags: ["User"],
     }),
-    postUser: builder.mutation<unknown, PostUserInput>({
+    getUser: query<EntityResponse<User>, string>({
+      query: (id) => ({
+        url: "/users/" + id,
+      }),
+      providesTags: ["User"],
+    }),
+    createUser: mutation<unknown, PostUserInput>({
       query: (body) => ({
         url: "/users",
         method: "post",
@@ -36,15 +43,28 @@ const userApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    deleteUser: builder.mutation<unknown, number>({
+    deleteUser: mutation<unknown, number>({
       query: (id) => ({
         url: `/users/${id}`,
         method: "delete",
       }),
       invalidatesTags: ["User"],
     }),
+    updateUser: mutation<unknown, Partial<PostUserInput> & { id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/users/${id}`,
+        method: "put",
+        body,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useDeleteUserMutation, usePostUserMutation } =
-  userApi;
+export const {
+  useGetUsersQuery,
+  useLazyGetUserQuery,
+  useDeleteUserMutation,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} = userApi;

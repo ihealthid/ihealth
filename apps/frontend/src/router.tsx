@@ -13,7 +13,7 @@ const load = (...paths: (string | any | any[])[]) => ({
 });
 
 export const router = createBrowserRouter([
-  load("/login", () => import("./pages/login")),
+  load("/", () => import("./pages/login")),
   ...administratorRoutes,
   ...pharmacyRoutes,
   ...receptionistRoutes,

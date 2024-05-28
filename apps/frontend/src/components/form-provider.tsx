@@ -13,7 +13,6 @@ interface FormProviderProps<TInput, TResult> {
     mutate: MutationTrigger<MutationDefinition<TInput, any, any, any>>
   ) => ReactNode;
   useMutate: UseMutation<MutationDefinition<TInput, any, any, any>>;
-  redirect?: string;
   onSuccess?: (res: TResult) => void;
   initialValues?: Partial<TInput>;
   encType?: FormEncType;
@@ -22,7 +21,6 @@ interface FormProviderProps<TInput, TResult> {
 export const FormProvider = <TInput, TResult extends Record<string, any>>({
   children,
   useMutate,
-  redirect,
   onSuccess,
   initialValues,
   encType,
@@ -34,14 +32,10 @@ export const FormProvider = <TInput, TResult extends Record<string, any>>({
   const [mutate, { isSuccess, data }] = useMutate();
 
   useEffect(() => {
-    if (isSuccess && redirect) {
-      navigate(redirect);
-    }
-
-    if (isSuccess && !redirect) {
+    if (isSuccess) {
       onSuccess?.(data);
     }
-  }, [isSuccess, redirect, navigate, onSuccess, data]);
+  }, [isSuccess, navigate, onSuccess, data]);
 
   return (
     <form

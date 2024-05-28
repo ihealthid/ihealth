@@ -13,7 +13,7 @@ export const privateBaseQuery = () =>
     },
     async responseHandler(response) {
       if (response.status === 401) {
-        window.location.href = '/login'
+        window.location.href = '/'
       }
 
       return response.json();

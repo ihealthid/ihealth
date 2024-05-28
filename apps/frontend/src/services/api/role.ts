@@ -3,7 +3,7 @@ import { mainApi } from "./main";
 import { PaginationResult } from "@/types/pagination-result";
 
 export type Role = {
-  id: number;
+  id: string;
   name: string;
   type: string;
 };
