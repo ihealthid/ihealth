@@ -64,7 +64,7 @@ export const Component = () => {
                   icon: <IconStethoscope />,
                   label: "Observation",
                   onClick(row) {
-                    navigate("/observation/" + row.id);
+                    navigate("/nurse/observation/" + row.id);
                   },
                 },
               ],
