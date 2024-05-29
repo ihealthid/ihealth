@@ -1,11 +1,11 @@
 import { Layout } from "@/components/layout";
-import { ReceptionistNav } from "@/components/navbar";
+import { NavigationBar } from "@/components/navbar";
 import { RouteObject } from "react-router-dom";
 
 export const receptionistRoutes: RouteObject[] = [
   {
     path: "/receptionist",
-    element: <Layout navbar={<ReceptionistNav />} />,
+    element: <Layout navbar={<NavigationBar role="receptionist" />} />,
     children: [
       {
         path: "admission",

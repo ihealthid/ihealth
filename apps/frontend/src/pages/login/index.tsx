@@ -2,6 +2,7 @@ import { FormProvider } from "@/components/form-provider";
 import { useAccessToken } from "@/hooks/access-token";
 import { usePostLoginMutation } from "@/services/api/auth";
 import {
+  BackgroundImage,
   Box,
   Button,
   Flex,
@@ -35,36 +36,38 @@ export const Component = () => {
 
   return (
     <>
-      <Flex mih="100vh">
-        <Box style={{ flex: 1 }}></Box>
-        <Flex w={300} justify="center" align="center">
-          <FormProvider
-            useMutate={usePostLoginMutation}
-            onSuccess={({ data }) => {
-              onSuccess(data);
-            }}
-          >
-            {(form) => (
-              <Stack>
-                <TextInput
-                  {...form.getInputProps("username")}
-                  label="Username"
-                  placeholder="Enter Username"
-                />
-                <TextInput
-                  {...form.getInputProps("password")}
-                  label="Password"
-                  placeholder="Enter Password"
-                  type="password"
-                />
-                <Button type="submit" fullWidth>
-                  Login
-                </Button>
-              </Stack>
-            )}
-          </FormProvider>
+      <BackgroundImage src="/background.jpeg">
+        <Flex mih="100vh">
+          <Box style={{ flex: 1 }}></Box>
+          <Flex w={300} justify="center" align="center" bg="rgba(255, 255, 255, .9)">
+            <FormProvider
+              useMutate={usePostLoginMutation}
+              onSuccess={({ data }) => {
+                onSuccess(data);
+              }}
+            >
+              {(form) => (
+                <Stack>
+                  <TextInput
+                    {...form.getInputProps("username")}
+                    label="Username"
+                    placeholder="Enter Username"
+                  />
+                  <TextInput
+                    {...form.getInputProps("password")}
+                    label="Password"
+                    placeholder="Enter Password"
+                    type="password"
+                  />
+                  <Button type="submit" fullWidth>
+                    Login
+                  </Button>
+                </Stack>
+              )}
+            </FormProvider>
+          </Flex>
         </Flex>
-      </Flex>
+      </BackgroundImage>
 
       <Modal
         opened={opened}

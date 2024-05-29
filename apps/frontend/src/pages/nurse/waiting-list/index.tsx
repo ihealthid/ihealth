@@ -38,7 +38,7 @@ export const Component = () => {
           queryLoader={useGetEncountersQuery}
           query={paginateQuery.get()}
           options={{
-            pollingInterval: 100,
+            pollingInterval: 5000,
           }}
           cols={[
             {

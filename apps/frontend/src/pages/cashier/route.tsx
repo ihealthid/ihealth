@@ -1,11 +1,11 @@
 import { Layout } from "@/components/layout";
-import { CashierNav } from "@/components/navbar";
+import { NavigationBar } from "@/components/navbar";
 import { RouteObject } from "react-router-dom";
 
 export const cashierRoutes: RouteObject[] = [
   {
     path: "/cashier",
-    element: <Layout navbar={<CashierNav />} />,
+    element: <Layout navbar={<NavigationBar role="cashier" />} />,
     children: [
       {
         path: "payment",

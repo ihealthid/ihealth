@@ -1,11 +1,11 @@
 import { Layout } from "@/components/layout";
-import { DoctorNav } from "@/components/navbar";
+import { NavigationBar } from "@/components/navbar";
 import { RouteObject } from "react-router-dom";
 
 export const doctorRoutes: RouteObject[] = [
   {
     path: "/doctor",
-    element: <Layout navbar={<DoctorNav />} />,
+    element: <Layout navbar={<NavigationBar role="doctor" />} />,
     children: [
       {
         path: "appointment",

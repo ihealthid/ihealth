@@ -4,10 +4,15 @@ import { UserButton } from "../user-button";
 import classes from "./style.module.css";
 import { Links, LinksGroup } from "@/components/navbar-links-group";
 import {
+  IconCash,
   IconDashboard,
   IconDatabase,
   IconList,
+  IconListNumbers,
+  IconNote,
+  IconPencil,
   IconUser,
+  IconUsers,
 } from "@tabler/icons-react";
 
 interface Link {
@@ -53,208 +58,72 @@ const links: {
       ],
     },
   ],
-};
-
-const pharmachyNavs: { label: string; link: string }[] = [
-  {
-    label: "Manufacture",
-    link: "manufacture",
-  },
-  {
-    label: "Brand",
-    link: "brand",
-  },
-  {
-    label: "Distributor",
-    link: "distributor",
-  },
-  {
-    label: "Ingredient",
-    link: "ingredient",
-  },
-  {
-    label: "Medication",
-    link: "medication",
-  },
-  {
-    label: "Procurement",
-    link: "procurement",
-  },
-];
-
-const receptionistNavs: { label: string; link: string }[] = [
-  {
-    label: "Admission",
-    link: "admission",
-  },
-  {
-    label: "Patient",
-    link: "patient",
-  },
-];
-
-const nurseNavs: { label: string; link: string }[] = [
-  {
-    label: "Waiting List",
-    link: "waiting-list",
-  },
-];
-
-const doctorNavs: { label: string; link: string }[] = [
-  {
-    label: "Appoitment",
-    link: "appointment",
-  },
-];
-
-const cashierNavs: { label: string; link: string }[] = [
-  {
-    label: "Payment",
-    link: "payment",
-  },
-];
-
-export const PharmacyNav = () => {
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.header}>
-        <Group justify="center">
-          <Logo style={{ width: rem(120) }} />
-        </Group>
-      </div>
-      <ScrollArea className={classes.links}>
-        <div className={classes.linksInner}>
-          <LinksGroup label="Dashboard" link="/pharmacy" icon={IconDashboard} />
-          {pharmachyNavs.map((row) => (
-            <LinksGroup
-              label={row.label}
-              link={`/pharmacy/${row.link}`}
-              icon={IconUser}
-            />
-          ))}
-        </div>
-      </ScrollArea>
-      <div className={classes.footer}>
-        <UserButton />
-      </div>
-    </nav>
-  );
-};
-
-export const ReceptionistNav = () => {
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.header}>
-        <Group justify="center">
-          <Logo style={{ width: rem(120) }} />
-        </Group>
-      </div>
-      <ScrollArea className={classes.links}>
-        <div className={classes.linksInner}>
-          <LinksGroup
-            label="Dashboard"
-            link="/receptionist"
-            icon={IconDashboard}
-          />
-          {receptionistNavs.map((row) => (
-            <LinksGroup
-              label={row.label}
-              link={`/receptionist/${row.link}`}
-              icon={IconUser}
-            />
-          ))}
-        </div>
-      </ScrollArea>
-      <div className={classes.footer}>
-        <UserButton />
-      </div>
-    </nav>
-  );
-};
-
-export const NurseNav = () => {
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.header}>
-        <Group justify="center">
-          <Logo style={{ width: rem(120) }} />
-        </Group>
-      </div>
-      <ScrollArea className={classes.links}>
-        <div className={classes.linksInner}>
-          <LinksGroup label="Dashboard" link="/nurse" icon={IconDashboard} />
-          {nurseNavs.map((row) => (
-            <LinksGroup
-              label={row.label}
-              link={`/nurse/${row.link}`}
-              icon={IconUser}
-            />
-          ))}
-        </div>
-      </ScrollArea>
-      <div className={classes.footer}>
-        <UserButton />
-      </div>
-    </nav>
-  );
-};
-
-export const DoctorNav = () => {
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.header}>
-        <Group justify="center">
-          <Logo style={{ width: rem(120) }} />
-        </Group>
-      </div>
-
-      <ScrollArea className={classes.links}>
-        <div className={classes.linksInner}>
-          <LinksGroup label="Dashboard" link="/doctor" icon={IconDashboard} />
-          {doctorNavs.map((row) => (
-            <LinksGroup
-              label={row.label}
-              link={"/doctor/" + row.link}
-              icon={IconList}
-            />
-          ))}
-        </div>
-      </ScrollArea>
-
-      <div className={classes.footer}>
-        <UserButton />
-      </div>
-    </nav>
-  );
-};
-
-export const CashierNav = () => {
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.header}>
-        <Group justify="center">
-          <Logo style={{ width: rem(120) }} />
-        </Group>
-      </div>
-
-      <ScrollArea className={classes.links}>
-        <div className={classes.linksInner}>
-          <LinksGroup label="Dashboard" link="/cashier" icon={IconDashboard} />
-          {cashierNavs.map((row) => (
-            <LinksGroup
-              label={row.label}
-              link={"/cashier/" + row.link}
-              icon={IconList}
-            />
-          ))}
-        </div>
-      </ScrollArea>
-
-      <div className={classes.footer}>
-        <UserButton />
-      </div>
-    </nav>
-  );
+  receptionist: [
+    {
+      label: "Admission",
+      link: "admission",
+      icon: IconPencil,
+    },
+    {
+      label: "Patient",
+      link: "patient",
+      icon: IconUsers,
+    },
+  ],
+  nurse: [
+    {
+      label: "Waiting List",
+      link: "waiting-list",
+      icon: IconListNumbers,
+    },
+  ],
+  doctor: [
+    {
+      label: "Appoitment",
+      link: "appointment",
+      icon: IconListNumbers,
+    },
+  ],
+  cashier: [
+    {
+      label: "Payment",
+      link: "payment",
+      icon: IconCash,
+    },
+  ],
+  pharmacy: [
+    {
+      label: "Master Data",
+      icon: IconDatabase,
+      links: [
+        {
+          label: "Manufacture",
+          link: "manufacture",
+        },
+        {
+          label: "Brand",
+          link: "brand",
+        },
+        {
+          label: "Distributor",
+          link: "distributor",
+        },
+        {
+          label: "Ingredient",
+          link: "ingredient",
+        },
+        {
+          label: "Medication",
+          link: "medication",
+        },
+      ],
+    },
+    {
+      label: "Procurement",
+      link: "procurement",
+      icon: IconNote,
+    },
+  ],
 };
 
 export const NavigationBar = ({ role }: { role: keyof typeof links }) => {

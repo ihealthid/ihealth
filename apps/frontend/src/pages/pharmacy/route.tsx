@@ -1,11 +1,11 @@
 import { Layout } from "@/components/layout";
-import { PharmacyNav } from "@/components/navbar";
+import { NavigationBar } from "@/components/navbar";
 import { RouteObject } from "react-router-dom";
 
 export const pharmacyRoutes: RouteObject[] = [
   {
     path: "/pharmacy",
-    element: <Layout navbar={<PharmacyNav />} />,
+    element: <Layout navbar={<NavigationBar role="pharmacy" />} />,
     children: [
       {
         path: "brand",
