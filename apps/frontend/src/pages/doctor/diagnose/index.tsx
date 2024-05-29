@@ -2,7 +2,7 @@ import { Box, Card, Grid, InputLabel, Stack, Tabs } from "@mantine/core";
 import { useState } from "react";
 import { randomId } from "@mantine/hooks";
 import { useParams } from "react-router-dom";
-import { PatientProfile } from "./components/PatientProfile";
+import { PatientProfile } from "../../../features/PatientProfile";
 import { ScreeningDetail } from "./screening-detail";
 import { SOAPForm } from "./soap-form";
 import { ClassificationDiseaseSection } from "./components/ClassificationDiseaseSection";
@@ -12,7 +12,6 @@ import { Footer } from "./components/Footer";
 import { OtherField } from "./other-field";
 import { AllergySection } from "./components/AllergySection";
 import { EncounterAct } from "./components/EncounterAct";
-import { ProTable } from "@/components/ProTable";
 
 export const Component = () => {
   const params = useParams();

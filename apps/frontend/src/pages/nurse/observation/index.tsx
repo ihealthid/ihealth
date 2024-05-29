@@ -7,6 +7,8 @@ import {
   Button,
   Card,
   Flex,
+  Grid,
+  Menu,
   NumberInput,
   SimpleGrid,
   Skeleton,
@@ -14,11 +16,13 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import _ from "lodash";
 import { useMemo } from "react";
+import { PatientProfile } from "@/features/PatientProfile";
 
 export const Component = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const encounterId = params.id as string;
   const { data } = useGetObservationByEncounterIdQuery({
@@ -54,96 +58,115 @@ export const Component = () => {
   }, [data]);
 
   return (
-    <Card>
-      <Title order={4} mb="md">
-        Observation
-      </Title>
-      {data ? (
-        <FormProvider
-          useMutate={useUpdateObservationMutation}
-          initialValues={{ encounterId }}
-          redirect="/waiting-list"
-        >
-          {(form) => (
-            <Stack>
-              <SimpleGrid cols={2}>
-                <NumberInput
-                  {...form.getInputProps("systole")}
-                  label="Systole"
-                  placeholder="Masukan systole"
-                  defaultValue={computedData.systole ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("diastole")}
-                  label="Diastole"
-                  placeholder="Masukan diastole"
-                  defaultValue={computedData.diastole ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("height")}
-                  label="Tinggi Badan"
-                  placeholder="Masukan tinggi badan"
-                  defaultValue={computedData.height ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("weight")}
-                  label="Berat Badan"
-                  placeholder="Masukan berat badan"
-                  defaultValue={computedData.weight ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("waistline")}
-                  label="Lingkar Pinggang"
-                  placeholder="Masukan lingkar pinggang"
-                  defaultValue={computedData.waistline ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("headCircumference")}
-                  label="Lingkar Kepala"
-                  placeholder="Masukan lingkar kepala"
-                  defaultValue={computedData.headCircumference ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("temperature")}
-                  label="Suhu Badan"
-                  placeholder="Masukan suhu badan"
-                  defaultValue={computedData.temperature ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("saturationOxygen")}
-                  label="Sarutasi Oksigen"
-                  placeholder="Masukan sarutasi oksigen"
-                  defaultValue={computedData.saturationOxygen ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("heartRate")}
-                  label="Detak Jantung"
-                  placeholder="Masukan detak jantung"
-                  defaultValue={computedData.heartRate ?? undefined}
-                />
-                <NumberInput
-                  {...form.getInputProps("respiratoryRate")}
-                  label="Respiratory Rate"
-                  placeholder="Masukan respiratory rate"
-                  defaultValue={computedData.respiratoryRate ?? undefined}
-                />
-                <Textarea
-                  {...form.getInputProps("anamnesis")}
-                  label="Anamnesis"
-                  placeholder="Masukan anamnesis"
-                  defaultValue={computedData.anamnesis ?? undefined}
-                  required
-                />
-              </SimpleGrid>
-              <Flex justify="end">
-                <Button type="submit">Save</Button>
-              </Flex>
-            </Stack>
+    <Grid columns={5}>
+      <Grid.Col span={2}>
+        <PatientProfile encounterId={encounterId} />
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <Card withBorder>
+          <Card.Section bg="pink" c="white" p="sm">
+            <Title order={4}>Screening Awal</Title>
+          </Card.Section>
+          {data ? (
+            <FormProvider
+              useMutate={useUpdateObservationMutation}
+              initialValues={{ encounterId }}
+              onSuccess={() => {
+                navigate("/nurse/waiting-list");
+              }}
+            >
+              {(form) => (
+                <Stack>
+                  <SimpleGrid cols={1}>
+                    <NumberInput
+                      {...form.getInputProps("systole")}
+                      label="Systole"
+                      placeholder="Masukan systole"
+                      defaultValue={computedData.systole ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("diastole")}
+                      label="Diastole"
+                      placeholder="Masukan diastole"
+                      defaultValue={computedData.diastole ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("height")}
+                      label="Tinggi Badan"
+                      placeholder="Masukan tinggi badan"
+                      defaultValue={computedData.height ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("weight")}
+                      label="Berat Badan"
+                      placeholder="Masukan berat badan"
+                      defaultValue={computedData.weight ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("waistline")}
+                      label="Lingkar Pinggang"
+                      placeholder="Masukan lingkar pinggang"
+                      defaultValue={computedData.waistline ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("headCircumference")}
+                      label="Lingkar Kepala"
+                      placeholder="Masukan lingkar kepala"
+                      defaultValue={computedData.headCircumference ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("temperature")}
+                      label="Suhu Badan"
+                      placeholder="Masukan suhu badan"
+                      defaultValue={computedData.temperature ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("saturationOxygen")}
+                      label="Sarutasi Oksigen"
+                      placeholder="Masukan sarutasi oksigen"
+                      defaultValue={computedData.saturationOxygen ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("heartRate")}
+                      label="Detak Jantung"
+                      placeholder="Masukan detak jantung"
+                      defaultValue={computedData.heartRate ?? undefined}
+                    />
+                    <NumberInput
+                      {...form.getInputProps("respiratoryRate")}
+                      label="Respiratory Rate"
+                      placeholder="Masukan respiratory rate"
+                      defaultValue={computedData.respiratoryRate ?? undefined}
+                    />
+                    <Textarea
+                      {...form.getInputProps("anamnesis")}
+                      label="Anamnesis"
+                      placeholder="Masukan anamnesis"
+                      defaultValue={computedData.anamnesis ?? undefined}
+                      required
+                    />
+                  </SimpleGrid>
+                  <Flex justify="end" gap="md">
+                    <Menu>
+                      <Menu.Target>
+                        <Button type="button" variant="subtle">
+                          Tambah Field
+                        </Button>
+                      </Menu.Target>
+                      <Menu.Dropdown>
+                        <Menu.Item>A</Menu.Item>
+                      </Menu.Dropdown>
+                    </Menu>
+                    <Button type="submit">Save</Button>
+                  </Flex>
+                </Stack>
+              )}
+            </FormProvider>
+          ) : (
+            <Skeleton />
           )}
-        </FormProvider>
-      ) : (
-        <Skeleton />
-      )}
-    </Card>
+        </Card>
+      </Grid.Col>
+    </Grid>
   );
 };

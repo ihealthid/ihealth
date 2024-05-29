@@ -11,6 +11,10 @@ export const nurseRoutes: RouteObject[] = [
         path: "waiting-list",
         lazy: () => import("./waiting-list"),
       },
+      {
+        path: "observation/:id",
+        lazy: () => import("./observation"),
+      },
     ],
   },
 ];
