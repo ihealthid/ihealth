@@ -4,7 +4,6 @@ import {
   Box,
   Collapse,
   ThemeIcon,
-  Text,
   UnstyledButton,
   rem,
 } from "@mantine/core";
@@ -12,12 +11,17 @@ import { IconChevronRight } from "@tabler/icons-react";
 import classes from "./style.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
+export type Links = {
+  label: string;
+  link: string;
+}[];
+
 interface LinksGroupProps {
   icon: React.FC<any>;
   label: string;
   link?: string;
   initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  links?: Links;
 }
 
 export function LinksGroup({

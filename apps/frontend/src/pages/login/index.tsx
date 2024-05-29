@@ -7,7 +7,6 @@ import {
   Flex,
   Group,
   Modal,
-  ModalBase,
   ModalBody,
   Stack,
   TextInput,

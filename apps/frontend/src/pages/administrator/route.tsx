@@ -1,11 +1,11 @@
 import { Layout } from "@/components/layout";
-import { AdministratorNav } from "@/components/navbar";
+import { NavigationBar } from "@/components/navbar";
 import { RouteObject } from "react-router-dom";
 
 export const administratorRoutes: RouteObject[] = [
   {
     path: "/administrator",
-    element: <Layout navbar={<AdministratorNav />} />,
+    element: <Layout navbar={<NavigationBar role="administrator" />} />,
     children: [
       {
         path: "role",

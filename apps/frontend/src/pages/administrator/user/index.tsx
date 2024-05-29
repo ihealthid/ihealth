@@ -40,8 +40,8 @@ export const Component = () => {
             query={paginateQuery.get()}
             cols={[
               {
-                keyIndex: "id",
-                header: "ID",
+                keyIndex: "fullName",
+                header: "Full Name",
               },
               {
                 keyIndex: "username",

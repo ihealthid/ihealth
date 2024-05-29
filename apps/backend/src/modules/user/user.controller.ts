@@ -34,7 +34,7 @@ export class UserController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(
-    @Body() { fullName, roles, password, ...data }: UserCreateRequest,
+    @Body() { roles, password, ...data }: UserCreateRequest,
   ) {
     const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
     const user = this.entityManager.create(User, {
