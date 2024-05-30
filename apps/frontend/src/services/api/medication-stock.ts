@@ -48,8 +48,19 @@ const api = mainApi.injectEndpoints({
       }),
       invalidatesTags: ["MedicationStock", "Medication"],
     }),
+
+    deleteMedicationStock: mutation<unknown, string>({
+      query: (id) => ({
+        url: "/medication-stocks/" + id,
+        method: "delete",
+      }),
+      invalidatesTags: ["MedicationStock", "Medication"],
+    }),
   }),
 });
 
-export const { useGetMedicationStocksQuery, useCreateMedicationStockMutation } =
-  api;
+export const {
+  useGetMedicationStocksQuery,
+  useCreateMedicationStockMutation,
+  useDeleteMedicationStockMutation,
+} = api;

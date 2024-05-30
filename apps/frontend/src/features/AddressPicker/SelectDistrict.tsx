@@ -1,27 +1,18 @@
+import { useCreateSelectOptions } from "@/hooks/useCreateSelectOptions";
 import { useGetDistrictsQuery } from "@/services/api/area";
 import { Select, SelectProps } from "@mantine/core";
-import { useMemo } from "react";
 
 export const SelectDistrict = ({
   regencyId,
   ...props
 }: SelectProps & { regencyId?: string | null }) => {
   const { data } = useGetDistrictsQuery({
-    regencyId,
     page: 1,
     limit: 1000,
-    sort: ["name:asc"],
+    sortBy: "name:ASC",
+    "filter.regencyId": "$eq:" + regencyId,
   });
-  const options = useMemo(
-    () =>
-      data
-        ? data.data.map((row) => ({
-            value: row.id,
-            label: row.name,
-          }))
-        : [],
-    [data]
-  );
+  const options = useCreateSelectOptions(data?.data, "name", "id");
 
   return regencyId ? (
     <Select

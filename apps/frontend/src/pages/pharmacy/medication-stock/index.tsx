@@ -10,11 +10,15 @@ import { useParams } from "react-router-dom";
 import { AddStockSection } from "./components/AddStockSection";
 import { StockCard } from "./components/StockCard";
 import { useGetMedicationStockCountQuery } from "@/services/api/medication";
-import { IconPlus } from "@tabler/icons-react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRef } from "react";
-import { ProTable } from "@/components/ProTable";
+import { ProTable, createProTableColumnActions } from "@/components/ProTable";
 import { DisclosureAction } from "@/types/disclosure";
-import { useGetMedicationStocksQuery } from "@/services/api/medication-stock";
+import {
+  MedicationStock,
+  useDeleteMedicationStockMutation,
+  useGetMedicationStocksQuery,
+} from "@/services/api/medication-stock";
 import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
@@ -27,6 +31,7 @@ export const Component = () => {
   });
 
   const { data } = useGetMedicationStockCountQuery({ medicationId });
+  const [deleteMutate] = useDeleteMedicationStockMutation();
 
   return (
     <>
@@ -65,6 +70,15 @@ export const Component = () => {
                 keyIndex: "expiredAt",
                 header: "Expired Date",
               },
+              createProTableColumnActions<MedicationStock>({
+                actions: [
+                  {
+                    icon: <IconTrash />,
+                    label: "Delete",
+                    onClick: (row) => deleteMutate(row.id),
+                  },
+                ],
+              }),
             ]}
           />
         </CardSection>

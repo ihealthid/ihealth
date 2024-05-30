@@ -4,10 +4,13 @@ import {
   useUpdateObservationMutation,
 } from "@/services/api/observation";
 import {
+  ActionIcon,
+  Box,
   Button,
   Card,
   Flex,
   Grid,
+  Group,
   Menu,
   NumberInput,
   SimpleGrid,
@@ -20,6 +23,90 @@ import { useNavigate, useParams } from "react-router-dom";
 import _ from "lodash";
 import { useMemo } from "react";
 import { PatientProfile } from "@/features/PatientProfile";
+import { useMap } from "@mantine/hooks";
+import { IconTrash } from "@tabler/icons-react";
+
+const fields = [
+  {
+    name: "height",
+    label: "Tinggi Badan",
+    Component: NumberInput,
+  },
+  {
+    name: "weight",
+    label: "Berat Badan",
+    Component: NumberInput,
+  },
+  {
+    name: "waistline",
+    label: "Lingkar Pinggang",
+    Component: NumberInput,
+  },
+  {
+    name: "headCircumference",
+    label: "Lingkar Kepala",
+    Component: NumberInput,
+  },
+  {
+    name: "temperature",
+    label: "Suhu Badan",
+    Component: NumberInput,
+  },
+  {
+    name: "saturationOxygen",
+    label: "Saturasi Oxygen",
+    Component: NumberInput,
+  },
+  {
+    name: "heartRate",
+    label: "Detak Jantung",
+    Component: NumberInput,
+  },
+  {
+    name: "respiratoryRate",
+    label: "Respiratory Rate",
+    Component: NumberInput,
+  },
+  {
+    name: "colesterole",
+    label: "Kolesterol",
+    Component: NumberInput,
+  },
+  {
+    name: "uricAcid",
+    label: "Asam Urat",
+    Component: NumberInput,
+  },
+  {
+    name: "glucose",
+    label: "Gula Darah",
+    Component: NumberInput,
+  },
+];
+
+const defaultFields: [string, any][] = [
+  [
+    "anamnesis",
+    {
+      label: "Anamnesis",
+      Component: Textarea,
+    },
+  ],
+  [
+    "systole",
+    {
+      label: "Systole",
+      Component: NumberInput,
+    },
+  ],
+  [
+    "diastole",
+    {
+      label: "Diastole",
+      Component: NumberInput,
+    },
+  ],
+];
 
 export const Component = () => {
   const navigate = useNavigate();
@@ -28,6 +115,13 @@ export const Component = () => {
   const { data } = useGetObservationByEncounterIdQuery({
     encounterId,
   });
+
+  const mapState = useMap([...defaultFields]);
+
+  const computedFields = useMemo(
+    () => fields.filter((f) => !mapState.has(f.name)),
+    [mapState.size],
+  );
 
   const computedData = useMemo(() => {
     const c = _.map(data?.data.entries, (item) => ({
@@ -77,75 +171,28 @@ export const Component = () => {
             >
               {(form) => (
                 <Stack>
-                  <SimpleGrid cols={1}>
-                    <NumberInput
-                      {...form.getInputProps("systole")}
-                      label="Systole"
-                      placeholder="Masukan systole"
-                      defaultValue={computedData.systole ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("diastole")}
-                      label="Diastole"
-                      placeholder="Masukan diastole"
-                      defaultValue={computedData.diastole ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("height")}
-                      label="Tinggi Badan"
-                      placeholder="Masukan tinggi badan"
-                      defaultValue={computedData.height ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("weight")}
-                      label="Berat Badan"
-                      placeholder="Masukan berat badan"
-                      defaultValue={computedData.weight ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("waistline")}
-                      label="Lingkar Pinggang"
-                      placeholder="Masukan lingkar pinggang"
-                      defaultValue={computedData.waistline ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("headCircumference")}
-                      label="Lingkar Kepala"
-                      placeholder="Masukan lingkar kepala"
-                      defaultValue={computedData.headCircumference ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("temperature")}
-                      label="Suhu Badan"
-                      placeholder="Masukan suhu badan"
-                      defaultValue={computedData.temperature ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("saturationOxygen")}
-                      label="Sarutasi Oksigen"
-                      placeholder="Masukan sarutasi oksigen"
-                      defaultValue={computedData.saturationOxygen ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("heartRate")}
-                      label="Detak Jantung"
-                      placeholder="Masukan detak jantung"
-                      defaultValue={computedData.heartRate ?? undefined}
-                    />
-                    <NumberInput
-                      {...form.getInputProps("respiratoryRate")}
-                      label="Respiratory Rate"
-                      placeholder="Masukan respiratory rate"
-                      defaultValue={computedData.respiratoryRate ?? undefined}
-                    />
-                    <Textarea
-                      {...form.getInputProps("anamnesis")}
-                      label="Anamnesis"
-                      placeholder="Masukan anamnesis"
-                      defaultValue={computedData.anamnesis ?? undefined}
-                      required
-                    />
-                  </SimpleGrid>
+                  {Array.from(mapState.entries()).map(
+                    ([name, { Component, ...inputProps }], index) => (
+                      <Group align="end">
+                        <Box style={{ flex: 1 }}>
+                          <Component
+                            {...form.getInputProps(name)}
+                            {...inputProps}
+                            defaultValue={computedData[name] ?? undefined}
+                          />
+                        </Box>
+                        {index > 2 && (
+                          <ActionIcon
+                            variant="subtle"
+                            onClick={() => mapState.delete(name)}
+                          >
+                            <IconTrash />
+                          </ActionIcon>
+                        )}
+                      </Group>
+                    ),
+                  )}
+
                   <Flex justify="end" gap="md">
                     <Menu>
                       <Menu.Target>
@@ -154,7 +201,13 @@ export const Component = () => {
                         </Button>
                       </Menu.Target>
                       <Menu.Dropdown>
-                        <Menu.Item>A</Menu.Item>
+                        {computedFields.map(({ name, ...inputProps }) => (
+                          <Menu.Item
+                            onClick={() => mapState.set(name, inputProps)}
+                          >
+                            {inputProps.label}
+                          </Menu.Item>
+                        ))}
                       </Menu.Dropdown>
                     </Menu>
                     <Button type="submit">Save</Button>

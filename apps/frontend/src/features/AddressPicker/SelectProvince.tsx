@@ -1,23 +1,16 @@
+import { useCreateSelectOptions } from "@/hooks/useCreateSelectOptions";
 import { useGetProvincesQuery } from "@/services/api/area";
 import { Select, SelectProps } from "@mantine/core";
-import { useMemo } from "react";
 
 export const SelectProvince = (props: SelectProps) => {
   const { data } = useGetProvincesQuery({
     page: 1,
     limit: 100,
-    sort: ["name:asc"],
+    sortBy: "name:ASC",
   });
-  const options = useMemo(
-    () =>
-      data
-        ? data.data.map((row) => ({
-            value: row.id,
-            label: row.name,
-          }))
-        : [],
-    [data]
-  );
+
+  const options = useCreateSelectOptions(data?.data, "name", "id");
+
   return (
     <Select
       {...props}

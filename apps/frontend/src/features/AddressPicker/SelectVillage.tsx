@@ -1,27 +1,20 @@
+import { useCreateSelectOptions } from "@/hooks/useCreateSelectOptions";
 import { useGetVillagesQuery } from "@/services/api/area";
 import { Select, SelectProps } from "@mantine/core";
-import { useMemo } from "react";
 
 export const SelectVillage = ({
   districtId,
   ...props
 }: SelectProps & { districtId?: string | null }) => {
   const { data } = useGetVillagesQuery({
-    districtId,
     page: 1,
     limit: 1000,
-    sort: ["name:asc"],
+    sortBy: "name:ASC",
+    "filter.districtId": "$eq:" + districtId,
   });
-  const options = useMemo(
-    () =>
-      data
-        ? data.data.map((row) => ({
-            value: row.id,
-            label: row.name,
-          }))
-        : [],
-    [data]
-  );
+
+  const options = useCreateSelectOptions(data?.data, "name", "id");
+
   return districtId ? (
     <Select
       {...props}

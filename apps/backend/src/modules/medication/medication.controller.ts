@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -129,5 +130,13 @@ export class MedicationController {
     };
 
     return data;
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    const medication = await this.entityManager.findOneByOrFail(Medication, {
+      id,
+    });
+    await this.entityManager.remove(Medication, medication);
   }
 }
