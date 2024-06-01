@@ -3,6 +3,7 @@ import { PaginationResult } from "@/types/pagination-result";
 import { mainApi } from "./main";
 import { EntityResponse } from "@/types/entity-response";
 import { DoseForm } from "./dose-form";
+import { MedicationIngredient } from "./medication-ingredient";
 
 export type Medication = {
   id: string;
@@ -15,6 +16,7 @@ export type Medication = {
   stock: string;
   createdAt: string;
   updatedAt: string;
+  ingredients: MedicationIngredient[]
 };
 
 export type MedicationBatch = {

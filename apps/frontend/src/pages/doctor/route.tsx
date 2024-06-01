@@ -15,6 +15,10 @@ export const doctorRoutes: RouteObject[] = [
         path: "diagnose/:id",
         lazy: () => import("./diagnose"),
       },
+      {
+        path: "medication",
+        lazy: () => import("./medication"),
+      },
     ],
   },
 ];

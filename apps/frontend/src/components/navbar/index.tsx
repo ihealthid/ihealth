@@ -10,6 +10,7 @@ import {
   IconDatabase,
   IconList,
   IconListNumbers,
+  IconMedicineSyrup,
   IconNote,
   IconPencil,
   IconUser,
@@ -83,6 +84,11 @@ const links: {
       label: "Appoitment",
       link: "appointment",
       icon: IconListNumbers,
+    },
+    {
+      label: "Medication",
+      link: "medication",
+      icon: IconMedicineSyrup,
     },
   ],
   cashier: [
