@@ -56,7 +56,7 @@ export const Component = () => {
                   icon: <IconStethoscope />,
                   label: "Lakukan Pemeriksaan",
                   onClick(row) {
-                    navigate("/diagnose/" + row.id);
+                    navigate("/doctor/diagnose/" + row.id);
                   },
                 },
               ],

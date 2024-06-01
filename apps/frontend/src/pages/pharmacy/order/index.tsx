@@ -38,7 +38,7 @@ export const Component = () => {
                 icon: <IconMedicineSyrup />,
                 label: "Detail",
                 onClick(row) {
-                  navigate("/order-detail/" + row.id);
+                  navigate("/pharmachy/order-detail/" + row.id);
                 },
               },
             ],

@@ -1,0 +1,6 @@
+2024/05/31-18:11:16.627 92a3b Reusing MANIFEST /home/dalfiannur/ihealth/apps/backend/tokens/mentarimedika/Default/Local Storage/leveldb/MANIFEST-000001
+2024/05/31-18:11:16.642 92a3b Recovering log #3
+2024/05/31-18:11:16.642 92a3b Reusing old log /home/dalfiannur/ihealth/apps/backend/tokens/mentarimedika/Default/Local Storage/leveldb/000003.log 
+2024/05/31-18:42:25.658 92a3c Level-0 table #5: started
+2024/05/31-18:42:25.964 92a3c Level-0 table #5: 14812 bytes OK
+2024/05/31-18:42:26.203 92a3c Delete type=0 #3

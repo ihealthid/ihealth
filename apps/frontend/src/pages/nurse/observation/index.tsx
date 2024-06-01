@@ -154,7 +154,7 @@ export const Component = () => {
   return (
     <Grid columns={5}>
       <Grid.Col span={2}>
-        <PatientProfile encounterId={encounterId} />
+        <PatientProfile encounterId={encounterId} onRendered={() => {}} />
       </Grid.Col>
       <Grid.Col span={3}>
         <Card withBorder>

@@ -12,17 +12,22 @@ import { Footer } from "./components/Footer";
 import { OtherField } from "./other-field";
 import { AllergySection } from "./components/AllergySection";
 import { EncounterAct } from "./components/EncounterAct";
+import { HistorySection } from "./components/HistorySection";
 
 export const Component = () => {
   const params = useParams();
   const id = params.id as string;
 
+  const [patientId, setPatientId] = useState<string | null>(null);
   const [prescriptionId, setPrescriptionId] = useState(randomId());
 
   return (
     <Grid columns={2}>
       <Grid.Col span={1}>
-        <PatientProfile encounterId={id} />
+        <PatientProfile
+          encounterId={id}
+          onRendered={(patient) => setPatientId(patient.id)}
+        />
       </Grid.Col>
 
       <Grid.Col span={1}>
@@ -36,6 +41,7 @@ export const Component = () => {
               <Tabs.List>
                 <Tabs.Tab value="diagnosis">Diagnosis</Tabs.Tab>
                 <Tabs.Tab value="allergy">Allergy</Tabs.Tab>
+                <Tabs.Tab value="history">Riwayat Kunjungan</Tabs.Tab>
               </Tabs.List>
 
               <Box p={16}>
@@ -83,6 +89,10 @@ export const Component = () => {
 
                 <Tabs.Panel value="allergy">
                   <AllergySection encounterId={id} />
+                </Tabs.Panel>
+
+                <Tabs.Panel value="history">
+                  {patientId && <HistorySection patientId={patientId} />}
                 </Tabs.Panel>
               </Box>
             </Tabs>

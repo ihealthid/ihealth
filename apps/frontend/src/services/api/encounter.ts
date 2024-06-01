@@ -56,6 +56,7 @@ const encounterApi = mainApi.injectEndpoints({
 
 export const {
   useGetEncounterQuery,
+  useLazyGetEncounterQuery,
   useGetEncountersQuery,
   usePostEncounterMutation,
 } = encounterApi;

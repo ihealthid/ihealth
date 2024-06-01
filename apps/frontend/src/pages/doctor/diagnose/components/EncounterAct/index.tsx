@@ -10,7 +10,7 @@ import {
   useDeleteDiagnoseEncounterActMutation,
   useGetDiagnoseEncounterActsQuery,
 } from "@/services/api/diagnose-encounter-act";
-import { SelectConsumable } from "../../../../features/SelectConsumable";
+import { SelectConsumable } from "../../../../../features/SelectConsumable";
 import { IconTrash } from "@tabler/icons-react";
 import { deleteConfirmation } from "@/utils/delete-confirmation-modal";
 
@@ -29,8 +29,8 @@ export const EncounterAct = ({ encounterId }: EncounterActProps) => {
 
       <ProTable
         queryLoader={useGetDiagnoseEncounterActsQuery}
-        queryParams={{
-          "encounterId:of": encounterId,
+        query={{
+          "filter.encounterId": "$eq:" + encounterId,
         }}
         cols={[
           {

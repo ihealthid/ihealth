@@ -4,6 +4,7 @@ import { UserButton } from "../user-button";
 import classes from "./style.module.css";
 import { Links, LinksGroup } from "@/components/navbar-links-group";
 import {
+  IconBottle,
   IconCash,
   IconDashboard,
   IconDatabase,
@@ -122,6 +123,11 @@ const links: {
       label: "Procurement",
       link: "procurement",
       icon: IconNote,
+    },
+    {
+      label: "Pesanan",
+      link: "order",
+      icon: IconBottle,
     },
   ],
 };

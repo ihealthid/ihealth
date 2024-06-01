@@ -14,6 +14,7 @@ import {
   TableTh,
   TableThead,
   TableTr,
+  TextInput,
   Title,
   Tooltip,
 } from "@mantine/core";
@@ -25,11 +26,12 @@ import { Patient, useGetPatientsQuery } from "@/services/api/patient";
 import { DisclosureAction, DisclosureActionOnEdit } from "@/types/disclosure";
 import { humanizedDate } from "@/utils/date";
 import { EditSection } from "./components/EditSection";
-import { SearchField } from "./components/SearchField";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const addSectionRef = useRef<DisclosureAction>(null);
   const editSectionRef = useRef<DisclosureActionOnEdit<string>>(null);
+  const paginateQuery = usePaginateQuery();
 
   return (
     <>
@@ -47,6 +49,7 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetPatientsQuery}
+            query={paginateQuery.get()}
             cols={[
               {
                 header: "Identifies",
@@ -126,13 +129,25 @@ export const Component = () => {
                 ],
               }),
             ]}
-            headerSection={(filter) => (
+            headerSection={() => (
               <Flex p="md">
-                <SearchField
+                <TextInput
+                  placeholder="Search..."
                   onChange={(e) => {
-                    filter({
-                      [e.key]: e.value,
-                    });
+                    const val = e.currentTarget.value;
+                    if (val.length > 0) {
+                      paginateQuery.set(
+                        "filter.fullName",
+                        "$or:$ilike:" + e.currentTarget.value,
+                      );
+                      paginateQuery.set(
+                        "filter.identifies.value",
+                        "$or:$ilike:" + e.currentTarget.value,
+                      );
+                    } else {
+                      paginateQuery.delete("filter.fullName");
+                      paginateQuery.delete("filter.identifiers.value");
+                    }
                   }}
                 />
               </Flex>

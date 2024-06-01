@@ -52,7 +52,7 @@ export const pharmacyRoutes: RouteObject[] = [
         lazy: () => import("./order-add"),
       },
       {
-        path: "order-detail",
+        path: "order-detail/:id",
         lazy: () => import("./order-detail"),
       },
       {

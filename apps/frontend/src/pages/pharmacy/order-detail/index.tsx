@@ -23,8 +23,8 @@ export const Component = () => {
             <CardSection mt="md">
               <ProTable
                 queryLoader={useGetPrescriptionItemsQuery}
-                queryParams={{
-                  "prescriptionId:of": id,
+                query={{
+                  "filter.prescriptionId": "$eq:" + id,
                 }}
                 cols={[
                   {

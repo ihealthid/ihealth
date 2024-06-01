@@ -106,7 +106,7 @@ export const TotalSection = ({
           leftSection={<IconCash />}
           onClick={() => {
             doneMutation(id).then(() => {
-              navigate("/payment");
+              navigate("/cashier/payment");
             });
           }}
         >

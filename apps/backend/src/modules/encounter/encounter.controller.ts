@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -24,6 +25,7 @@ import {
   PaginateQuery,
   paginate,
 } from 'nestjs-paginate';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
   path: 'encounters',
@@ -35,7 +37,7 @@ export class EncounterController {
   ) {}
 
   @Get()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async get(@Paginate() query: PaginateQuery) {
     return paginate(query, this.entityManager.getRepository(Encounter), {
       nullSort: 'last',
@@ -56,8 +58,44 @@ export class EncounterController {
     });
   }
 
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async findById(@Param('id') id: string) {
+    return this.entityManager.findOneOrFail(Encounter, {
+      where: {
+        id,
+      },
+      relations: {
+        prescriptions: {
+          items: {
+            medication: true,
+          },
+        },
+        diagnoses: {
+          classificationDisease: true,
+        },
+        observation: {
+          entries: true
+        },
+        // diagnoseEncounterActs: {
+        // encounterAct: true,
+        // consumable: true,
+        // user: true,
+        // },
+        healthcareService: true,
+        histories: {
+          status: true,
+        },
+        patientCondition: true,
+        participants: {
+          user: true,
+        },
+      },
+    });
+  }
+
   @Post()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   async create(@Request() req, @Body() data: EncounterInputRequest) {
     await this.entityManager.transaction(async (trx) => {
       const patient = await trx.findOneByOrFail(Patient, {
@@ -68,14 +106,15 @@ export class EncounterController {
         id: data.patientConditionId,
       });
 
+      
       const participantType = await trx.findOneByOrFail(ParticipantTypeCode, {
         code: 'ADM',
       });
-
+      
       const healthcareService = await trx.findOneByOrFail(HealthcareService, {
         id: data.healthcareServiceId,
       });
-
+      
       const encounter = trx.create(Encounter, {
         patient,
         healthcareService,
@@ -83,13 +122,14 @@ export class EncounterController {
         patientCondition,
       });
       await trx.save(encounter);
-
-      const participant = trx.create(Participant, {
-        encounterId: encounter.id,
-        userId: req.user.sub,
-        type: participantType,
-      });
-      await trx.save(participant);
+      
+      // console.log('oje')
+      // const participant = trx.create(Participant, {
+      //   encounterId: encounter.id,
+      //   userId: req.user.sub,
+      //   type: participantType,
+      // });
+      // await trx.save(participant);
 
       const status = await this.entityManager.findOneByOrFail(EncounterStatus, {
         code: 'registered',

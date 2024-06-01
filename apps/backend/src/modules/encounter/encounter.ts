@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,6 +16,8 @@ import { HealthcareService } from '../healthcare-service/healthcare-service';
 import { PatientCondition } from '../patient-condition/patient-condition';
 import { Prescription } from '../prescription/prescription';
 import { DiagnoseEncounterAct } from '../diagnose-encounter-act/diagnose-encounter-act';
+import { Diagnose } from '../diagnose/diagnose';
+import { Observation } from '../observation/observation';
 
 @Entity()
 export class Encounter {
@@ -64,4 +67,10 @@ export class Encounter {
 
   @OneToMany(() => DiagnoseEncounterAct, (act) => act.encounterId)
   diagnoseEncounterActs: DiagnoseEncounterAct[];
+
+  @OneToMany(() => Diagnose, (diagnose) => diagnose.encounter)
+  diagnoses: Diagnose[];
+
+  @OneToOne(() => Observation, (observation) => observation.encounter)
+  observation: Observation;
 }

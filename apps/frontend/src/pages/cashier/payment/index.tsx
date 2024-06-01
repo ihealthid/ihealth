@@ -43,7 +43,7 @@ export const Component = () => {
                     label: "Pay",
                     hidden: (row) => row.status.code === "done",
                     onClick(row) {
-                      navigate("/payment/" + row.id);
+                      navigate("/cashier/payment/" + row.id);
                     },
                   },
                 ],

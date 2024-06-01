@@ -19,10 +19,12 @@ import {
   useGetConsumableStocksQuery,
 } from "@/services/api/consumable-stock";
 import { humanizedDate } from "@/utils/date";
+import { usePaginateQuery } from "@/hooks/usePaginateQuery";
 
 export const Component = () => {
   const addSectionRef = useRef<DisclosureAction>(null);
   const [deleteMutation] = useDeleteConsumableStockMutation();
+  const paginateQuery = usePaginateQuery();
 
   return (
     <>
@@ -40,15 +42,14 @@ export const Component = () => {
         <CardSection>
           <ProTable
             queryLoader={useGetConsumableStocksQuery}
-            headerSection={(filter) => (
+            query={paginateQuery.get()}
+            headerSection={() => (
               <Group p="md">
                 <TextInput
                   placeholder="Search ..."
-                  onChange={(e) =>
-                    filter({
-                      "name:iLike": e.currentTarget.value,
-                    })
-                  }
+                  onChange={(e) => {
+                    paginateQuery.set("filter.name", e.currentTarget.value);
+                  }}
                 />
               </Group>
             )}

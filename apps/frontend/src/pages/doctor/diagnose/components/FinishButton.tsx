@@ -18,7 +18,7 @@ export const FinishButton = ({ disabled }: FinishButtonProps) => {
       disabled={disabled}
       onClick={() => {
         mutate(id).then(() => {
-          navigate("/appointment");
+          navigate("/doctor/appointment");
         });
       }}
     >

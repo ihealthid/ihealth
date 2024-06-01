@@ -3,8 +3,8 @@ import { exec, spawn } from 'child_process';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { convertToHtml } from 'mammoth';
 import * as htmlPdf from 'html-pdf';
+import gs from 'ghostscript-js';
 
 @Injectable()
 export class PrinterService {
@@ -42,10 +42,44 @@ export class PrinterService {
         format: 'A4',
       })
       .toFile(fileName, (err, res) => {
-        const cmd = spawn('lp', ['-d', printerName, res.filename, '-o', 'media=a5', '-o', 'orientation-requested=4']);
+        const cmd = spawn('lp', [
+          '-d',
+          printerName,
+          res.filename,
+          '-o',
+          'media=a5',
+          '-o',
+          'orientation-requested=4',
+        ]);
         cmd.stdout.on('close', () => {
           fs.rmSync(fileName);
         });
       });
+  }
+
+  async printToThermal(buffer: Buffer) {
+    const data = [
+      '      KLINIK MENTARI MEDIKA     ',
+      '',
+      'KONSULTASI DOKTER',
+      '          50000',
+      'PARACETAMOL 5MG x1 TAB',
+      '           5000',
+      '',
+      '',
+      '      HUBUNGI LAYANAN KAMI',
+      '        08 222 111 01 45',
+      '',
+      '      SEMOGA LEKAS SEMBUH',
+      '         TERIMA KASIH',
+      '',
+      ''
+    ];
+
+    data.forEach((line) => {
+      exec(`echo "${line}" >> /dev/usb/lp0`, (err) => {
+        if (err) console.log(err.message);
+      });
+    });
   }
 }

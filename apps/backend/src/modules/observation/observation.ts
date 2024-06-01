@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -25,6 +26,7 @@ export class Observation {
   encounterId: string;
 
   @OneToOne(() => Encounter)
+  @JoinColumn()
   encounter: Encounter;
 
   @OneToMany(() => ObservationEntry, (entry) => entry.observation)

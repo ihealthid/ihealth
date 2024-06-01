@@ -1,4 +1,7 @@
-import { useGetPatientByEncounterIdQuery } from "@/services/api/patient";
+import {
+  Patient,
+  useGetPatientByEncounterIdQuery,
+} from "@/services/api/patient";
 import { ageCounter } from "@/utils/date";
 import {
   ActionIcon,
@@ -15,6 +18,7 @@ import { useMemo } from "react";
 
 interface ProfilePatientProps {
   encounterId: string;
+  onRendered: (patient: Patient) => void;
 }
 
 const gender: { [key: string]: string } = {
@@ -22,7 +26,10 @@ const gender: { [key: string]: string } = {
   FEMALE: "Perempuan",
 };
 
-export function PatientProfile({ encounterId }: Readonly<ProfilePatientProps>) {
+export function PatientProfile({
+  encounterId,
+  onRendered,
+}: Readonly<ProfilePatientProps>) {
   const { data } = useGetPatientByEncounterIdQuery({ encounterId });
 
   const identifiers = useMemo(() => {
@@ -35,6 +42,7 @@ export function PatientProfile({ encounterId }: Readonly<ProfilePatientProps>) {
       };
     });
 
+    onRendered(data.data);
     return arrObj.reduce((acc, current) => ({ ...acc, ...current }));
   }, [data]);
 

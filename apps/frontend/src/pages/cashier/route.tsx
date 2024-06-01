@@ -12,7 +12,7 @@ export const cashierRoutes: RouteObject[] = [
         lazy: () => import("./payment"),
       },
       {
-        path: "payment-detail",
+        path: "payment/:id",
         lazy: () => import("./payment-detail"),
       },
     ],
