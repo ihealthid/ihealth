@@ -24,6 +24,11 @@ export class Patient {
   @Column()
   birthDate: Date;
 
+  @Column({
+    nullable: true,
+  })
+  phoneNumber?: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

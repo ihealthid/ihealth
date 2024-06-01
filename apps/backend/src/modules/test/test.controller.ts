@@ -11,7 +11,7 @@ export class TestController {
   constructor(
     private printerService: PrinterService,
     // private minioService: MinioService,
-    // private whatsappService: WhatsappService
+    private whatsappService: WhatsappService
   ) {}
 
   @Get()
@@ -27,6 +27,6 @@ export class TestController {
     //   .qrcode('https://klinikmentarimedika.id')
     //   .encode();
     // this.printerService.printData(Buffer.from(result.buffer));
-    // return this.whatsappService.getQr()
+    return this.whatsappService.getQr()
   }
 }

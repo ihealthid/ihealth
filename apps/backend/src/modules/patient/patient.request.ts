@@ -50,6 +50,10 @@ export class PatientCreateRequest {
   fullName: string;
 
   @IsString()
+  @IsOptional()
+  phoneNumber?: string;
+
+  @IsString()
   gender: string;
 
   @IsString()

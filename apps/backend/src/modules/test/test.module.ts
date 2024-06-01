@@ -6,7 +6,7 @@ import { WhatsappService } from '../whatsapp/whatsapp.service';
 
 @Module({
   imports: [],
-  providers: [PrinterService, MinioService],
+  providers: [PrinterService, MinioService, WhatsappService],
   controllers: [TestController],
 })
 export class TestModule {}

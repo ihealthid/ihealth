@@ -100,12 +100,14 @@ export class PatientController {
       fullName,
       birthDate,
       nik,
+      phoneNumber,
       address: { rt, rw, block, no, floor, address, villageId },
     } = data;
     await this.entityManager.transaction(async (trx) => {
       const patient = trx.create(Patient, {
         fullName,
         birthDate,
+        phoneNumber,
       });
       await trx.save(patient);
 
@@ -214,6 +216,10 @@ export class PatientController {
           );
         }
       }
+
+      const patient = await trx.findOneByOrFail(Patient, { id });
+      const uData = trx.merge(Patient, patient, data);
+      return trx.save(uData);
     });
   }
 }

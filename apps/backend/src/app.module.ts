@@ -59,7 +59,7 @@ import { EncounterPaymentModule } from './modules/encounter-payment/encounter-pa
 import { IngredientModule } from './modules/ingredient/ingredient.module';
 import { MedicationIngredientModule } from './modules/medication-ingredient/medication-ingredient.module';
 import { MedicationInventoryModule } from './modules/medication-inventory/medication-inventory.module';
-import { TestModule } from './modules/test/test.module';
+// import { TestModule } from './modules/test/test.module';
 
 @Module({
   imports: [
@@ -147,7 +147,7 @@ import { TestModule } from './modules/test/test.module';
     InitModule,
 
     RFIDModule,
-    TestModule,
+    // TestModule,
   ],
 })
 export class AppModule {

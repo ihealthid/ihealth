@@ -24,6 +24,7 @@ export type Patient = {
   gender: string;
   birthDate: string;
   addresses: Address[];
+  phoneNumber?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -48,6 +49,7 @@ type PostPatientInput = {
   gender: string;
   birthDate: string;
   address: AddressInput;
+  phoneNumber: string | null;
 };
 
 const patientApi = mainApi.injectEndpoints({
