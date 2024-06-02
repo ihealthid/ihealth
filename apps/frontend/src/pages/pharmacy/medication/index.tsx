@@ -89,6 +89,9 @@ export const Component = () => {
               {
                 keyIndex: "price",
                 header: "Price",
+                sortable(value) {
+                  paginateQuery.set("sortBy", "price:" + value);
+                },
                 render: (row) => (
                   <NumberFormatter value={row.price} thousandSeparator />
                 ),

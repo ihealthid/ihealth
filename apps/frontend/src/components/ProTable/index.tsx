@@ -68,8 +68,8 @@ export const ProTable = <TData extends Record<string, any>>({
         <Table striped highlightOnHover>
           <TableThead>
             <TableTr>
-              {cols.map((col) => (
-                <TableTh ta={col.textAlign}>
+              {cols.map((col, idx) => (
+                <TableTh key={idx} ta={col.textAlign}>
                   {col.sortable ? (
                     <Group justify="space-between">
                       <Text>{col.header}</Text>

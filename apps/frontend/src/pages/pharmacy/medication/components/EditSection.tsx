@@ -18,9 +18,10 @@ export const EditSection = forwardRef<DisclosureActionOnEdit<string>>(
 
     useImperativeHandle(ref, () => ({
       open(id) {
-        open();
-        setId(id);
-        fetcher(id);
+        fetcher(id).then(() => {
+          setId(id);
+          open();
+        });
       },
       close,
     }));
@@ -33,6 +34,7 @@ export const EditSection = forwardRef<DisclosureActionOnEdit<string>>(
       >
         <Modal.Body>
           <FormProvider
+            key={id}
             useMutate={usePutMedicationMutation}
             onSuccess={close}
             initialValues={{ id }}
@@ -49,5 +51,5 @@ export const EditSection = forwardRef<DisclosureActionOnEdit<string>>(
         </Modal.Body>
       </Modal>
     );
-  }
+  },
 );

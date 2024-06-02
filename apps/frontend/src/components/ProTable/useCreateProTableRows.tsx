@@ -21,8 +21,8 @@ export const useCreateProTableRows = <TData extends Record<string, any>>({
 }: UseCreateProTableRowsProps<TData>): React.ReactNode[] => {
   return data.map((row, index) => (
     <TableTr key={index}>
-      {cols.map((col) => (
-        <TableTd ta={col.textAlign}>
+      {cols.map((col, idx) => (
+        <TableTd key={idx} ta={col.textAlign}>
           {col.render
             ? col.render(row, index)
             : col.keyIndex

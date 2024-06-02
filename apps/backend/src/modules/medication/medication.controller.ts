@@ -42,7 +42,7 @@ export class MedicationController {
   @UseGuards(AuthGuard)
   async get(@Paginate() query: PaginateQuery) {
     return paginate(query, this.entityManager.getRepository(Medication), {
-      sortableColumns: ['name', 'doseForm.display'],
+      sortableColumns: ['name', 'doseForm.display', 'price'],
       nullSort: 'last',
       defaultSortBy: [['name', 'ASC']],
       searchableColumns: ['name', 'ingredients.ingredient.name'],
