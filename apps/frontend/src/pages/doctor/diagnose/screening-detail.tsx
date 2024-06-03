@@ -28,7 +28,10 @@ export function ScreeningDetail({
       [entry.code]: getValue(entry.code, entry.value),
     }));
 
-    return u?.reduce((acc, current) => ({ ...acc, ...current }));
+    if (u && u?.length > 0) {
+      return u.reduce((acc, current) => ({ ...acc, ...current }));
+    }
+    return {};
   }, [data]);
 
   const counter = IMTCounter({
@@ -39,13 +42,15 @@ export function ScreeningDetail({
   return (
     <Card withBorder radius="md">
       <Card.Section bg="pink" c="white" px={16} py={12}>
-        <Title order={4}>Hasil Observasi Awal</Title>
+        <Title order={4}>Observasi Awal</Title>
       </Card.Section>
       <SimpleGrid cols={2} mt={16}>
-        <ValueWithLabel
-          label="Tekanan Darah"
-          value={`${computedData?.systole}/${computedData?.diastole} mmHg`}
-        />
+        {computedData?.systole && computedData?.diastole && (
+          <ValueWithLabel
+            label="Tekanan Darah"
+            value={`${computedData?.systole}/${computedData?.diastole} mmHg`}
+          />
+        )}
 
         {computedData?.height && computedData?.weight && (
           <ValueWithLabel

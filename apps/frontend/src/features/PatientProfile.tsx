@@ -43,7 +43,10 @@ export function PatientProfile({
     });
 
     onRendered(data.data);
-    return arrObj.reduce((acc, current) => ({ ...acc, ...current }));
+    if (arrObj.length > 0) {
+      return arrObj.reduce((acc, current) => ({ ...acc, ...current }));
+    }
+    return {};
   }, [data]);
 
   if (!data) {
