@@ -57,6 +57,10 @@ const links: {
           label: "Patient Condition",
           link: "patient-condition",
         },
+        {
+          label: "Jenis Pembayaran",
+          link: "payment-method",
+        },
       ],
     },
   ],

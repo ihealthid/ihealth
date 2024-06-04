@@ -53,6 +53,7 @@ export const mainApi = createApi({
 
     "Procurement",
     "Payment",
+    "PaymentMethod",
   ],
   endpoints: () => ({}),
 });

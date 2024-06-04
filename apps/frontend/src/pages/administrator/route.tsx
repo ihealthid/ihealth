@@ -51,6 +51,10 @@ export const administratorRoutes: RouteObject[] = [
         path: "encounter-act-consumable",
         lazy: () => import("./encounter-act-consumable"),
       },
+      {
+        path: "payment-method",
+        lazy: () => import("./payment-method"),
+      },
     ],
   },
 ];
