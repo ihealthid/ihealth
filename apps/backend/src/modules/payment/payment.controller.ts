@@ -13,7 +13,7 @@ import {
 } from 'nestjs-paginate';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { DiagnoseEncounterAct } from '../diagnose-encounter-act/diagnose-encounter-act';
-import { PaymentMethd } from '../payment-method/payment-method';
+import { PaymentMethod } from '../payment-method/payment-method';
 import { Encounter } from '../encounter/encounter';
 import { HealthcareService } from '../healthcare-service/healthcare-service';
 import { Prescription } from '../prescription/prescription';
@@ -146,7 +146,7 @@ export class PaymentController {
         code: 'done',
       });
 
-      const method = await trx.findOneByOrFail(PaymentMethd, {
+      const method = await trx.findOneByOrFail(PaymentMethod, {
         code: 'cash',
       });
 

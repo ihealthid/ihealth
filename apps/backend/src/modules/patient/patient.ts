@@ -18,6 +18,12 @@ export class Patient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({
+    unique: true,
+    nullable: true
+  })
+  medicalRecord?: string;
+
   @Column()
   fullName: string;
 

@@ -6,7 +6,7 @@ import { ProcurementInputRequest } from './procurement.request';
 import { MedicationStock } from '../medication-stock/medication-stock';
 import { Payment } from '../payment/payment';
 import { PaymentStatus } from '../payment-status/payment-status';
-import { PaymentMethd } from '../payment-method/payment-method';
+import { PaymentMethod } from '../payment-method/payment-method';
 import { Paginate, PaginateQuery, paginate } from 'nestjs-paginate';
 
 @Controller({
@@ -62,7 +62,7 @@ export class ProcurementController {
         await trx.save(newStock);
       }
 
-      const paymentMethod = await trx.findOneByOrFail(PaymentMethd, {
+      const paymentMethod = await trx.findOneByOrFail(PaymentMethod, {
         code: isCredit ? 'credit' : 'cash',
       });
       const paymentStatus = await trx.findOneByOrFail(PaymentStatus, {

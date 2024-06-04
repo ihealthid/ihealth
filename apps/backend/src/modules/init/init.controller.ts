@@ -30,7 +30,7 @@ import { PaymentStatus } from '../payment-status/payment-status';
 import { MaritalStatus } from '../marital-status/marital-status';
 import { EncounterStatus } from '../encounter-status/encounter-status';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { PaymentMethd } from '../payment-method/payment-method';
+import { PaymentMethod } from '../payment-method/payment-method';
 
 @Controller({
   path: 'init',
@@ -55,12 +55,12 @@ export class InitController {
         await this.initFormType();
         await this.initPrescriptionStatus();
         await this.initEncounterStatus();
-        await this.init(PaymentMethd, paymentMethodJson.data, ['code']);
+        await this.init(PaymentMethod, paymentMethodJson.data, ['code']);
         return this.initPaymentStatus();
       }
 
       case 'payment-method':
-        await this.init(PaymentMethd, paymentMethodJson.data, ['code']);
+        await this.init(PaymentMethod, paymentMethodJson.data, ['code']);
 
       case 'user':
         return await this.initUser();

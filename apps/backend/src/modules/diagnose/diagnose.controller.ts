@@ -19,11 +19,7 @@ import { PrescriptionStatus } from '../prescription-status/prescription-status';
 import { EncounterStatus } from '../encounter-status/encounter-status';
 import { EncounterHistory } from '../encounter-history/encounter-history';
 import { DiagnoseStatus } from '../diagnose-status/diagnose-status';
-import { PaymentStatus } from '../payment-status/payment-status';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { PaymentMethd } from '../payment-method/payment-method';
-import { EncounterPayment } from '../encounter-payment/encounter-payment';
-import { Payment } from '../payment/payment';
 import { Encounter } from '../encounter/encounter';
 
 @Controller({
@@ -110,8 +106,8 @@ export class DiagnoseController {
       const encounter = await trx.findOneOrFail(Encounter, {
         where: { id: encounterId },
         relations: {
-          patient: true
-        }
+          patient: true,
+        },
       });
 
       const prescriptionStatus = await trx.findOneBy(PrescriptionStatus, {
@@ -147,30 +143,6 @@ export class DiagnoseController {
       } else {
         await trx.update(EncounterHistory, { id: history.id }, history);
       }
-
-      const paymentStatus = await trx.findOneBy(PaymentStatus, {
-        code: 'pending',
-      });
-
-      const paymentMethod = await trx.findOneByOrFail(PaymentMethd, {
-        code: 'cash',
-      });
-
-      const payment = trx.create(Payment, {
-        amount: 1234,
-        status: paymentStatus,
-        method: paymentMethod,
-      });
-      await trx.save(payment);
-
-      console.log(payment.id);
-
-      const encounterPayment = trx.create(EncounterPayment, {
-        payment,
-        encounterId,
-        patientId: encounter.patient.id,
-      });
-      await trx.save(encounterPayment);
 
       const diagnoseStatus = await trx.findOneBy(DiagnoseStatus, {
         code: 'done',

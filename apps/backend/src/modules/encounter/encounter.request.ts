@@ -9,4 +9,7 @@ export class EncounterInputRequest {
 
   @IsString()
   patientConditionId: string;
+
+  @IsString()
+  paymentMethodId: string;
 }

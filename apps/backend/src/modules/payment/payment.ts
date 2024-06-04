@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentStatus } from '../payment-status/payment-status';
-import { PaymentMethd } from '../payment-method/payment-method';
+import { PaymentMethod } from '../payment-method/payment-method';
 import { EncounterPayment } from '../encounter-payment/encounter-payment';
 
 @Entity()
@@ -34,8 +34,8 @@ export class Payment {
   @Column()
   methodId: string;
 
-  @ManyToOne(() => PaymentMethd)
-  method: PaymentMethd;
+  @ManyToOne(() => PaymentMethod)
+  method: PaymentMethod;
 
   @OneToOne(() => EncounterPayment, (encounter) => encounter.payment)
   encounterPayment?: EncounterPayment;
