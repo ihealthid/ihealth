@@ -15,6 +15,10 @@ import {
   paginate,
 } from 'nestjs-paginate';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { PaymentMethod } from '../payment-method/payment-method';
+import { Payment } from '../payment/payment';
+import { PaymentStatus } from '../payment-status/payment-status';
+import { EncounterPayment } from '../encounter-payment/encounter-payment';
 
 @Controller({
   path: 'encounters',
@@ -66,11 +70,6 @@ export class EncounterController {
         observation: {
           entries: true,
         },
-        // diagnoseEncounterActs: {
-        // encounterAct: true,
-        // consumable: true,
-        // user: true,
-        // },
         healthcareService: true,
         histories: {
           status: true,
@@ -99,6 +98,21 @@ export class EncounterController {
         id: data.healthcareServiceId,
       });
 
+      const paymentMethod = await trx.findOneByOrFail(PaymentMethod, {
+        id: data.paymentMethodId,
+      });
+
+      const paymentStatus = await trx.findOneByOrFail(PaymentStatus, {
+        code: 'pending',
+      });
+
+      const payment = trx.create(Payment, {
+        amount: paymentMethod.code === 'paket-hemat' ? 75000 : 0,
+        methodId: paymentMethod.id,
+        statusId: paymentStatus.id,
+      });
+      await trx.save(payment);
+
       const encounter = trx.create(Encounter, {
         patient,
         healthcareService,
@@ -106,6 +120,13 @@ export class EncounterController {
         patientCondition,
       });
       await trx.save(encounter);
+
+      const encounterPayment = trx.create(EncounterPayment, {
+        patientId: data.patientId,
+        paymentId: payment.id,
+        encounterId: encounter.id,
+      });
+      await trx.save(encounterPayment);
 
       const status = await this.entityManager.findOneByOrFail(EncounterStatus, {
         code: 'registered',
